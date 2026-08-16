@@ -31,3 +31,8 @@ described in spec section 7.
 
 - Chart palette validated for colorblind separation in both light and dark modes; every chart has a table view.
 - Responsive down to 390px. Light/dark theme toggle in the header.
+
+## Deploys
+
+Pushes to `main` deploy automatically to Vercel — this repo is linked to the `colourway-dashboard`
+Vercel project (production branch: `main`).
