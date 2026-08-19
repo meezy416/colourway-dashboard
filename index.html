@@ -1706,13 +1706,13 @@ table.tbl tbody tr:last-child td {
   H.sort((t, e) => e.date - t.date || t.id.localeCompare(e.id));
   const I = {
       overall: 3600,
-      sneakers: 1500,
-      apparel: 450,
-      accessories: 160,
-      fees: 260,
-      shipping: 120,
-      cleaning: 70,
-      storage: 110
+      sneakers: 2300,
+      apparel: 680,
+      accessories: 180,
+      fees: 130,
+      shipping: 160,
+      cleaning: 50,
+      storage: 100
     },
     j = {
       view: "overview",
@@ -1923,42 +1923,55 @@ table.tbl tbody tr:last-child td {
   }
 
   let healthPending = !0;
+  const healthSteps = [1, .8, .56, .32, .12, 0];
 
   function renderHealth(cats, spend, budget, monthTx) {
     const host = t("#healthCard");
     if (!host) return;
-    const clamp01 = t => a(t, 0, 1),
+    const band = (v, zero, full) => a((v - zero) / (full - zero), 0, 1),
+      smooth = (good, n, prior) => (good + 2 * prior) / (n + 2),
       sameMonth = t => t.getMonth() === B.getMonth() && t.getFullYear() === B.getFullYear(),
-      monthReceipts = E.filter(t => sameMonth(t.date)),
-      over = cats.filter(t => j.budgets[t.id] && t.value > j.budgets[t.id]).length,
+      rc = E.filter(t => sameMonth(t.date)),
       daysIn = new Date(B.getFullYear(), B.getMonth() + 1, 0).getDate(),
-      pace = budget > 0 ? spend / (budget * (B.getDate() / daysIn)) : 0,
-      ocr = monthReceipts.length ? monthReceipts.filter(t => !t.corrected && "processed" === t.status)
-        .length / monthReceipts.length : 1,
-      syncRate = monthTx.length ? monthTx.filter(t => "synced" === t.sync).length / monthTx.length : 1,
+      elapsed = B.getDate() / daysIn,
+      budgeted = cats.filter(t => j.budgets[t.id]),
+      allowance = .25 + .75 * elapsed,
+      over = budgeted.filter(t => t.value > j.budgets[t.id] * allowance).length,
+      expected = budget * Math.max(elapsed, .15),
+      pace = expected > 0 ? spend / expected : 0,
+      rcClean = rc.filter(t => !t.corrected && "processed" === t.status).length,
+      txSynced = monthTx.filter(t => "synced" === t.sync).length,
+      ocr = smooth(rcClean, rc.length, .7),
+      syncRate = smooth(txSynced, monthTx.length, .85),
       signals = [{
         name: "Budget adherence",
-        score: clamp01(1 - over / 3),
+        score: healthSteps[Math.min(over, 5)],
         val: over ? over + " over" : "All clear",
-        hint: (1 === over ? "one category is" : over + " categories are") + " over budget this month"
+        detail: over + " of " + budgeted.length + " categories past their day-" + B.getDate() +
+          " allowance",
+        hint: (1 === over ? "one category is" : over + " categories are") +
+          " running ahead of budget for this point in the month"
       }, {
         name: "Spend pace",
-        score: clamp01((1.4 - pace) / .4),
+        score: band(pace, 1.5, 1),
         val: pace > 1 ? u(pace - 1) + " over" : u(1 - pace) + " under",
+        detail: c(spend) + " of " + c(expected) + " expected by day " + B.getDate(),
         hint: "spend is running " + u(pace - 1) + " ahead of where the month has got to"
       }, {
         name: "Capture quality",
-        score: clamp01((ocr - .6) / .35),
+        score: band(ocr, .5, .9),
         val: u(ocr),
+        detail: rcClean + " of " + rc.length + " receipts parsed clean",
         hint: "only " + u(ocr) + " of receipts parsed without a correction"
       }, {
         name: "Sync health",
-        score: clamp01((syncRate - .75) / .25),
+        score: band(syncRate, .72, .98),
         val: u(syncRate),
+        detail: txSynced + " of " + monthTx.length + " transactions synced",
         hint: u(1 - syncRate) + " of transactions have not reached QuickBooks"
       }],
       total = Math.round(25 * signals.reduce((t, e) => t + e.score, 0)),
-      band = total >= 80 ? ["Strong", "var(--g700)", "b-good"] : total >= 60 ? ["Steady", "var(--g400)",
+      grade = total >= 80 ? ["Strong", "var(--g700)", "b-good"] : total >= 60 ? ["Steady", "var(--g400)",
         "b-good"
       ] : total >= 40 ? ["Strained", "var(--warning)", "b-warn"] : ["At risk", "var(--critical)", "b-crit"],
       weakest = signals.reduce((t, e) => e.score < t.score ? e : t),
@@ -1969,19 +1982,19 @@ table.tbl tbody tr:last-child td {
       run = healthPending && !still;
     healthPending = !1;
     host.innerHTML = `<div class="health-dial">
-      <svg viewBox="0 0 132 132" role="img" aria-label="Financial health ${total} out of 100 — ${band[0]}">
+      <svg viewBox="0 0 132 132" role="img" aria-label="Financial health ${total} out of 100 — ${grade[0]}">
         <circle class="hs-track" cx="66" cy="66" r="54"></circle>
-        <circle class="hs-arc" cx="66" cy="66" r="54" stroke="${band[1]}" stroke-dasharray="${circ.toFixed(2)}"
+        <circle class="hs-arc" cx="66" cy="66" r="54" stroke="${grade[1]}" stroke-dasharray="${circ.toFixed(2)}"
           stroke-dashoffset="${(run?circ:circ*(1-total/100)).toFixed(2)}"></circle></svg>
       <div class="health-read" aria-hidden="true">
-        <div class="health-num" style="color:${band[1]}">${run?0:total}</div>
+        <div class="health-num" style="color:${grade[1]}">${run?0:total}</div>
         <div class="health-out">OUT OF 100</div></div></div>
     <div class="health-body">
       <div class="card-head"><div><h3 class="card-title">Financial health</h3>
           <p class="card-sub">Four signals, 25 points each · this month</p></div>
-        <div class="card-tools"><span class="badge ${band[2]}">${f(band[0])}</span></div></div>
+        <div class="card-tools"><span class="badge ${grade[2]}">${f(grade[0])}</span></div></div>
       <div class="health-note">${f(note)}</div>
-      <div class="health-signals">${signals.map(t=>`<div title="${f(t.name)} — ${Math.round(25*t.score)} of 25 points">
+      <div class="health-signals">${signals.map(t=>`<div title="${f(t.name+" — "+t.detail+" · "+Math.round(25*t.score)+" of 25 points")}">
         <div class="hs-label"><span class="hs-name">${f(t.name)}</span><span class="hs-val">${f(t.val)}</span></div>
         <div class="meter-track"><div class="meter-fill" style="width:${run?0:(100*t.score).toFixed(1)}%;background:${t.score>=.75?"var(--g700)":t.score>=.4?"var(--g400)":t.score>=.2?"var(--warning)":"var(--critical)"}"></div></div>
       </div>`).join("")}</div></div>`;
