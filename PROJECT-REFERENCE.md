@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 20 Aug 2026 · **Rev 6** (adds the iOS app side; rev 5 added `brand-mark.png`)
+**Last updated:** 20 Aug 2026 · **Rev 7** (new Team ID / bundle ID; rev 6 added the iOS app side)
 
 ---
 
@@ -92,7 +92,7 @@ The repo root **is** the publish root. No build step, no framework, no subdirect
 | `og-image.png` | 19,024 B | yes | Link-preview card, 1200×630 |
 | `brand-mark.png` | 4,040 B | yes | Sidebar logo — **transparent**, 120px for a 40px box |
 | `auth-callback.html` | 4,962 B | yes | OAuth return leg, bounces to `colourway://` |
-| `.well-known/apple-app-site-association` | 483 B | yes | iOS Universal Links |
+| `.well-known/apple-app-site-association` | 495 B | yes | iOS Universal Links |
 | `favicon.ico` | 3,405 B | yes | Multi-size ICO: 16 / 32 / 48 |
 | `icon-16.png` | 415 B | yes | 16px tier (sneaker glyph only) |
 | `icon-32.png` | 554 B | yes | 32px tier (full badge) |
@@ -127,7 +127,7 @@ index.html          53b2b54e696d2036e54f7571298e97543e8bb0f2e04eace930caf38638d7
 og-image.png        1d83f889a524d60d4086e33eae7e99b139ec3b3c9f71c97dd2585662aa8f20e6
 brand-mark.png      f28e89fe116965dbfba0d676a500e949e75b937715e6ec9e55f12720067832ed
 auth-callback.html  0a2e13fbed8978550cd664ec1261696c674b9fcc9d4a95721b21a907db05945e
-AASA                3ec94f9a1dda6166ac18eacbac5c065f07fc54097885815597168d81289403d6
+AASA                2a93b2c4311002cc7afbd2e90ba058e7e3d51d4721097171c47a5f4eb82ed1b5
 ```
 
 ---
@@ -193,11 +193,23 @@ Worst adjacent colour-blind ΔE: **9.2 light / 9.4 dark** — both pass.
 
 ### Apple identifiers
 ```
-Team ID    7X9K2MQ4RL
-Bundle ID  com.colourway.app
-App ID     7X9K2MQ4RL.com.colourway.app
-URL scheme colourway
+Team ID    M2JPA6CM75
+Bundle ID  app.colourway.Colourway     <- capital C, case-sensitive
+App ID     M2JPA6CM75.app.colourway.Colourway
+URL scheme colourway                    <- unchanged
 ```
+
+**Changed 20 Aug 2026.** Was `7X9K2MQ4RL` / `com.colourway.app`; the old app ID is no longer
+declared anywhere, so any build signed with it stops matching Universal Links. The scheme
+stayed `colourway` deliberately — it is hardcoded in the live `auth-callback.html` and sits on
+the Supabase redirect allow-list, so changing it would mean a web redeploy and a Supabase edit
+for no gain.
+
+Two traps in this pair of strings. The bundle ID is **case-sensitive** and ends in a capital
+C — a lowercase `colourway` there fails silently, with no error on device or in the AASA. And
+the AASA prefix is the **App ID Prefix**, not strictly the Team ID; they match for almost every
+app, but not for an App ID created under one team and transferred to another. If links stay
+dead after everything else checks out, read the prefix off the Developer portal.
 
 ### `.well-known/apple-app-site-association`
 
@@ -206,7 +218,7 @@ URL scheme colourway
   "applinks": {
     "details": [
       {
-        "appIDs": ["7X9K2MQ4RL.com.colourway.app"],
+        "appIDs": ["M2JPA6CM75.app.colourway.Colourway"],
         "components": [
           { "/": "/auth-callback.html", "comment": "OAuth return leg - hand the callback to the app" },
           { "/": "/auth-callback",      "comment": "Extensionless variant of the same route" }
@@ -214,7 +226,7 @@ URL scheme colourway
       }
     ]
   },
-  "webcredentials": { "apps": ["7X9K2MQ4RL.com.colourway.app"] }
+  "webcredentials": { "apps": ["M2JPA6CM75.app.colourway.Colourway"] }
 }
 ```
 
@@ -333,9 +345,12 @@ does not error — Supabase falls back to the Site URL, and the callback never r
 Providers redirect to **Supabase**, not to Colourway: the provider consoles get
 `https://<project>.supabase.co/auth/v1/callback`.
 
-**Verified so far:** the live AASA (re-fetched 20 Aug 2026) matches the entitlement, the
-bundle ID, and both claimed paths; the Swift passes a bracket/import lint and the callback
-parsing passes its case suite. **Not** verified: a real `swiftc` compile — there is no Swift
+**Verified so far:** the live AASA (re-fetched after the rev 7 identifier change) is
+byte-identical to the tested build — 495 B, `2a93b2c4…`, HTTP 200, `application/json`, zero
+redirects — and matches the entitlement, the new bundle ID, and both claimed paths; the Swift
+passes a bracket/import lint and the callback parsing passes its case suite. Apple's CDN copy
+lags the origin by up to a day, so the first device test after an identifier change should use
+`?mode=developer`. **Not** verified: a real `swiftc` compile — there is no Swift
 toolchain in this environment. Treat first build as the compile check, and see the last row
 of the gotchas table in `iOS-SETUP.md` about `signInWithOAuth` overloads shifting between
 supabase-swift minor versions.
