@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 20 Aug 2026 · **Rev 3** (adds og:image link-preview card)
+**Last updated:** 20 Aug 2026 · **Rev 4** (adds `.vercelignore`; this doc now lives in the repo)
 
 ---
 
@@ -84,19 +84,40 @@ a CNAME and follows automatically).
 
 The repo root **is** the publish root. No build step, no framework, no subdirectory.
 
-| File | Size | Purpose |
-|---|---|---|
-| `index.html` | 107,684 B | The entire dashboard — single self-contained file |
-| `og-image.png` | 19,024 B | Link-preview card, 1200×630 |
-| `auth-callback.html` | 4,962 B | OAuth return leg, bounces to `colourway://` |
-| `.well-known/apple-app-site-association` | 483 B | iOS Universal Links |
-| `vercel.json` | 347 B | Rewrite + content-type header rule |
-| `favicon.ico` | 3,405 B | Multi-size ICO: 16 / 32 / 48 |
-| `icon-16.png` | 415 B | 16px tier (sneaker glyph only) |
-| `icon-32.png` | 554 B | 32px tier (full badge) |
-| `icon-192.png` | 5,311 B | Android home screen |
-| `apple-touch-icon.png` | 6,192 B | iOS home screen, 180px, full-bleed square |
-| `README.md` | 2,682 B | Views, spec mapping, demo-data notes, deploy pipeline |
+**12 files in the repo, 10 served publicly.** The split matters — see the warning below.
+
+| File | Size | Served? | Purpose |
+|---|---|---|---|
+| `index.html` | 107,684 B | yes | The entire dashboard — single self-contained file |
+| `og-image.png` | 19,024 B | yes | Link-preview card, 1200×630 |
+| `auth-callback.html` | 4,962 B | yes | OAuth return leg, bounces to `colourway://` |
+| `.well-known/apple-app-site-association` | 483 B | yes | iOS Universal Links |
+| `favicon.ico` | 3,405 B | yes | Multi-size ICO: 16 / 32 / 48 |
+| `icon-16.png` | 415 B | yes | 16px tier (sneaker glyph only) |
+| `icon-32.png` | 554 B | yes | 32px tier (full badge) |
+| `icon-192.png` | 5,311 B | yes | Android home screen |
+| `apple-touch-icon.png` | 6,192 B | yes | iOS home screen, 180px, full-bleed square |
+| `vercel.json` | 347 B | no | Rewrite + content-type header rule (config, never served) |
+| `.vercelignore` | 245 B | no | Keeps this doc out of the deployment |
+| `README.md` | 2,682 B | no | Vercel skips it by convention |
+| `PROJECT-REFERENCE.md` | this file | no | Only because `.vercelignore` excludes it |
+
+> ### ⚠ Vercel serves root markdown
+> Vercel skips `README.md` by convention but **serves every other `.md` file at the root**.
+> This doc went live at `/PROJECT-REFERENCE.md` returning 200 for about two minutes before
+> `.vercelignore` was added. Nothing in it is a credential, but it holds the Vercel project
+> and team IDs, the GitHub App installation ID, and the private repo name.
+>
+> **Any new `.md`, `.txt`, or note file added to the repo root is public by default.**
+> Add it to `.vercelignore` in the same commit, then verify:
+> ```bash
+> curl -sI https://colourwayapp.com/<file> | head -n 1   # want 404
+> ```
+> Don't assume a file type isn't served — check it.
+
+`.vercelignore` excludes files from the deployment upload entirely, so they stay in git and
+version history while never reaching the CDN. That's the right tool here; a `headers` or
+`redirects` rule in `vercel.json` would still upload the file and only mask it.
 
 **Current live hashes (SHA-256):**
 
@@ -374,6 +395,7 @@ Hash-checking beats a 200 status — a 200 can be a stale cached build.
 | Vercel project-link `repo_not_found` | Vercel's GitHub App scoped to selected repos. **User must fix manually** at `github.com/settings/installations/137592170` — cannot be granted via API |
 | OAuth links expired unused | 10-minute TTL → regenerate with a fresh alias |
 | `/v4/domains/status` returns 400 | Sunsetted 9 Nov 2025; the replacement registrar API isn't in the public docs → use **RDAP** (`rdap.verisign.com/com/v1/domain/{name}`): 404 = genuinely unregistered |
+| A committed `.md` went live at a public URL | Vercel skips `README.md` but serves any other root markdown. Add internal files to `.vercelignore` in the same commit and `curl -sI` the path to confirm 404. **Verify what a new commit exposes — don't reason about it from convention** |
 | Chunked binary transfer arrived corrupt | An end-to-end hash tells you *that* it broke, not *where*. Hash **every chunk** against the local split before reassembling, and re-send only the bad ones. A boundary can shift silently and still decode into a valid-looking file |
 | `pkill -f "http.server 8123"` kills its own shell | The pattern matches the invoking shell's command line → capture the PID and `kill $PID` |
 | Playwright hangs on `colourway://` | Chromium can't navigate an unknown scheme; the page dies mid-test → gate the redirect behind a test-only flag |
@@ -414,8 +436,11 @@ Closed: og:image (rev 3), sidebar badge (Aug 18), custom domain (Aug 17).
 ## 13. Fast resume
 
 1. The repo is the source of truth. Any local build directory is ephemeral and gone.
+   This doc lives at `PROJECT-REFERENCE.md` in the repo root — keep it updated in place.
 2. `index.html` is a single self-contained, **unminified** file — edit it directly.
 3. Push to `main` → Vercel auto-deploys → verify with the block in §9.
-4. Re-read §3's proxy warning before touching DNS.
-5. Re-run the palette validator before touching category colours.
-6. Don't switch `vercel.json` to `cleanUrls` — see §6 for why the rewrite is preferred.
+4. Adding any non-asset file to the repo root? Add it to `.vercelignore` too, then curl the
+   path and confirm 404 — see the warning in §4.
+5. Re-read §3's proxy warning before touching DNS.
+6. Re-run the palette validator before touching category colours.
+7. Don't switch `vercel.json` to `cleanUrls` — see §6 for why the rewrite is preferred.
