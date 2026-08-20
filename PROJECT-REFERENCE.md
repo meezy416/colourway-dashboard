@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 20 Aug 2026 · **Rev 4** (adds `.vercelignore`; this doc now lives in the repo)
+**Last updated:** 20 Aug 2026 · **Rev 5** (adds `brand-mark.png` for the sidebar)
 
 ---
 
@@ -84,12 +84,13 @@ a CNAME and follows automatically).
 
 The repo root **is** the publish root. No build step, no framework, no subdirectory.
 
-**12 files in the repo, 10 served publicly.** The split matters — see the warning below.
+**13 files in the repo, 11 served publicly.** The split matters — see the warning below.
 
 | File | Size | Served? | Purpose |
 |---|---|---|---|
-| `index.html` | 107,684 B | yes | The entire dashboard — single self-contained file |
+| `index.html` | 107,643 B | yes | The entire dashboard — single self-contained file |
 | `og-image.png` | 19,024 B | yes | Link-preview card, 1200×630 |
+| `brand-mark.png` | 4,040 B | yes | Sidebar logo — **transparent**, 120px for a 40px box |
 | `auth-callback.html` | 4,962 B | yes | OAuth return leg, bounces to `colourway://` |
 | `.well-known/apple-app-site-association` | 483 B | yes | iOS Universal Links |
 | `favicon.ico` | 3,405 B | yes | Multi-size ICO: 16 / 32 / 48 |
@@ -122,8 +123,9 @@ version history while never reaching the CDN. That's the right tool here; a `hea
 **Current live hashes (SHA-256):**
 
 ```
-index.html          a7317c3e9cf846220cc4bf1f2709db97b02a10a5ac8ab18673ae07c4e02b3414
+index.html          53b2b54e696d2036e54f7571298e97543e8bb0f2e04eace930caf38638d7f003
 og-image.png        1d83f889a524d60d4086e33eae7e99b139ec3b3c9f71c97dd2585662aa8f20e6
+brand-mark.png      f28e89fe116965dbfba0d676a500e949e75b937715e6ec9e55f12720067832ed
 auth-callback.html  0a2e13fbed8978550cd664ec1261696c674b9fcc9d4a95721b21a907db05945e
 AASA                3ec94f9a1dda6166ac18eacbac5c065f07fc54097885815597168d81289403d6
 ```
@@ -348,6 +350,28 @@ collapses into a smudge — two nested shapes can't survive 16 pixels.
 Most people see the 32px tier — a Retina display renders a 16px tab slot at 32 physical px.
 Icons are real files, not inlined data URIs.
 
+### The sidebar mark is a different file, on purpose
+
+```html
+<img class="brand-mark" src="/brand-mark.png" width="40" height="40" alt="" decoding="async">
+.brand-mark { width: 40px; height: 40px; flex: 0 0 40px; display: block }
+```
+
+`brand-mark.png` is **transparent**, 120px for a 40px box (3x for high-DPI), 4,040 B.
+
+**Don't repoint this at `icon-192.png`.** The two need opposite things. The app icon wants the
+opaque off-white plate so it reads as a tile on a home screen; the sidebar mark needs
+transparency so it sits on whatever is behind it. The sidebar is `var(--shell)` — `#ffffff`
+light, `#111412` dark — so a baked-in plate shows as a grey disc in light mode and a glaring
+white one in dark.
+
+That is exactly what shipped 18 Aug and was fixed 20 Aug: the sidebar used `icon-192.png`
+with `border-radius: 50%; object-fit: cover`, which both dragged the plate into dark mode and
+**clipped the knot and aglet** — a circular crop of rounded-square art cuts the corners off.
+
+`alt=""` is correct: "Colourway" sits beside it as real text, so alt text would make a screen
+reader announce the name twice.
+
 ---
 
 ## 9. Deployment workflow
@@ -396,7 +420,8 @@ Hash-checking beats a 200 status — a 200 can be a stale cached build.
 | OAuth links expired unused | 10-minute TTL → regenerate with a fresh alias |
 | `/v4/domains/status` returns 400 | Sunsetted 9 Nov 2025; the replacement registrar API isn't in the public docs → use **RDAP** (`rdap.verisign.com/com/v1/domain/{name}`): 404 = genuinely unregistered |
 | A committed `.md` went live at a public URL | Vercel skips `README.md` but serves any other root markdown. Add internal files to `.vercelignore` in the same commit and `curl -sI` the path to confirm 404. **Verify what a new commit exposes — don't reason about it from convention** |
-| Chunked binary transfer arrived corrupt | An end-to-end hash tells you *that* it broke, not *where*. Hash **every chunk** against the local split before reassembling, and re-send only the bad ones. A boundary can shift silently and still decode into a valid-looking file |
+| Chunked binary transfer arrived corrupt | An end-to-end hash tells you *that* it broke, not *where*. Hash **every chunk** against the local split before reassembling, and re-send only the bad ones. A boundary can shift silently and still decode into a valid-looking file. Corruption can also preserve byte count — a single wrong character gives the right length and the wrong hash, so bisect by segment rather than re-sending blind |
+| An asset "already done" looked wrong | The sidebar badge shipped, then rendered clipped and mis-toned for two days. Re-check a shipped visual against the surfaces it actually sits on — both themes — instead of trusting the commit message |
 | `pkill -f "http.server 8123"` kills its own shell | The pattern matches the invoking shell's command line → capture the PID and `kill $PID` |
 | Playwright hangs on `colourway://` | Chromium can't navigate an unknown scheme; the page dies mid-test → gate the redirect behind a test-only flag |
 | Mobile row overflow | Grid children need `min-width: 0` |
