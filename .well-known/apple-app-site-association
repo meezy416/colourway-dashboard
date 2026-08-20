@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["7X9K2MQ4RL.com.colourway.app"],
+        "components": [
+          {
+            "/": "/auth-callback.html",
+            "comment": "OAuth return leg - hand the callback to the app"
+          },
+          {
+            "/": "/auth-callback",
+            "comment": "Extensionless variant of the same route"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["7X9K2MQ4RL.com.colourway.app"]
+  }
+}
