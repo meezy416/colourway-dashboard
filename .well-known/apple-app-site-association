@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["7X9K2MQ4RL.com.colourway.app"],
+        "appIDs": ["M2JPA6CM75.app.colourway.Colourway"],
         "components": [
           {
             "/": "/auth-callback.html",
@@ -17,6 +17,6 @@
     ]
   },
   "webcredentials": {
-    "apps": ["7X9K2MQ4RL.com.colourway.app"]
+    "apps": ["M2JPA6CM75.app.colourway.Colourway"]
   }
 }
