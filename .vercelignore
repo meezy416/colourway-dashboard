@@ -1,0 +1,4 @@
+# Internal docs - kept in the repo, never uploaded to the deployment.
+# Vercel skips README.md by convention but serves any other .md at the root,
+# so this file is what actually keeps the reference doc off the public site.
+PROJECT-REFERENCE.md
