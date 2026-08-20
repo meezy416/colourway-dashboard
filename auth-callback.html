@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colourway — Signing you in</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f4ed" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101511" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<style>
+:root{
+  --plane:#f3f4ed; --card:#ffffff; --ink:#101511; --ink-2:#5c6761;
+  --brand:#1c5335; --brand-ink:#ffffff; --line:rgba(16,21,17,.10); --err:#a3341f;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --plane:#0d100e; --card:#161a17; --ink:#eef1ee; --ink-2:#a3aca7;
+         --brand:#3d875a; --brand-ink:#0d100e; --line:rgba(255,255,255,.12); --err:#e08b73; }
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--plane); color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+  -webkit-font-smoothing:antialiased;
+}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:22px;
+  padding:34px 30px; max-width:400px; width:100%; text-align:center;
+  box-shadow:0 1px 2px rgba(16,24,20,.04), 0 12px 34px rgba(16,24,20,.07);
+}
+.mark{width:60px;height:60px;margin:0 auto 20px;display:block}
+h1{font-size:19px; line-height:1.3; margin:0 0 8px; letter-spacing:-.01em}
+p{margin:0 0 6px; color:var(--ink-2); font-size:14.5px}
+.spin{
+  width:26px;height:26px;margin:22px auto 4px;border-radius:50%;
+  border:3px solid var(--line); border-top-color:var(--brand);
+  animation:r .8s linear infinite;
+}
+@keyframes r{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ .spin{animation-duration:2.4s} }
+.btn{
+  display:inline-block; margin-top:18px; padding:12px 22px; border-radius:12px;
+  background:var(--brand); color:var(--brand-ink); text-decoration:none;
+  font-weight:600; font-size:15px; border:0; cursor:pointer;
+}
+.btn:focus-visible{outline:3px solid var(--brand); outline-offset:3px}
+.hide{display:none}
+.err{color:var(--err)}
+.foot{margin-top:16px; font-size:12.5px; color:var(--ink-2)}
+</style>
+</head>
+<body>
+<main class="card" role="main">
+  <img class="mark" src="/icon-192.png" alt="" width="60" height="60">
+
+  <div id="working">
+    <h1>Signing you in…</h1>
+    <p>Handing this back to the Colourway app.</p>
+    <div class="spin" role="status" aria-label="Signing in"></div>
+  </div>
+
+  <div id="fallback" class="hide">
+    <h1>Almost there</h1>
+    <p>If Colourway didn’t open automatically, tap below.</p>
+    <a class="btn" id="openBtn" href="#">Open Colourway</a>
+    <p class="foot">Nothing happening? Make sure the Colourway app is installed on this device, then try signing in again.</p>
+  </div>
+
+  <div id="nothing" class="hide">
+    <h1>Nothing to finish here</h1>
+    <p>This page completes a sign-in that’s already in progress. Start from the Colourway app.</p>
+  </div>
+
+  <div id="failed" class="hide">
+    <h1 class="err">Sign-in didn’t complete</h1>
+    <p id="failMsg">Something went wrong on the way back. Please try signing in again from the app.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var SCHEME = "colourway://auth-callback";
+  var search = window.location.search || "";
+  var hash   = window.location.hash || "";
+
+  function show(id) {
+    ["working", "fallback", "nothing", "failed"].forEach(function (k) {
+      document.getElementById(k).classList.toggle("hide", k !== id);
+    });
+  }
+
+  // Nothing to forward — someone opened this page directly.
+  if (!search && !hash) { show("nothing"); return; }
+
+  // Surface a provider-reported error rather than bouncing into the app with it.
+  var params = new URLSearchParams(search.replace(/^\?/, ""));
+  if (params.get("error")) {
+    var desc = params.get("error_description") || params.get("error");
+    document.getElementById("failMsg").textContent =
+      String(desc).replace(/\+/g, " ").slice(0, 200);
+    show("failed");
+    return;
+  }
+
+  // Forward the callback verbatim. Query and fragment are both carried:
+  // auth-code flows use the query string, implicit/PKCE-hash flows use the fragment.
+  var target = SCHEME + search + hash;
+  window.__authTarget = target;              // exposed for automated checks
+  document.getElementById("openBtn").href = target;
+
+  // __noRedirect is set only by the automated test harness, never in production.
+  if (!window.__noRedirect) {
+    try { window.location.replace(target); } catch (e) {}
+  }
+
+  // If the app didn't take over, the page is still here — offer the manual route.
+  setTimeout(function () { show("fallback"); }, 1600);
+})();
+</script>
+</body>
+</html>
