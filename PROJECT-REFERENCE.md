@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 20 Aug 2026 · **Rev 5** (adds `brand-mark.png` for the sidebar)
+**Last updated:** 20 Aug 2026 · **Rev 6** (adds the iOS app side; rev 5 added `brand-mark.png`)
 
 ---
 
@@ -284,15 +284,66 @@ Colourway" button. Styled to the brand, `noindex`.
 so *both* callback paths return a clean 200 and nothing else on the site is affected. Apple
 and strict OAuth providers both prefer no redirect on the callback leg.
 
-### Still to do on the app side
+### The app side — written 20 Aug 2026
 
-1. Add `applinks:colourwayapp.com` to the **Associated Domains** entitlement
-2. Register `colourway` as a URL scheme in `Info.plist`
-3. Handle both the Universal Link and the custom scheme in the app delegate
-4. Register the redirect URI with the OAuth provider — either callback URL works
+Swift + SwiftUI, Supabase auth, delivered as drop-in files rather than edits to a project
+(there is no iOS repo yet). Bundle: `colourway-ios-universal-links.zip`.
+
+| File | Role |
+| --- | --- |
+| `Colourway.entitlements` | `applinks:` + `webcredentials:colourwayapp.com` |
+| `Info-plist-additions.xml` | `CFBundleURLTypes` registering the `colourway` scheme |
+| `ColourwayLink.swift` | Recognises a callback URL; reads provider errors; redacts for logging |
+| `AuthModel.swift` | The delegate handling — dedupe, error surfacing, session exchange |
+| `WebAuthLauncher.swift` | `ASWebAuthenticationSession` wrapper |
+| `SupabaseClient+Colourway.swift` | Shared client, pinned to the PKCE flow |
+| `ColourwayApp.swift` | `@main` wiring, both inbound routes attached |
+| `iOS-SETUP.md` | Xcode click-paths, Supabase config, verification checklist, gotchas |
+
+**Two inbound routes, both wired.** `onOpenURL` takes the custom scheme (and, on current
+SwiftUI, Universal Links too); `onContinueUserActivity(NSUserActivityTypeBrowsingWeb)` takes
+the Universal Link on a cold launch from Safari. Attaching only one is the usual cause of
+"sign-in works on my phone but not on theirs". Both funnel into `AuthModel.handle(_:)`.
+
+**Which means a callback can arrive twice**, and a PKCE code is single-use — the second
+exchange fails and would clobber the session the first one just established. `AuthModel`
+keeps a `Set` of handled URLs and drops an entry again only if the exchange threw, so a
+genuine retry is not swallowed.
+
+**The URL is handed to Supabase untouched.** `ColourwayLink`'s parsing is diagnostic only —
+recognition, error display, log redaction. Re-encoding a callback is how a base64url auth
+code containing `+` or `/` gets corrupted. The parsing was exercised against 17 cases
+(base64 codes, fragment-only errors, `error_code` vs `error`, malformed pairs, wrong host,
+plain http, collision precedence) before shipping.
+
+**Errors are read from the query *and* the fragment.** Auth-code flows report `?error=`,
+implicit/hash flows report `#error=`. Checking one is how a failed sign-in becomes a spinner
+that never resolves.
+
+**PKCE, not implicit** (`flowType: .pkce`). The code comes back in the query string, so a
+Universal Link carries it intact. Implicit returns tokens in the fragment, which no server
+ever sees — that is the case `auth-callback.html` exists to rescue.
+
+**Redirect allow-list.** All three of `colourway://auth-callback`,
+`https://colourwayapp.com/auth-callback`, `https://colourwayapp.com/auth-callback.html` must
+be on Supabase → Authentication → URL Configuration. A `redirectTo` that is not on the list
+does not error — Supabase falls back to the Site URL, and the callback never reaches the app.
+"Sign-in just goes to the website" is nearly always this.
+
+Providers redirect to **Supabase**, not to Colourway: the provider consoles get
+`https://<project>.supabase.co/auth/v1/callback`.
+
+**Verified so far:** the live AASA (re-fetched 20 Aug 2026) matches the entitlement, the
+bundle ID, and both claimed paths; the Swift passes a bracket/import lint and the callback
+parsing passes its case suite. **Not** verified: a real `swiftc` compile — there is no Swift
+toolchain in this environment. Treat first build as the compile check, and see the last row
+of the gotchas table in `iOS-SETUP.md` about `signInWithOAuth` overloads shifting between
+supabase-swift minor versions.
 
 If Universal Links don't fire on the first attempt, delete and reinstall the app. A stale
-cached AASA is the usual culprit, not the file.
+cached AASA is the usual culprit, not the file — or use `applinks:colourwayapp.com?mode=developer`
+with Settings → Developer → Associated Domains Development to bypass Apple's CDN entirely.
+Remove the flag before archiving.
 
 ---
 
@@ -411,6 +462,8 @@ Hash-checking beats a 200 status — a 200 can be a stale cached build.
 
 | Problem | Cause / fix |
 |---|---|
+| **A linter's own bug read as a code defect** | A crude brace-balance script stripped `//` as a comment — inside `"https://…"` — and reported a real file as unbalanced. Two files were "wrong" before the tool was. **When a check fails on code you have reason to trust, suspect the check first**; a correct scanner then found the files clean |
+| `.xcconfig` value silently truncated | `//` starts a comment in xcconfig, so `SUPABASE_URL = https://x.supabase.co` stores `https:`. Write `https:/$()/x.supabase.co` |
 | **Files "missing from the deploy"** | They had never been committed. Before debugging a pipeline, run `git ls-files` or list the repo tree via the API. Tell: if a dotfolder *and* a normal file are both missing, it isn't a dot-pattern `.gitignore` and it isn't the deploy |
 | GitHub "session bound to configured repositories" | Sandbox's native token is repo-scoped → use Composio's OAuth GitHub connection |
 | Vercel API unreachable from sandbox (curl exit 56) | No outbound route → use the Composio remote sandbox |
@@ -450,11 +503,17 @@ conflict with a UK-spelling app domain, but worth knowing before filing.
 
 ## 12. Open items
 
-1. **iOS app side** — entitlement, URL scheme, delegate handling (see §6)
-2. **Apex A → CNAME swap** — optional hardening, see §3
-3. **Full badge at 16px** — if the tiered favicon approach isn't wanted
+1. **Build the iOS app files into a real Xcode project** — the drop-in files are written and
+   linted but have never been compiled (see §6). First build is the compile check.
+2. **Native Sign in with Apple** — `ASAuthorizationController` + `auth.signInWithIdToken`.
+   The current `signIn(with: .apple)` uses the web flow, which reviewers accept but dislike.
+   App Store guideline 4.8 requires offering it at all if Google sign-in is offered.
+3. **Supabase redirect allow-list** — three URLs to add before any sign-in can work (§6).
+4. **Apex A → CNAME swap** — optional hardening, see §3
+5. **Full badge at 16px** — if the tiered favicon approach isn't wanted
 
-Closed: og:image (rev 3), sidebar badge (Aug 18), custom domain (Aug 17).
+Closed: iOS entitlement / URL scheme / delegate handling (rev 6), og:image (rev 3),
+sidebar badge (Aug 18), custom domain (Aug 17).
 
 ---
 
