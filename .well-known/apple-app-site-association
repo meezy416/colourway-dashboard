@@ -2,21 +2,18 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["M2JPA6CM75.app.colourway.Colourway"],
+        "appIDs": ["6PDFYXL936.app.colourway.Colourway"],
         "components": [
           {
-            "/": "/auth-callback.html",
-            "comment": "OAuth return leg - hand the callback to the app"
+            "/": "/auth-callback",
+            "comment": "Supabase email confirmation and password reset land here."
           },
           {
-            "/": "/auth-callback",
-            "comment": "Extensionless variant of the same route"
+            "/": "/auth-callback/*",
+            "comment": "Any sub-path, so the callback can grow without redeploying this file."
           }
         ]
       }
     ]
-  },
-  "webcredentials": {
-    "apps": ["M2JPA6CM75.app.colourway.Colourway"]
   }
 }
