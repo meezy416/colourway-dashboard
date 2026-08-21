@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 21 Aug 2026 · **Rev 8** (corrected identifiers against the real iOS repo)
+**Last updated:** 21 Aug 2026 · **Rev 9** (one copy of each auth file; wildcard actually served)
 
 ---
 
@@ -91,14 +91,14 @@ The repo root **is** the publish root. No build step, no framework, no subdirect
 | `index.html` | 107,643 B | yes | The entire dashboard — single self-contained file |
 | `og-image.png` | 19,024 B | yes | Link-preview card, 1200×630 |
 | `brand-mark.png` | 4,040 B | yes | Sidebar logo — **transparent**, 120px for a 40px box |
-| `auth-callback.html` | 4,962 B | yes | OAuth return leg, bounces to `colourway://` |
+| `auth-callback.html` | 5,204 B | yes | OAuth return leg, bounces to `colourway://` |
 | `.well-known/apple-app-site-association` | 454 B | yes | iOS Universal Links |
 | `favicon.ico` | 3,405 B | yes | Multi-size ICO: 16 / 32 / 48 |
 | `icon-16.png` | 415 B | yes | 16px tier (sneaker glyph only) |
 | `icon-32.png` | 554 B | yes | 32px tier (full badge) |
 | `icon-192.png` | 5,311 B | yes | Android home screen |
 | `apple-touch-icon.png` | 6,192 B | yes | iOS home screen, 180px, full-bleed square |
-| `vercel.json` | 347 B | no | Rewrite + content-type header rule (config, never served) |
+| `vercel.json` | 428 B | no | Rewrites + content-type header rule (config, never served) |
 | `.vercelignore` | 245 B | no | Keeps this doc out of the deployment |
 | `README.md` | 2,682 B | no | Vercel skips it by convention |
 | `PROJECT-REFERENCE.md` | this file | no | Only because `.vercelignore` excludes it |
@@ -126,7 +126,7 @@ version history while never reaching the CDN. That's the right tool here; a `hea
 index.html          53b2b54e696d2036e54f7571298e97543e8bb0f2e04eace930caf38638d7f003
 og-image.png        1d83f889a524d60d4086e33eae7e99b139ec3b3c9f71c97dd2585662aa8f20e6
 brand-mark.png      f28e89fe116965dbfba0d676a500e949e75b937715e6ec9e55f12720067832ed
-auth-callback.html  0a2e13fbed8978550cd664ec1261696c674b9fcc9d4a95721b21a907db05945e
+auth-callback.html  526665e99b02aee07ae7031dfaf61612edf6c51ffdba46e8680d70f4a177088e
 AASA                dafde98128c8ee5c407885284199ac85013af6cedb5f58b2a68174826c28dc30
 ```
 
@@ -221,10 +221,10 @@ for an App ID created under one team and transferred to another.
 > **Lives in TWO repos. Only one is served.** `colourwayapp.com` deploys from
 > **`colourway-dashboard`**, so `colourway-dashboard:.well-known/apple-app-site-association`
 > is the live file and the only one to edit. `colourway:web/.well-known/…` used to hold a
-> second copy; it drifted, and edits to it did nothing. Deleted 21 Aug 2026 —
-> `colourway:web/README.md` now points here. `colourway:web/auth-callback.html` is still a
-> second, divergent copy of the callback page (2,958 B vs the live 4,962 B) and is **not**
-> what gets served.
+> second copy; it drifted, and edits to it did nothing. Deleted 21 Aug 2026, along with
+> `colourway:web/auth-callback.html` — a second divergent copy of the callback page that was
+> also never served. `colourway:web/` now holds only `README.md`, which points here. **One
+> file per served artifact; everything else is a pointer.**
 
 ```json
 {
@@ -251,12 +251,16 @@ AASA deploy and another day of waiting on Apple's CDN.
 `webcredentials` entry would claim a capability the app has not been granted. Add both together
 or neither.
 
-**⚠️ `/auth-callback/*` is claimed but not served.** `curl` on `/auth-callback/test` returns
-404 — `vercel.json` rewrites only the exact `/auth-callback`. Installed apps are unaffected
-(iOS matches the AASA pattern and never asks the server), but the *web fallback* for any
-sub-path lands on a 404 instead of the callback page. Fix when a sub-path is first used, by
-adding `{ "source": "/auth-callback/:path*", "destination": "/auth-callback.html" }` to the
-rewrites.
+**`/auth-callback/*` is claimed *and* served** (since 21 Aug 2026). `vercel.json` carries two
+rewrites — the exact path and `/auth-callback/:path*` — both pointing at `auth-callback.html`.
+Verified: `/auth-callback`, `/auth-callback/verify`, and `/auth-callback/deep/er` all return
+200 with zero redirects and byte-identical content.
+
+It was claimed-but-not-served for a few hours after rev 8, which is the failure mode to watch
+for: **an AASA pattern is matched by iOS alone, and never checked against the server.** An
+installed app would have worked while every web fallback on a sub-path hit a 404 — the kind of
+gap that only shows up for the users who don't have the app, i.e. the ones the fallback exists
+for.
 
 Constraints that matter, all currently satisfied:
 - Served at exactly `/.well-known/apple-app-site-association`, **no** `.json` extension
@@ -542,32 +546,25 @@ conflict with a UK-spelling app domain, but worth knowing before filing.
 2. **Enable Associated Domains** for `6PDFYXL936.app.colourway.Colourway` in the Developer
    portal and regenerate the profile, or device builds fail to sign.
 
-**Serve what the AASA claims:**
-
-3. **`/auth-callback/*` returns 404.** Add
-   `{ "source": "/auth-callback/:path*", "destination": "/auth-callback.html" }` to the
-   dashboard's `vercel.json` rewrites. Installed apps are fine; the web fallback is not.
-4. **`colourway:web/auth-callback.html` is a second divergent copy** (2,958 B vs the live
-   4,962 B). Same hazard the AASA had. Delete or reconcile.
-
 **Before TestFlight:**
 
-5. **Strip the LAN escape hatch** — `NSAppTransportSecurity → NSAllowsLocalNetworking` and
+3. **Strip the LAN escape hatch** — `NSAppTransportSecurity → NSAllowsLocalNetworking` and
    `NSLocalNetworkUsageDescription` in `ios/Info.plist`, once extraction moves behind HTTPS.
-6. **Real version numbers** — `MARKETING_VERSION` is `0.1`, `CURRENT_PROJECT_VERSION` is `1`.
+4. **Real version numbers** — `MARKETING_VERSION` is `0.1`, `CURRENT_PROJECT_VERSION` is `1`.
 
 **Before submission:**
 
-7. **Native Sign in with Apple** — guideline 4.8 requires offering it if any third-party
+5. **Native Sign in with Apple** — guideline 4.8 requires offering it if any third-party
    sign-in is offered. `auth.signInWithIdToken` + `ASAuthorizationController`.
-8. **Privacy nutrition labels** — camera, email, and receipt content all get declared.
+6. **Privacy nutrition labels** — camera, email, and receipt content all get declared.
 
 **Not blocking anything:**
 
-9. **Apex A → CNAME swap** — optional hardening, see §3
-10. **Full badge at 16px** — if the tiered favicon approach isn't wanted
+7. **Apex A → CNAME swap** — optional hardening, see §3
+8. **Full badge at 16px** — if the tiered favicon approach isn't wanted
 
-Closed: correct App ID live (rev 8), single AASA source of truth (rev 8), og:image (rev 3),
+Closed: wildcard callback route served (rev 9), one copy of each auth file (rev 9),
+correct App ID live (rev 8), single AASA source of truth (rev 8), og:image (rev 3),
 sidebar badge (Aug 18), custom domain (Aug 17).
 
 ---
