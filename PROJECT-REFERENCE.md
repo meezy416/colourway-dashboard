@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 20 Aug 2026 · **Rev 7** (new Team ID / bundle ID; rev 6 added the iOS app side)
+**Last updated:** 21 Aug 2026 · **Rev 8** (corrected identifiers against the real iOS repo)
 
 ---
 
@@ -92,7 +92,7 @@ The repo root **is** the publish root. No build step, no framework, no subdirect
 | `og-image.png` | 19,024 B | yes | Link-preview card, 1200×630 |
 | `brand-mark.png` | 4,040 B | yes | Sidebar logo — **transparent**, 120px for a 40px box |
 | `auth-callback.html` | 4,962 B | yes | OAuth return leg, bounces to `colourway://` |
-| `.well-known/apple-app-site-association` | 495 B | yes | iOS Universal Links |
+| `.well-known/apple-app-site-association` | 454 B | yes | iOS Universal Links |
 | `favicon.ico` | 3,405 B | yes | Multi-size ICO: 16 / 32 / 48 |
 | `icon-16.png` | 415 B | yes | 16px tier (sneaker glyph only) |
 | `icon-32.png` | 554 B | yes | 32px tier (full badge) |
@@ -127,7 +127,7 @@ index.html          53b2b54e696d2036e54f7571298e97543e8bb0f2e04eace930caf38638d7
 og-image.png        1d83f889a524d60d4086e33eae7e99b139ec3b3c9f71c97dd2585662aa8f20e6
 brand-mark.png      f28e89fe116965dbfba0d676a500e949e75b937715e6ec9e55f12720067832ed
 auth-callback.html  0a2e13fbed8978550cd664ec1261696c674b9fcc9d4a95721b21a907db05945e
-AASA                2a93b2c4311002cc7afbd2e90ba058e7e3d51d4721097171c47a5f4eb82ed1b5
+AASA                dafde98128c8ee5c407885284199ac85013af6cedb5f58b2a68174826c28dc30
 ```
 
 ---
@@ -192,47 +192,71 @@ Worst adjacent colour-blind ΔE: **9.2 light / 9.4 dark** — both pass.
 ## 6. iOS integration
 
 ### Apple identifiers
+
+**Authoritative source: `ios/Colourway.xcodeproj/project.pbxproj` in `meezy416/colourway`.**
+Never take these from a chat message — read them off the project.
+
 ```
-Team ID    M2JPA6CM75
-Bundle ID  app.colourway.Colourway     <- capital C, case-sensitive
-App ID     M2JPA6CM75.app.colourway.Colourway
-URL scheme colourway                    <- unchanged
+Team ID    6PDFYXL936                   <- DEVELOPMENT_TEAM
+Bundle ID  app.colourway.Colourway      <- PRODUCT_BUNDLE_IDENTIFIER, capital C
+App ID     6PDFYXL936.app.colourway.Colourway
+URL scheme colourway
 ```
 
-**Changed 20 Aug 2026.** Was `7X9K2MQ4RL` / `com.colourway.app`; the old app ID is no longer
-declared anywhere, so any build signed with it stops matching Universal Links. The scheme
-stayed `colourway` deliberately — it is hardcoded in the live `auth-callback.html` and sits on
-the Supabase redirect allow-list, so changing it would mean a web redeploy and a Supabase edit
-for no gain.
+**Two wrong values were live before this.** `7X9K2MQ4RL` (rev 5–6) and `M2JPA6CM75` (rev 7)
+were both supplied conversationally and neither matched the signed project, so Universal Links
+could not have worked at any point in that window. Each was deployed and "verified" — but what
+got verified was that the file was *served correctly*, not that the identifier was *right*.
+Serving a wrong value flawlessly is still serving a wrong value. **A hash check proves
+delivery, not correctness; correctness needs a second source.** The second source here is the
+pbxproj.
 
 Two traps in this pair of strings. The bundle ID is **case-sensitive** and ends in a capital
 C — a lowercase `colourway` there fails silently, with no error on device or in the AASA. And
-the AASA prefix is the **App ID Prefix**, not strictly the Team ID; they match for almost every
-app, but not for an App ID created under one team and transferred to another. If links stay
-dead after everything else checks out, read the prefix off the Developer portal.
+the AASA prefix is the **App ID Prefix**, not strictly the Team ID; they match here, but not
+for an App ID created under one team and transferred to another.
 
 ### `.well-known/apple-app-site-association`
+
+> **Lives in TWO repos. Only one is served.** `colourwayapp.com` deploys from
+> **`colourway-dashboard`**, so `colourway-dashboard:.well-known/apple-app-site-association`
+> is the live file and the only one to edit. `colourway:web/.well-known/…` used to hold a
+> second copy; it drifted, and edits to it did nothing. Deleted 21 Aug 2026 —
+> `colourway:web/README.md` now points here. `colourway:web/auth-callback.html` is still a
+> second, divergent copy of the callback page (2,958 B vs the live 4,962 B) and is **not**
+> what gets served.
 
 ```json
 {
   "applinks": {
     "details": [
       {
-        "appIDs": ["M2JPA6CM75.app.colourway.Colourway"],
+        "appIDs": ["6PDFYXL936.app.colourway.Colourway"],
         "components": [
-          { "/": "/auth-callback.html", "comment": "OAuth return leg - hand the callback to the app" },
-          { "/": "/auth-callback",      "comment": "Extensionless variant of the same route" }
+          { "/": "/auth-callback",   "comment": "Supabase email confirmation and password reset land here." },
+          { "/": "/auth-callback/*", "comment": "Any sub-path, so the callback can grow without redeploying this file." }
         ]
       }
     ]
-  },
-  "webcredentials": { "apps": ["M2JPA6CM75.app.colourway.Colourway"] }
+  }
 }
 ```
 
-**Scoped deliberately to the two callback paths — not `"*"`.** A wildcard would make every
-colourwayapp.com link try to open the app, hijacking the dashboard itself. Widen only when
-real deep-link routes exist.
+**Scoped deliberately to the callback route — not `"*"`.** A bare wildcard would make every
+colourwayapp.com link try to open the app, hijacking the dashboard itself. The `/auth-callback/*`
+form widens only within the callback route, so sub-paths can be added later without another
+AASA deploy and another day of waiting on Apple's CDN.
+
+**No `webcredentials` block.** `ios/Colourway.entitlements` declares only `applinks:`, so a
+`webcredentials` entry would claim a capability the app has not been granted. Add both together
+or neither.
+
+**⚠️ `/auth-callback/*` is claimed but not served.** `curl` on `/auth-callback/test` returns
+404 — `vercel.json` rewrites only the exact `/auth-callback`. Installed apps are unaffected
+(iOS matches the AASA pattern and never asks the server), but the *web fallback* for any
+sub-path lands on a 404 instead of the callback page. Fix when a sub-path is first used, by
+adding `{ "source": "/auth-callback/:path*", "destination": "/auth-callback.html" }` to the
+rewrites.
 
 Constraints that matter, all currently satisfied:
 - Served at exactly `/.well-known/apple-app-site-association`, **no** `.json` extension
@@ -296,69 +320,59 @@ Colourway" button. Styled to the brand, `noindex`.
 so *both* callback paths return a clean 200 and nothing else on the site is affected. Apple
 and strict OAuth providers both prefer no redirect on the callback leg.
 
-### The app side — written 20 Aug 2026
+### The app side — audited 21 Aug 2026
 
-Swift + SwiftUI, Supabase auth, delivered as drop-in files rather than edits to a project
-(there is no iOS repo yet). Bundle: `colourway-ios-universal-links.zip`.
+The iOS app is **`meezy416/colourway`** (private): SwiftUI, Swift 6.0, iOS 18 target, Supabase
+via SPM, ~40 Swift files. It is well past a spike — receipt capture with `VNDocumentCamera`,
+an extraction pipeline, inventory with landed-cost and mark-as-sold, multi-currency
+transactions with an FX-rate cache, and its own migrations under `supabase/`.
 
-| File | Role |
-| --- | --- |
-| `Colourway.entitlements` | `applinks:` + `webcredentials:colourwayapp.com` |
-| `Info-plist-additions.xml` | `CFBundleURLTypes` registering the `colourway` scheme |
-| `ColourwayLink.swift` | Recognises a callback URL; reads provider errors; redacts for logging |
-| `AuthModel.swift` | The delegate handling — dedupe, error surfacing, session exchange |
-| `WebAuthLauncher.swift` | `ASWebAuthenticationSession` wrapper |
-| `SupabaseClient+Colourway.swift` | Shared client, pinned to the PKCE flow |
-| `ColourwayApp.swift` | `@main` wiring, both inbound routes attached |
-| `iOS-SETUP.md` | Xcode click-paths, Supabase config, verification checklist, gotchas |
+**Auth already works.** `ios/Colourway/Supabase/AuthModel.swift` (8,962 B) and `AuthView.swift`
+handle it, and `ColourwayApp.swift` already attaches **both** inbound routes — `onOpenURL` and
+`onContinueUserActivity(NSUserActivityTypeBrowsingWeb)` — each calling
+`await auth.completeDeepLink(url)`. Its own comment explains why it is deliberately *not*
+`auth.handle(url)`: that swallows failures into a log line, "which is how a broken link becomes
+'I tapped it and nothing happened'." That is a better call than the fire-and-forget version
+this doc previously recommended.
 
-**Two inbound routes, both wired.** `onOpenURL` takes the custom scheme (and, on current
-SwiftUI, Universal Links too); `onContinueUserActivity(NSUserActivityTypeBrowsingWeb)` takes
-the Universal Link on a cold launch from Safari. Attaching only one is the usual cause of
-"sign-in works on my phone but not on theirs". Both funnel into `AuthModel.handle(_:)`.
+> **A drop-in bundle (`colourway-ios-universal-links.zip`) was produced on 20 Aug before this
+> repo was known.** It duplicates working code and its advice on the redirect allow-list was
+> wrong. **Discard it.** Kept in the record only so nobody re-derives it.
 
-**Which means a callback can arrive twice**, and a PKCE code is single-use — the second
-exchange fails and would clobber the session the first one just established. `AuthModel`
-keeps a `Set` of handled URLs and drops an entry again only if the exchange threw, so a
-genuine retry is not swallowed.
+### How the callback actually flows
 
-**The URL is handed to Supabase untouched.** `ColourwayLink`'s parsing is diagnostic only —
-recognition, error display, log redaction. Re-encoding a callback is how a base64url auth
-code containing `+` or `/` gets corrupted. The parsing was exercised against 17 cases
-(base64 codes, fragment-only errors, `error_code` vs `error`, malformed pairs, wrong host,
-plain http, collision precedence) before shipping.
+`Backend.authCallbackURL` → `https://colourwayapp.com/auth-callback`. The app does **not** ask
+Supabase to redirect to `colourway://`; the custom scheme stays registered in `Info.plist`
+purely so `auth-callback.html` has somewhere to bounce to when the Universal Link doesn't
+reach — before the AASA is cached, on desktop or Android, or with the app not installed.
 
-**Errors are read from the query *and* the fragment.** Auth-code flows report `?error=`,
-implicit/hash flows report `#error=`. Checking one is how a failed sign-in becomes a spinner
-that never resolves.
+**No redirect allow-list entry is needed**, and rev 6–7 of this doc were wrong to insist on
+three. GoTrue accepts any redirect sharing the **Site URL's** hostname, and Site URL is
+`colourwayapp.com`. The real constraint is the inverse: **point Site URL anywhere else and the
+callback is silently rejected**, falling back to whatever Site URL then is. Leave it alone.
 
-**PKCE, not implicit** (`flowType: .pkce`). The code comes back in the query string, so a
-Universal Link carries it intact. Implicit returns tokens in the fragment, which no server
-ever sees — that is the case `auth-callback.html` exists to rescue.
+### What still needs doing on the app
 
-**Redirect allow-list.** All three of `colourway://auth-callback`,
-`https://colourwayapp.com/auth-callback`, `https://colourwayapp.com/auth-callback.html` must
-be on Supabase → Authentication → URL Configuration. A `redirectTo` that is not on the list
-does not error — Supabase falls back to the Site URL, and the callback never reaches the app.
-"Sign-in just goes to the website" is nearly always this.
+1. `ios/Colourway.entitlements` declares `applinks:colourwayapp.com` only. Correct as-is —
+   add `webcredentials:` only alongside a matching AASA block.
+2. Associated Domains must be enabled for App ID `6PDFYXL936.app.colourway.Colourway` in the
+   Developer portal, or device builds fail to sign.
+3. `Info.plist` still carries `NSAppTransportSecurity → NSAllowsLocalNetworking` and an
+   `NSLocalNetworkUsageDescription` for the LAN extraction service. Both must come out before
+   submission — the plist itself flags this as a Phase 1 removal.
+4. `MARKETING_VERSION` is `0.1` and `CURRENT_PROJECT_VERSION` is `1`; App Store Connect wants
+   a real version pair.
 
-Providers redirect to **Supabase**, not to Colourway: the provider consoles get
-`https://<project>.supabase.co/auth/v1/callback`.
+**Verified 21 Aug 2026:** the live AASA is byte-identical to the file the iOS repo intended —
+454 B, `dafde981…`, HTTP 200, `application/json`, zero redirects — and its App ID matches
+`DEVELOPMENT_TEAM` and `PRODUCT_BUNDLE_IDENTIFIER` in the pbxproj. Git agrees independently:
+the dashboard blob and the iOS repo blob were the same object, `e9d65336…`.
 
-**Verified so far:** the live AASA (re-fetched after the rev 7 identifier change) is
-byte-identical to the tested build — 495 B, `2a93b2c4…`, HTTP 200, `application/json`, zero
-redirects — and matches the entitlement, the new bundle ID, and both claimed paths; the Swift
-passes a bracket/import lint and the callback parsing passes its case suite. Apple's CDN copy
-lags the origin by up to a day, so the first device test after an identifier change should use
-`?mode=developer`. **Not** verified: a real `swiftc` compile — there is no Swift
-toolchain in this environment. Treat first build as the compile check, and see the last row
-of the gotchas table in `iOS-SETUP.md` about `signInWithOAuth` overloads shifting between
-supabase-swift minor versions.
-
-If Universal Links don't fire on the first attempt, delete and reinstall the app. A stale
-cached AASA is the usual culprit, not the file — or use `applinks:colourwayapp.com?mode=developer`
-with Settings → Developer → Associated Domains Development to bypass Apple's CDN entirely.
-Remove the flag before archiving.
+If Universal Links don't fire on the first attempt, delete and reinstall the app — iOS caches
+the AASA at install time, so deploying it does not retro-fit an installed build. A stale cache
+is the usual culprit, not the file. Or use `applinks:colourwayapp.com?mode=developer` with
+Settings → Developer → Associated Domains Development to bypass Apple's CDN entirely, and
+remove the flag before archiving.
 
 ---
 
@@ -477,6 +491,8 @@ Hash-checking beats a 200 status — a 200 can be a stale cached build.
 
 | Problem | Cause / fix |
 |---|---|
+| **Identifiers taken from chat instead of the project** | Two wrong Team IDs shipped live before anyone read `DEVELOPMENT_TEAM` out of `project.pbxproj`. Both were "verified" — but verification proved the file was *served* correctly, not that its *contents* were right. **Hash-checking proves delivery, never correctness.** For any value that must match something else, read both ends |
+| **A second copy of a deployed file, in another repo** | `colourway:web/.well-known/…` looked authoritative and was never served. Edits to it did nothing, silently. When one artifact has to be live at a URL, exactly one file may exist — the others become pointers |
 | **A linter's own bug read as a code defect** | A crude brace-balance script stripped `//` as a comment — inside `"https://…"` — and reported a real file as unbalanced. Two files were "wrong" before the tool was. **When a check fails on code you have reason to trust, suspect the check first**; a correct scanner then found the files clean |
 | `.xcconfig` value silently truncated | `//` starts a comment in xcconfig, so `SUPABASE_URL = https://x.supabase.co` stores `https:`. Write `https:/$()/x.supabase.co` |
 | **Files "missing from the deploy"** | They had never been committed. Before debugging a pipeline, run `git ls-files` or list the repo tree via the API. Tell: if a dotfolder *and* a normal file are both missing, it isn't a dot-pattern `.gitignore` and it isn't the deploy |
@@ -518,16 +534,40 @@ conflict with a UK-spelling app domain, but worth knowing before filing.
 
 ## 12. Open items
 
-1. **Build the iOS app files into a real Xcode project** — the drop-in files are written and
-   linted but have never been compiled (see §6). First build is the compile check.
-2. **Native Sign in with Apple** — `ASAuthorizationController` + `auth.signInWithIdToken`.
-   The current `signIn(with: .apple)` uses the web flow, which reviewers accept but dislike.
-   App Store guideline 4.8 requires offering it at all if Google sign-in is offered.
-3. **Supabase redirect allow-list** — three URLs to add before any sign-in can work (§6).
-4. **Apex A → CNAME swap** — optional hardening, see §3
-5. **Full badge at 16px** — if the tiered favicon approach isn't wanted
+**Blocking a working Universal Link — do these first:**
 
-Closed: iOS entitlement / URL scheme / delegate handling (rev 6), og:image (rev 3),
+1. **Reinstall the app on device.** iOS cached the AASA when the current build was installed,
+   and every AASA served before 21 Aug named a wrong App ID. Nothing else matters until the
+   device re-fetches. Use `?mode=developer` to skip Apple's CDN lag.
+2. **Enable Associated Domains** for `6PDFYXL936.app.colourway.Colourway` in the Developer
+   portal and regenerate the profile, or device builds fail to sign.
+
+**Serve what the AASA claims:**
+
+3. **`/auth-callback/*` returns 404.** Add
+   `{ "source": "/auth-callback/:path*", "destination": "/auth-callback.html" }` to the
+   dashboard's `vercel.json` rewrites. Installed apps are fine; the web fallback is not.
+4. **`colourway:web/auth-callback.html` is a second divergent copy** (2,958 B vs the live
+   4,962 B). Same hazard the AASA had. Delete or reconcile.
+
+**Before TestFlight:**
+
+5. **Strip the LAN escape hatch** — `NSAppTransportSecurity → NSAllowsLocalNetworking` and
+   `NSLocalNetworkUsageDescription` in `ios/Info.plist`, once extraction moves behind HTTPS.
+6. **Real version numbers** — `MARKETING_VERSION` is `0.1`, `CURRENT_PROJECT_VERSION` is `1`.
+
+**Before submission:**
+
+7. **Native Sign in with Apple** — guideline 4.8 requires offering it if any third-party
+   sign-in is offered. `auth.signInWithIdToken` + `ASAuthorizationController`.
+8. **Privacy nutrition labels** — camera, email, and receipt content all get declared.
+
+**Not blocking anything:**
+
+9. **Apex A → CNAME swap** — optional hardening, see §3
+10. **Full badge at 16px** — if the tiered favicon approach isn't wanted
+
+Closed: correct App ID live (rev 8), single AASA source of truth (rev 8), og:image (rev 3),
 sidebar badge (Aug 18), custom domain (Aug 17).
 
 ---
