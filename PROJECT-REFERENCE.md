@@ -3,7 +3,7 @@
 Everything built, decided, and deployed. Written to be dropped into a new chat as context so
 work can resume without re-explaining anything.
 
-**Last updated:** 21 Aug 2026 · **Rev 9** (one copy of each auth file; wildcard actually served)
+**Last updated:** 21 Aug 2026 · **Rev 10** (Universal Link confirmed working on device)
 
 ---
 
@@ -367,10 +367,22 @@ callback is silently rejected**, falling back to whatever Site URL then is. Leav
 4. `MARKETING_VERSION` is `0.1` and `CURRENT_PROJECT_VERSION` is `1`; App Store Connect wants
    a real version pair.
 
-**Verified 21 Aug 2026:** the live AASA is byte-identical to the file the iOS repo intended —
-454 B, `dafde981…`, HTTP 200, `application/json`, zero redirects — and its App ID matches
-`DEVELOPMENT_TEAM` and `PRODUCT_BUNDLE_IDENTIFIER` in the pbxproj. Git agrees independently:
-the dashboard blob and the iOS repo blob were the same object, `e9d65336…`.
+**✅ Confirmed on device, 21 Aug 2026: the Universal Link opens the app.** Reinstalling after
+the App ID fix was the last step. That single observation proves the whole transport chain at
+once — the AASA is served correctly, its App ID matches the signed build, Associated Domains is
+present in the provisioning profile, Apple's CDN has the current file, and the device fetched
+and cached it. None of those need separate checking now.
+
+**What it does not prove: that a sign-in completes.** A link opening the app is transport only.
+The exchange — `completeDeepLink(url)` taking the code and returning a session — is a separate
+mechanism that runs after the app is already open, and it can fail on its own (spent code,
+expired link, PKCE verifier missing after a reinstall). Do not read "the link works" as "auth
+works"; they were verified separately for a reason.
+
+Supporting evidence from the same day: the live AASA is byte-identical to the file the iOS repo
+intended — 454 B, `dafde981…`, HTTP 200, `application/json`, zero redirects — and its App ID
+matches `DEVELOPMENT_TEAM` and `PRODUCT_BUNDLE_IDENTIFIER` in the pbxproj. Git agrees
+independently: the dashboard blob and the iOS repo blob were the same object, `e9d65336…`.
 
 If Universal Links don't fire on the first attempt, delete and reinstall the app — iOS caches
 the AASA at install time, so deploying it does not retro-fit an installed build. A stale cache
@@ -538,32 +550,32 @@ conflict with a UK-spelling app domain, but worth knowing before filing.
 
 ## 12. Open items
 
-**Blocking a working Universal Link — do these first:**
+**Next, and the only untested link in the chain:**
 
-1. **Reinstall the app on device.** iOS cached the AASA when the current build was installed,
-   and every AASA served before 21 Aug named a wrong App ID. Nothing else matters until the
-   device re-fetches. Use `?mode=developer` to skip Apple's CDN lag.
-2. **Enable Associated Domains** for `6PDFYXL936.app.colourway.Colourway` in the Developer
-   portal and regenerate the profile, or device builds fail to sign.
+1. **Run one real sign-in end to end.** Request a confirmation or magic link, open it from Mail
+   on the device, and confirm you land signed in — not merely that the app opens. This is the
+   half the Universal Link test cannot cover. Worth also trying it once with a *stale* link, to
+   see that the failure surfaces a reason rather than a spinner.
 
 **Before TestFlight:**
 
-3. **Strip the LAN escape hatch** — `NSAppTransportSecurity → NSAllowsLocalNetworking` and
+2. **Strip the LAN escape hatch** — `NSAppTransportSecurity → NSAllowsLocalNetworking` and
    `NSLocalNetworkUsageDescription` in `ios/Info.plist`, once extraction moves behind HTTPS.
-4. **Real version numbers** — `MARKETING_VERSION` is `0.1`, `CURRENT_PROJECT_VERSION` is `1`.
+3. **Real version numbers** — `MARKETING_VERSION` is `0.1`, `CURRENT_PROJECT_VERSION` is `1`.
 
 **Before submission:**
 
-5. **Native Sign in with Apple** — guideline 4.8 requires offering it if any third-party
+4. **Native Sign in with Apple** — guideline 4.8 requires offering it if any third-party
    sign-in is offered. `auth.signInWithIdToken` + `ASAuthorizationController`.
-6. **Privacy nutrition labels** — camera, email, and receipt content all get declared.
+5. **Privacy nutrition labels** — camera, email, and receipt content all get declared.
 
 **Not blocking anything:**
 
-7. **Apex A → CNAME swap** — optional hardening, see §3
-8. **Full badge at 16px** — if the tiered favicon approach isn't wanted
+6. **Apex A → CNAME swap** — optional hardening, see §3
+7. **Full badge at 16px** — if the tiered favicon approach isn't wanted
 
-Closed: wildcard callback route served (rev 9), one copy of each auth file (rev 9),
+Closed: **Universal Link opening the app, confirmed on device (rev 10)**,
+wildcard callback route served (rev 9), one copy of each auth file (rev 9),
 correct App ID live (rev 8), single AASA source of truth (rev 8), og:image (rev 3),
 sidebar badge (Aug 18), custom domain (Aug 17).
 
