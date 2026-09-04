@@ -1,7 +1,8 @@
 {
   "rewrites": [
     { "source": "/auth-callback", "destination": "/auth-callback.html" },
-    { "source": "/auth-callback/:path*", "destination": "/auth-callback.html" }
+    { "source": "/auth-callback/:path*", "destination": "/auth-callback.html" },
+    { "source": "/privacy", "destination": "/privacy.html" }
   ],
   "headers": [
     {
