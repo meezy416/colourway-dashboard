@@ -125,12 +125,9 @@
 
 <h2>Where your data is stored</h2>
 <p>Your account, ledger, and receipt images are stored in Canada, in the <code>ca-central-1</code> region. Receipt images are held in a private storage bucket that is not publicly readable; the app retrieves them using short-lived signed links. Database access is restricted per-user at the database level, so one account cannot read another's rows.</p>
-<p>Some processing takes place in the United States — receipt reading by Anthropic, and QuickBooks sync by Intuit if you have connected it. If you are in the EEA or UK, this means your information is transferred outside your region.</p>
+<p><strong>Colourway is available only in Canada and the United States.</strong></p>
 
-<!-- TODO(before deploy): counsel must confirm the transfer mechanism. If the app
-     ships to Canada and the US only at launch, the correct resolution may be to
-     delete this paragraph and the EEA/UK sentence above it rather than fill it in. -->
-<div class="todo"><b>Unresolved — do not deploy</b>Confirm the appropriate transfer mechanism (e.g. Standard Contractual Clauses) with counsel before publishing.</div>
+<p>Some processing takes place in the United States — receipt reading by Anthropic, and QuickBooks sync by Intuit if you have connected it. So your information is stored in Canada but processed outside it, and while it is in the United States it is subject to United States law. That includes the possibility of lawful access by United States courts, law enforcement, and national security authorities, under legal standards that differ from Canada's. We tell you this because you cannot weigh it if we do not.</p>
 
 <h2>How long it is kept</h2>
 <p>Your data is kept for as long as your account exists. Colourway does not expire, archive, or auto-delete your ledger — a cost basis is only useful if it goes back as far as your inventory does.</p>
@@ -158,13 +155,11 @@
 <p>To exercise any right that is not available in the app, email <a href="mailto:privacy@colourwayapp.com">privacy@colourwayapp.com</a>. We will respond within the period required by applicable law.</p>
 <ul>
   <li><strong>Canada (PIPEDA).</strong> You may access your personal information and challenge its accuracy, and may complain to the Office of the Privacy Commissioner of Canada.</li>
-  <li><strong>EEA / UK (GDPR).</strong> Our lawful basis is performance of a contract — providing the service you signed up for — and legitimate interests in securing it. You may lodge a complaint with your supervisory authority.</li>
   <li><strong>California (CCPA/CPRA).</strong> Colourway does not sell or share personal information as those terms are defined, and does not use it for cross-context behavioural advertising. You will never be discriminated against for exercising a privacy right.</li>
+  <li><strong>Other United States states.</strong> Several have their own privacy statutes granting comparable rights. Where one applies to you, we honour the rights it gives you through the same address below, without asking which state you are in first.</li>
 </ul>
 
-<!-- TODO(before deploy): counsel confirms which regimes apply and whether an
-     EEA/UK representative must be appointed. Delete the bullets that don't apply. -->
-<div class="todo"><b>Unresolved — do not deploy</b>Have counsel confirm which of these apply to you and whether a representative must be appointed.</div>
+<p><strong>European and UK law is not listed here because Colourway is not offered in those regions.</strong> The GDPR reaches a company outside Europe when it offers goods or services to people in Europe, and we do not — the app is available only on the Canadian and United States App Store storefronts. If that changes, this policy changes with it, before the app becomes available there and not after.</p>
 
 <h2>Security</h2>
 <p>Traffic is encrypted in transit. Data is encrypted at rest by our hosting provider. Access to your rows is enforced at the database level rather than only in the app. Receipt images sit in a private bucket reachable only through short-lived signed links. QuickBooks tokens are held where the client application cannot read them at all.</p>
