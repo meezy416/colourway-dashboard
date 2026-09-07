@@ -54,6 +54,18 @@ h3 { font-size: 17px; font-weight: 650; margin: 0 0 7px; letter-spacing: -.01em 
 
 .band { padding: 46px 0; border-top: 1px solid var(--line) }
 
+/* The demo. Sized as a phone rather than a widescreen player, because that is
+   the shape of the thing being shown. */
+.demo { display: flex; flex-wrap: wrap; gap: 30px 40px; align-items: center }
+.demo video {
+  width: 268px; max-width: 100%; height: auto; display: block;
+  border-radius: 26px; border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg, var(--shadow)); background: var(--surface-1);
+}
+.demo .say { flex: 1 1 300px; min-width: 260px }
+.demo .say p { font-size: 15.5px }
+.demo .say p:last-child { margin-bottom: 0 }
+
 .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) }
 .card {
   background: var(--surface-1); border: 1px solid var(--line);
@@ -106,6 +118,20 @@ table.plans td:first-child { font-weight: 620; color: var(--ink); white-space: n
   <p class="lede">Colourway turns a photograph of a receipt into a per-item cost basis for resale inventory — what you paid, what it cost to land, what it sold for, and what was actually left.</p>
   <p class="lede" style="font-size:16px">Built for people who buy and resell sneakers and streetwear, and who are tired of a spreadsheet that never quite balances.</p>
 </header>
+
+<section class="band">
+  <h2>Watch it read a receipt</h2>
+  <div class="demo">
+    <video id="demo" src="/demo.mp4" poster="/demo-poster.jpg"
+           muted loop playsinline preload="metadata" controls
+           aria-label="Screen recording: a receipt is imported, read automatically, checked, and saved to the ledger."></video>
+    <div class="say">
+      <p>A real recording, not a mockup — the same reader that runs on your receipts, on a receipt it had never seen.</p>
+      <p>Watch what it does when it is <em>not</em> certain. It infers the currency from the province and the tax line, and says so. It marks shipping and duties as unsure rather than guessing a zero. Nothing is saved until you have looked at it.</p>
+      <p>The only edit is speed: reading takes about fifteen seconds and is played faster here.</p>
+    </div>
+  </div>
+</section>
 
 <section class="band">
   <h2>How it works</h2>
@@ -202,5 +228,21 @@ table.plans td:first-child { font-weight: 620; color: var(--ink); white-space: n
 </footer>
 
 </div>
+
+<script>
+  // Autoplay only where motion is welcome. Someone who has asked their system
+  // for reduced motion gets the poster and the controls instead.
+  (function () {
+    var v = document.getElementById('demo');
+    if (!v) return;
+    try {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        v.autoplay = true;
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+    } catch (e) {}
+  })();
+</script>
 </body>
 </html>
