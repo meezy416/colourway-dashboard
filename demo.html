@@ -1,0 +1,2752 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colourway — interactive demo</title>
+<meta name="description" content="An interactive demo of the Colourway dashboard, filled with sample data. Nothing here is saved.">
+<meta name="application-name" content="Colourway">
+<meta name="apple-mobile-web-app-title" content="Colourway">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f4ed" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101511" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Colourway">
+<meta property="og:title" content="Colourway — interactive demo">
+<meta property="og:description" content="Turn sneaker and streetwear receipts into a clear picture of where your money goes.">
+<meta property="og:url" content="https://colourwayapp.com/demo">
+<meta property="og:image" content="https://colourwayapp.com/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Colourway - track every drop">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://colourwayapp.com/og-image.png">
+<meta name="twitter:title" content="Colourway — interactive demo">
+<meta name="twitter:description" content="Turn sneaker and streetwear receipts into a clear picture of where your money goes.">
+<style>
+:root {
+  color-scheme: light;
+  --plane: #ebecea;
+  --shell: #ffffff;
+  --content: #f7f8f7;
+  --surface-1: #ffffff;
+  --surface-2: #f2f4f2;
+  --surface-3: #e9ece9;
+  --ink: #101511;
+  --ink-2: #5c6761;
+  --ink-3: #949c97;
+  --line: rgba(16, 21, 17, .09);
+  --line-2: rgba(16, 21, 17, .16);
+  --ghost: rgba(16, 21, 17, .045);
+  --shadow: 0 1px 2px rgba(16, 24, 20, .04), 0 8px 24px rgba(16, 24, 20, .05);
+  --shadow-lg: 0 24px 60px rgba(16, 24, 20, .16);
+  --g900: #0f2c1c;
+  --g800: #153b26;
+  --g700: #1c5335;
+  --g600: #276b45;
+  --g500: #3d875a;
+  --g400: #6ba887;
+  --g300: #a2cab3;
+  --g200: #cde4d6;
+  --g100: #eaf4ee;
+  --brand: #1c5335;
+  --brand-ink: #ffffff;
+  --hatch: #d5d9d6;
+  --hatch-bg: #ffffff;
+  --c1: #008300;
+  --c2: #2a78d6;
+  --c3: #eb6834;
+  --c4: #1baf7a;
+  --c5: #4a3aa7;
+  --c6: #eda100;
+  --c7: #e87ba4;
+  --c8: #e34948;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --good-text: #146c32;
+  --warning-text: #8a5a00;
+  --critical-text: #b32b2b;
+  --good-bg: rgba(20, 108, 50, .10);
+  --warning-bg: rgba(250, 178, 25, .18);
+  --critical-bg: rgba(208, 59, 59, .10);
+  --r-shell: 30px;
+  --r-card: 20px;
+  --r-sm: 14px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
+}
+@media (prefers-color-scheme:dark) {
+  :root:where(:not([data-theme=light])) {
+    color-scheme: dark;
+    --plane: #080908;
+    --shell: #111412;
+    --content: #0e100f;
+    --surface-1: #161917;
+    --surface-2: #1e221f;
+    --surface-3: #262b27;
+    --ink: #ffffff;
+    --ink-2: #b7c0ba;
+    --ink-3: #868e89;
+    --line: rgba(255, 255, 255, .09);
+    --line-2: rgba(255, 255, 255, .16);
+    --ghost: rgba(255, 255, 255, .06);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .32);
+    --g900: #0d2718;
+    --g800: #12361f;
+    --g700: #2b6f49;
+    --g600: #357f55;
+    --g500: #479267;
+    --g400: #6fae89;
+    --g300: #9ccbb1;
+    --g200: #2a4636;
+    --g100: #1b2e23;
+    --brand: #2f7a4f;
+    --hatch: #333935;
+    --hatch-bg: #161917;
+    --c1: #008300;
+    --c2: #3987e5;
+    --c3: #d95926;
+    --c4: #199e70;
+    --c5: #9085e9;
+    --c6: #c98500;
+    --c7: #d55181;
+    --c8: #e66767;
+    --good-text: #4cc46c;
+    --warning-text: #fab219;
+    --critical-text: #e66767;
+    --good-bg: rgba(76, 196, 108, .14)
+  }
+}
+:root[data-theme=dark] {
+  color-scheme: dark;
+  --plane: #080908;
+  --shell: #111412;
+  --content: #0e100f;
+  --surface-1: #161917;
+  --surface-2: #1e221f;
+  --surface-3: #262b27;
+  --ink: #ffffff;
+  --ink-2: #b7c0ba;
+  --ink-3: #868e89;
+  --line: rgba(255, 255, 255, .09);
+  --line-2: rgba(255, 255, 255, .16);
+  --ghost: rgba(255, 255, 255, .06);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .32);
+  --g900: #0d2718;
+  --g800: #12361f;
+  --g700: #2b6f49;
+  --g600: #357f55;
+  --g500: #479267;
+  --g400: #6fae89;
+  --g300: #9ccbb1;
+  --g200: #2a4636;
+  --g100: #1b2e23;
+  --brand: #2f7a4f;
+  --hatch: #333935;
+  --hatch-bg: #161917;
+  --c1: #008300;
+  --c2: #3987e5;
+  --c3: #d95926;
+  --c4: #199e70;
+  --c5: #9085e9;
+  --c6: #c98500;
+  --c7: #d55181;
+  --c8: #e66767;
+  --good-text: #4cc46c;
+  --warning-text: #fab219;
+  --critical-text: #e66767;
+  --good-bg: rgba(76, 196, 108, .14)
+}
+* {
+  box-sizing: border-box
+}
+body,
+html {
+  margin: 0;
+  padding: 0
+}
+body {
+  font-family: var(--font);
+  background: var(--plane);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased
+}
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit
+}
+button {
+  cursor: pointer
+}
+.page {
+  padding: 20px
+}
+.shell {
+  display: flex;
+  background: var(--shell);
+  border-radius: var(--r-shell);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-height: calc(100vh - 40px)
+}
+.sidebar {
+  width: 238px;
+  flex: 0 0 238px;
+  padding: 22px 14px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--shell)
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 2px 10px 22px
+}
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: block
+}
+.brand-name {
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -.03em
+}
+.nav-label {
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  color: var(--ink-3);
+  padding: 16px 12px 8px;
+  font-weight: 600
+}
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: 0 0;
+  border-radius: 11px;
+  color: var(--ink-3);
+  font-size: 14px;
+  font-weight: 550;
+  text-align: left
+}
+.nav-item:hover {
+  background: var(--ghost);
+  color: var(--ink)
+}
+.nav-item[aria-current=page] {
+  color: var(--ink);
+  font-weight: 680;
+  background: var(--surface-2)
+}
+.nav-item[aria-current=page]::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 8px;
+  bottom: 8px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--brand)
+}
+.nav-item .ic {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: grid;
+  place-items: center
+}
+.nav-item .ic svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+.nav-item[aria-current=page] .ic svg {
+  stroke: var(--brand)
+}
+.nav-pill {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 20px;
+  background: var(--critical-bg);
+  color: var(--critical-text)
+}
+.promo {
+  margin-top: auto;
+  border-radius: 18px;
+  padding: 18px 16px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(120% 120% at 80% 0, var(--g600) 0, var(--g900) 70%)
+}
+.promo h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.25
+}
+.promo p {
+  margin: 0 0 14px;
+  font-size: 11.5px;
+  opacity: .72
+}
+.promo button {
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 0;
+  font-size: 12.5px;
+  font-weight: 650;
+  background: var(--g500);
+  color: #fff
+}
+.promo button:hover {
+  filter: brightness(1.1)
+}
+.side-foot {
+  padding: 12px 2px 0;
+  font-size: 11.5px;
+  color: var(--ink-3)
+}
+.side-foot a {
+  color: var(--ink-3);
+  text-decoration: none
+}
+.side-foot a:hover {
+  color: var(--brand);
+  text-decoration: underline
+}
+.main {
+  flex: 1;
+  min-width: 0;
+  background: var(--content);
+  display: flex;
+  flex-direction: column
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  background: var(--content);
+  position: sticky;
+  top: 0;
+  z-index: 30
+}
+.search {
+  flex: 1;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 14px
+}
+.search input {
+  border: none;
+  outline: 0;
+  background: 0 0;
+  flex: 1;
+  font-size: 13.5px
+}
+.search input::placeholder {
+  color: var(--ink-3)
+}
+.kbd {
+  font-size: 11px;
+  color: var(--ink-3);
+  background: var(--surface-2);
+  border-radius: 7px;
+  padding: 2px 7px;
+  font-weight: 600
+}
+.round-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface-1);
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  font-size: 14px
+}
+.round-btn:hover {
+  background: var(--ghost);
+  color: var(--ink)
+}
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 4px
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  background: var(--g600);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px
+}
+.who-name {
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.2
+}
+.who-mail {
+  font-size: 11.5px;
+  color: var(--ink-3)
+}
+.content {
+  padding: 4px 22px 34px
+}
+.head-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px
+}
+.page-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 750;
+  letter-spacing: -.035em
+}
+.page-sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--ink-2)
+}
+.head-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 11px 20px;
+  border: 1px solid var(--line-2);
+  background: var(--surface-1);
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 600
+}
+.btn:hover {
+  background: var(--ghost)
+}
+.btn-primary {
+  background: var(--brand);
+  color: var(--brand-ink);
+  border-color: transparent
+}
+.btn-primary:hover {
+  background: var(--g600)
+}
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 12.5px
+}
+.btn-xs {
+  padding: 5px 12px;
+  font-size: 12px
+}
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 16px
+}
+.seg {
+  display: inline-flex;
+  background: var(--surface-2);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px
+}
+.seg button {
+  border: none;
+  background: 0 0;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  white-space: nowrap
+}
+.seg button:hover {
+  color: var(--ink)
+}
+.seg button[aria-pressed=true] {
+  background: var(--surface-1);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06)
+}
+.ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 550
+}
+.ctrl:hover {
+  border-color: var(--line-2)
+}
+input.ctrl,
+select.ctrl {
+  appearance: none
+}
+.spacer {
+  flex: 1
+}
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 18px 20px
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px
+}
+.card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.02em
+}
+.card-sub {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--ink-3)
+}
+.card-tools {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center
+}
+.grid {
+  display: grid;
+  gap: 14px
+}
+.grid>*,
+.lrow,
+.row-list {
+  min-width: 0
+}
+.g-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr))
+}
+.g-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+}
+.g-main {
+  grid-template-columns: 1.75fr 1.05fr 1fr
+}
+.g-bottom {
+  grid-template-columns: 1.5fr 1.1fr 1fr
+}
+.mt {
+  margin-top: 14px
+}
+.kpi {
+  position: relative
+}
+.kpi-head {
+  display: flex;
+  align-items: center;
+  gap: 10px
+}
+.kpi-title {
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: -.01em
+}
+.kpi-arrow {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: 0 0;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: var(--ink-2);
+  flex: 0 0 28px
+}
+.kpi-value {
+  font-size: 40px;
+  font-weight: 750;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+  margin: 10px 0 8px
+}
+.kpi-foot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--ink-3)
+}
+.kpi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--surface-2);
+  color: var(--ink-2)
+}
+.kpi.filled {
+  background: var(--brand);
+  border-color: transparent;
+  color: #fff
+}
+.kpi.filled .kpi-arrow {
+  border-color: rgba(255, 255, 255, .35);
+  color: #fff
+}
+.kpi.filled .kpi-foot {
+  color: rgba(255, 255, 255, .72)
+}
+.kpi.filled .kpi-chip {
+  background: rgba(255, 255, 255, .16);
+  color: #fff
+}
+.spotlight-title {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+  margin: 14px 0 6px
+}
+.spotlight-meta {
+  font-size: 12.5px;
+  color: var(--ink-2)
+}
+#spotlightCard {
+  display: flex;
+  flex-direction: column
+}
+.cta {
+  margin-top: auto !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 18px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 650
+}
+.cta:hover {
+  background: var(--g600)
+}
+.row-list {
+  display: flex;
+  flex-direction: column
+}
+.lrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 2px
+}
+.lrow+.lrow {
+  border-top: 1px solid var(--line)
+}
+.lrow .glyph {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff
+}
+.lrow .glyph.soft {
+  color: var(--ink)
+}
+.lrow-main {
+  min-width: 0;
+  flex: 1
+}
+.lrow-title {
+  font-size: 13.5px;
+  font-weight: 640;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.lrow-sub {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.lrow-end {
+  margin-left: auto;
+  text-align: right;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap
+}
+.dark-card {
+  border-radius: var(--r-card);
+  padding: 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(130% 130% at 85% 0, var(--g600) 0, var(--g900) 65%);
+  display: flex;
+  flex-direction: column
+}
+.dark-card h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650
+}
+.dark-value {
+  font-size: 38px;
+  font-weight: 750;
+  letter-spacing: -.035em;
+  margin: auto 0 6px
+}
+.dark-meta {
+  font-size: 12px;
+  opacity: .72
+}
+.dark-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px
+}
+.dark-actions button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .16);
+  color: #fff;
+  font-size: 15px
+}
+.dark-actions button:hover {
+  background: rgba(255, 255, 255, .26)
+}
+.dark-actions button.stop {
+  background: var(--critical)
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 650;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap
+}
+.badge .dotmark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%
+}
+.b-good {
+  background: var(--good-bg);
+  color: var(--good-text)
+}
+.b-warn {
+  background: var(--warning-bg);
+  color: var(--warning-text)
+}
+.b-crit {
+  background: var(--critical-bg);
+  color: var(--critical-text)
+}
+.b-neutral {
+  background: var(--surface-2);
+  color: var(--ink-2)
+}
+.cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap
+}
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 4px;
+  flex: 0 0 10px
+}
+.alert {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--critical);
+  border-radius: var(--r-card);
+  padding: 14px 18px;
+  margin-bottom: 14px
+}
+.alert.warn {
+  border-left-color: var(--warning)
+}
+.alert-title {
+  font-weight: 680;
+  font-size: 14px
+}
+.alert-body {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  margin-top: 2px
+}
+.chart-wrap {
+  position: relative;
+  margin-top: 12px
+}
+.chart-wrap svg {
+  display: block;
+  width: 100%;
+  overflow: visible
+}
+.tip {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -100%);
+  background: var(--ink);
+  color: var(--plane);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 20;
+  transition: opacity .1s;
+  box-shadow: var(--shadow)
+}
+.tip-title {
+  font-weight: 700;
+  margin-bottom: 4px
+}
+.tip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: .85
+}
+.tip-row b {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  opacity: 1
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 14px
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-2)
+}
+.legend-hatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, var(--hatch) 0 2px, var(--hatch-bg) 2px 4px)
+}
+.axis-t {
+  font-size: 11.5px;
+  fill: var(--ink-3);
+  font-variant-numeric: tabular-nums
+}
+.gridline {
+  stroke: var(--line);
+  stroke-width: 1
+}
+.bar-label {
+  font-size: 11.5px;
+  fill: var(--ink-2);
+  font-variant-numeric: tabular-nums
+}
+.bar-name {
+  font-size: 12.5px;
+  fill: var(--ink)
+}
+.hit {
+  fill: transparent;
+  cursor: pointer
+}
+.gauge-value {
+  font-size: 38px;
+  font-weight: 750;
+  letter-spacing: -.035em;
+  fill: var(--ink)
+}
+.gauge-label {
+  font-size: 11.5px;
+  fill: var(--ink-3)
+}
+.tbl-scroll {
+  overflow-x: auto;
+  margin-top: 8px
+}
+table.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px
+}
+table.tbl th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 650;
+  padding: 9px 12px;
+  white-space: nowrap;
+  background: var(--surface-2)
+}
+table.tbl thead tr th:first-child {
+  border-radius: 10px 0 0 10px
+}
+table.tbl thead tr th:last-child {
+  border-radius: 0 10px 10px 0
+}
+table.tbl th.sortable {
+  cursor: pointer;
+  user-select: none
+}
+table.tbl th.sortable:hover {
+  color: var(--ink)
+}
+table.tbl td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle
+}
+table.tbl tbody tr:hover {
+  background: var(--ghost)
+}
+table.tbl tbody tr:last-child td {
+  border-bottom: none
+}
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap
+}
+.mono {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap
+}
+.muted {
+  color: var(--ink-3)
+}
+.sec {
+  color: var(--ink-2)
+}
+.tfoot td {
+  font-weight: 700;
+  border-top: 1px solid var(--line-2)
+}
+.row-click {
+  cursor: pointer
+}
+.empty {
+  padding: 36px 10px;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 13px
+}
+.meter-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden
+}
+.meter-track.hatched {
+  background: repeating-linear-gradient(45deg, var(--hatch) 0 3px, var(--hatch-bg) 3px 7px)
+}
+.meter-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--brand)
+}
+.budget-row {
+  padding: 15px 2px;
+  border-bottom: 1px solid var(--line)
+}
+.budget-row:last-child {
+  border-bottom: none
+}
+.budget-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+  flex-wrap: wrap
+}
+.budget-amt {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums
+}
+.budget-amt b {
+  color: var(--ink)
+}
+.budget-foot {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--ink-3)
+}
+.bud-input {
+  width: 96px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding: 6px 12px
+}
+.modal-back {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 11, .45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 18px
+}
+.modal-back.open {
+  display: flex
+}
+.modal {
+  background: var(--surface-1);
+  border-radius: 22px;
+  max-width: 660px;
+  width: 100%;
+  max-height: 86vh;
+  overflow: auto;
+  box-shadow: var(--shadow-lg)
+}
+.modal-head {
+  padding: 20px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid var(--line)
+}
+.modal-body {
+  padding: 18px 22px 22px
+}
+.receipt-img {
+  height: 112px;
+  flex: 0 0 88px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  font-size: 11.5px;
+  text-align: center;
+  line-height: 1.3;
+  background: repeating-linear-gradient(45deg, var(--hatch) 0 3px, var(--hatch-bg) 3px 8px)
+}
+.kv {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 6px 14px;
+  font-size: 13px;
+  margin: 0
+}
+.kv dt {
+  color: var(--ink-3)
+}
+.kv dd {
+  margin: 0
+}
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap
+}
+.set-row:last-child {
+  border-bottom: none
+}
+.set-main {
+  min-width: 200px
+}
+.set-title {
+  font-size: 13.5px;
+  font-weight: 640
+}
+.set-desc {
+  font-size: 12px;
+  color: var(--ink-3)
+}
+.set-ctrl {
+  margin-left: auto
+}
+.switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  border: none;
+  padding: 0
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: .16s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2)
+}
+.switch[aria-checked=true] {
+  background: var(--brand)
+}
+.switch[aria-checked=true]::after {
+  left: 21px
+}
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%) translateY(14px);
+  background: var(--ink);
+  color: var(--plane);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+  z-index: 200
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%)
+}
+.view {
+  display: none
+}
+.view.active {
+  display: block;
+  animation: .18s fade
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(3px)
+  }
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+.health-card {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  flex-wrap: wrap
+}
+.health-dial {
+  position: relative;
+  flex: 0 0 132px;
+  width: 132px;
+  height: 132px
+}
+.health-dial svg {
+  width: 132px;
+  height: 132px;
+  display: block;
+  transform: rotate(-90deg)
+}
+.hs-track {
+  fill: none;
+  stroke: var(--surface-2);
+  stroke-width: 11
+}
+.hs-arc {
+  fill: none;
+  stroke-width: 11;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.15s cubic-bezier(.22, .85, .3, 1)
+}
+.health-read {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px
+}
+.health-num {
+  font-size: 34px;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -.035em;
+  font-variant-numeric: tabular-nums
+}
+.health-out {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .07em;
+  color: var(--ink-3)
+}
+.health-body {
+  flex: 1 1 340px;
+  min-width: 0
+}
+.health-note {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  margin-top: 10px
+}
+.health-signals {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px
+}
+.hs-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 6px
+}
+.hs-name {
+  color: var(--ink-2);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.hs-val {
+  margin-left: auto;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap
+}
+.health-signals .meter-track {
+  height: 7px
+}
+.health-signals .meter-fill {
+  transition: width .9s cubic-bezier(.22, .85, .3, 1)
+}
+@media (max-width:1180px) {
+  .g-bottom,
+  .g-main {
+    grid-template-columns: 1fr 1fr
+  }
+  .g-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+}
+@media (max-width:900px) {
+  .page {
+    padding: 10px
+  }
+  .shell {
+    flex-direction: column;
+    border-radius: 22px;
+    min-height: auto
+  }
+  .sidebar {
+    width: auto;
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 12px
+  }
+  .brand {
+    padding: 0 12px 0 4px
+  }
+  .nav-label,
+  .promo {
+    display: none
+  }
+  .nav-item {
+    width: auto;
+    white-space: nowrap;
+    padding: 9px 12px
+  }
+  .nav-item[aria-current=page] {
+    background: var(--g100)
+  }
+  .nav-item[aria-current=page]::before {
+    display: none
+  }
+  .g-2,
+  .g-4,
+  .g-bottom,
+  .g-main {
+    grid-template-columns: 1fr
+  }
+  .topbar {
+    flex-wrap: wrap;
+    padding: 14px
+  }
+  .search {
+    max-width: none;
+    order: 3;
+    flex-basis: 100%
+  }
+  .content {
+    padding: 0 14px 30px
+  }
+  .page-title {
+    font-size: 26px
+  }
+  .seg {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none
+  }
+  .seg::-webkit-scrollbar {
+    display: none
+  }
+}
+@media (max-width:1180px) {
+  .health-signals {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+}
+@media (max-width:900px) {
+  .health-card {
+    gap: 18px
+  }
+  .health-signals {
+    gap: 12px;
+    margin-top: 14px
+  }
+  .hs-label {
+    flex-wrap: wrap
+  }
+  .hs-name {
+    white-space: normal;
+    overflow: visible
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .hs-arc,
+  .health-signals .meter-fill {
+    transition: none
+  }
+}
+</style>
+</head>
+<body>
+<div style="background:#1c5335;color:#fff;padding:9px 16px;font:600 13px/1.4 system-ui,-apple-system,sans-serif;text-align:center">
+  Interactive demo — every figure below is invented sample data, and nothing you change is saved.
+  <a href="/" style="color:#fff;text-decoration:underline">Colourway for iPhone&nbsp;&rsaquo;</a>
+</div>
+<div class="page">
+<div class="shell"><aside class="sidebar"><div class="brand"><img class="brand-mark" src="/brand-mark.png" width="40" height="40" alt="" decoding="async"><div class="brand-name">Colourway</div></div><div class="nav-label">MENU</div><button class="nav-item" data-view="overview" aria-current="page"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg></span> Dashboard</button><button class="nav-item" data-view="categories"><span class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 13.4 11 3.8H4v7l9.6 9.6a2 2 0 0 0 2.8 0l4.2-4.2a2 2 0 0 0 0-2.8Z"/><circle cx="7.5" cy="7.5" r="1.3"/></svg></span> Categories</button><button class="nav-item" data-view="budgets"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-6"/></svg></span> Budgets</button><button class="nav-item" data-view="transactions"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span> Transactions</button><div class="nav-label">ACCOUNTING</div><button class="nav-item" data-view="sync"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg></span> QuickBooks <span class="nav-pill" id="navSyncPill">0</span></button><button class="nav-item" data-view="settings"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7.9 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.3Z"/></svg></span> Settings</button><div class="promo"><h4>Capture on the go</h4><p>Snap a receipt, we do the rest.</p><button onclick="location.href='/'">Get the iOS app</button></div><div class="side-foot"><a href="/">Home</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/support">Support</a></div></aside><div class="main"><header class="topbar"><label class="search"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="var(--ink-3)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="topSearch" type="search" placeholder="Search receipts, merchants, items" aria-label="Search"><span class="kbd">⌘F</span></label><span class="spacer"></span><button class="round-btn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg></button><button class="round-btn" id="bellBtn" title="Alerts" aria-label="Alerts"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M13.7 20a2 2 0 0 1-3.4 0"/></svg></button><div class="who"><div class="avatar">SM</div><div><div class="who-name">Stash tha Mula</div><div class="who-mail">mzyyyz416@mail.com</div></div></div></header><main class="content"><div class="head-row"><div><h1 class="page-title" id="pageTitle">Dashboard</h1><p class="page-sub" id="pageSub">Capture, categorize and control your sneaker spend.</p></div><div class="head-actions"><button class="btn btn-primary" id="addBtn">＋ Add receipt</button><button class="btn" id="exportBtn">↓ Export CSV</button></div></div><div class="filterbar"><div class="seg" id="rangeSeg" role="group" aria-label="Date range"><button data-range="7" aria-pressed="false">7D</button><button data-range="30" aria-pressed="true">30D</button><button data-range="90" aria-pressed="false">90D</button><button data-range="mtd" aria-pressed="false">MTD</button><button data-range="ytd" aria-pressed="false">YTD</button><button data-range="365" aria-pressed="false">12M</button><button data-range="custom" aria-pressed="false">Custom</button></div><span id="customWrap" style="display:none; gap:6px; align-items:center;"><input type="date" class="ctrl" id="dFrom"> <span class="muted">→</span> <input type="date" class="ctrl" id="dTo"></span><select class="ctrl" id="catFilter" aria-label="Filter by category"><option value="all">All categories</option></select><select class="ctrl" id="syncFilter" aria-label="Filter by sync status"><option value="all">Any sync status</option><option value="synced">Synced</option><option value="pending">Pending</option><option value="error">Failed</option></select><span class="spacer"></span><span class="muted" id="rangeCaption" style="font-size:12px;"></span></div><section class="view active" id="view-overview"><div id="alertHost"></div><div class="grid g-4" id="kpiRow"></div><div class="card health-card mt" id="healthCard"></div><div class="grid g-main mt"><div class="card"><div class="card-head"><div><h3 class="card-title">Spend Analytics</h3><p class="card-sub" id="trendSub"></p></div><div class="card-tools"><div class="seg" data-toggle="trend"><button data-mode="chart" aria-pressed="true">Chart</button><button data-mode="table" aria-pressed="false">Table</button></div></div></div><div class="chart-wrap" id="trendChart"></div><div id="trendTable" style="display:none"></div></div><div class="card" id="spotlightCard"></div><div class="card"><div class="card-head"><h3 class="card-title">Categories</h3><div class="card-tools"><button class="btn btn-xs" data-goto="categories">View all</button></div></div><div class="row-list" id="catList" style="margin-top:6px"></div></div></div><div class="grid g-bottom mt"><div class="card"><div class="card-head"><div><h3 class="card-title">Recent receipts</h3><p class="card-sub">Tap a row for the extracted line items</p></div><div class="card-tools"><button class="btn btn-xs" data-goto="transactions">View all</button></div></div><div class="row-list" id="recentList" style="margin-top:6px"></div></div><div class="card"><div class="card-head"><div><h3 class="card-title">Budget Progress</h3><p class="card-sub" id="gaugeSub"></p></div></div><div class="chart-wrap" id="gauge"></div></div><div class="dark-card" id="mtdCard"></div></div></section><section class="view" id="view-categories"><div class="grid g-2"><div class="card"><div class="card-head"><div><h3 class="card-title">Spend by category</h3><p class="card-sub" id="catBarsSub"></p></div><div class="card-tools"><div class="seg" data-toggle="catmain"><button data-mode="chart" aria-pressed="true">Chart</button><button data-mode="table" aria-pressed="false">Table</button></div></div></div><div class="chart-wrap" id="catBarsBig"></div><div id="catBarsTable" style="display:none"></div></div><div class="card"><div class="card-head"><div><h3 class="card-title">Where it went</h3><p class="card-sub">Share of total spend</p></div></div><div class="chart-wrap" id="catDonut"></div></div></div><div class="card mt"><div class="card-head"><div><h3 class="card-title">Monthly trend by category</h3><p class="card-sub">Last 6 months — stacked totals</p></div><div class="card-tools"><div class="seg" data-toggle="stack"><button data-mode="chart" aria-pressed="true">Chart</button><button data-mode="table" aria-pressed="false">Table</button></div></div></div><div class="chart-wrap" id="stackChart"></div><div id="stackTable" style="display:none"></div></div><div class="card mt"><div class="card-head"><div><h3 class="card-title">Category detail</h3><p class="card-sub">Totals, averages and budget position</p></div></div><div class="tbl-scroll" id="catTable"></div></div></section><section class="view" id="view-budgets"><div id="budAlertHost"></div><div class="grid g-4" id="budKpis"></div><div class="grid g-2 mt"><div class="card"><div class="card-head"><div><h3 class="card-title">Budget vs. actual by category</h3><p class="card-sub">Monthly budgets — edit any amount to re-plan</p></div><div class="card-tools"><button class="btn btn-xs" id="resetBudgets">Reset</button></div></div><div id="budgetList" style="margin-top:4px"></div></div><div><div class="card"><div class="card-head"><div><h3 class="card-title">Pace</h3><p class="card-sub">Where you should be by today</p></div></div><div id="paceBox" style="margin-top:10px"></div></div><div class="card mt"><div class="card-head"><div><h3 class="card-title">Last 6 months</h3><p class="card-sub">Monthly spend against the overall budget</p></div><div class="card-tools"><div class="seg" data-toggle="budhist"><button data-mode="chart" aria-pressed="true">Chart</button><button data-mode="table" aria-pressed="false">Table</button></div></div></div><div class="chart-wrap" id="budHistChart"></div><div id="budHistTable" style="display:none"></div></div></div></div></section><section class="view" id="view-transactions"><div class="card"><div class="card-head"><div><h3 class="card-title">Transactions</h3><p class="card-sub" id="txCount">—</p></div><div class="card-tools"><input class="ctrl" id="txSearch" type="search" placeholder="Search merchant or item…" style="min-width:200px"><button class="btn btn-xs" id="exportBtn2">↓ CSV</button></div></div><div class="tbl-scroll" id="txTable"></div><div style="display:flex; align-items:center; gap:10px; margin-top:14px;"><button class="btn btn-xs" id="txPrev">← Prev</button><span class="muted" id="txPage" style="font-size:12px"></span><button class="btn btn-xs" id="txNext">Next →</button><span class="spacer"></span><span class="muted" id="txSum" style="font-size:12px"></span></div></div></section><section class="view" id="view-sync"><div class="grid g-4" id="syncTiles"></div><div class="card mt"><div class="card-head"><div><h3 class="card-title">QuickBooks Online</h3><p class="card-sub" id="syncSub"></p></div><div class="card-tools"><button class="btn btn-xs" id="retryFailed">Retry failed</button><button class="btn btn-sm btn-primary" id="resyncBtn">⇄ Resync now</button></div></div><div class="tbl-scroll" id="syncTable"></div></div></section><section class="view" id="view-settings"><div class="grid g-2"><div class="card"><div class="card-head"><div><h3 class="card-title">Category → QuickBooks account</h3><p class="card-sub">Where each category lands in your chart of accounts</p></div></div><div id="mapList"></div></div><div><div class="card"><div class="card-head"><div><h3 class="card-title">Connection</h3><p class="card-sub">QuickBooks Online · OAuth 2.0</p></div></div><div id="connBox" style="margin-top:10px"></div></div><div class="card mt"><div class="card-head"><div><h3 class="card-title">Preferences</h3><p class="card-sub">Applies to this dashboard and the iOS app</p></div></div><div id="prefList"></div></div><div class="card mt"><div class="card-head"><div><h3 class="card-title">Data</h3><p class="card-sub">Records kept for tax and resale bookkeeping</p></div></div><div id="dataBox" style="margin-top:10px"></div></div></div></div></section></main></div>
+</div>
+</div><div class="modal-back" id="modalBack"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div style="flex:1"><div class="card-sub" id="modalKicker">Receipt</div><div style="font-size:19px; font-weight:750; letter-spacing:-.02em" id="modalTitle">—</div></div><button class="round-btn" id="modalClose" aria-label="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-body" id="modalBody"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+! function() {
+  "use strict";
+  const t = (t, e) => (e || document).querySelector(t),
+    e = (t, e) => Array.from((e || document).querySelectorAll(t)),
+    a = (t, e, a) => Math.max(e, Math.min(a, t)),
+    s = 864e5,
+    n = (i = 20260814, function() {
+      i = 1831565813 + (i |= 0) | 0;
+      let t = Math.imul(i ^ i >>> 15, 1 | i);
+      return t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t, ((t ^ t >>> 14) >>> 0) / 4294967296
+    });
+  var i;
+  const o = t => t[Math.floor(n() * t.length)],
+    r = (t, e) => t + Math.floor(n() * (e - t + 1)),
+    l = (t, e) => t + n() * (e - t),
+    d = (t, e) => "$" + t.toLocaleString("en-US", {
+      minimumFractionDigits: void 0 === e ? 2 : e,
+      maximumFractionDigits: void 0 === e ? 2 : e
+    }),
+    c = t => "$" + Math.round(t).toLocaleString("en-US");
+
+  function p(t) {
+    return t >= 1e6 ? "$" + (t / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : c(t)
+  }
+  const u = (t, e) => (100 * t).toFixed(void 0 === e ? 0 : e) + "%",
+    g = t => {
+      const e = new Date(t);
+      return e.setHours(0, 0, 0, 0), e
+    },
+    h = t => {
+      const e = g(t);
+      return e.getFullYear() + "-" + String(e.getMonth() + 1).padStart(2, "0") + "-" + String(e.getDate())
+        .padStart(2, "0")
+    },
+    m = t => new Date(t).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }),
+    v = t => new Date(t).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric"
+    }),
+    y = t => new Date(t).toLocaleDateString("en-US", {
+      month: "short",
+      year: "2-digit"
+    }),
+    b = t => new Date(t).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    }),
+    f = t => String(t).replace(/[&<>"']/g, t => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    } [t])),
+    $ = [{
+      id: "sneakers",
+      name: "Sneakers",
+      color: "var(--c1)",
+      qb: "COGS · Sneaker Inventory"
+    }, {
+      id: "apparel",
+      name: "Apparel",
+      color: "var(--c2)",
+      qb: "COGS · Apparel Inventory"
+    }, {
+      id: "accessories",
+      name: "Accessories",
+      color: "var(--c3)",
+      qb: "COGS · Accessories"
+    }, {
+      id: "fees",
+      name: "Resale / Consignment Fees",
+      color: "var(--c4)",
+      qb: "Expenses · Platform & Seller Fees"
+    }, {
+      id: "shipping",
+      name: "Shipping",
+      color: "var(--c5)",
+      qb: "Expenses · Shipping & Postage"
+    }, {
+      id: "cleaning",
+      name: "Cleaning & Care",
+      color: "var(--c6)",
+      qb: "Expenses · Supplies"
+    }, {
+      id: "storage",
+      name: "Storage",
+      color: "var(--c7)",
+      qb: "Expenses · Rent & Storage"
+    }],
+    x = Object.fromEntries($.map(t => [t.id, t])),
+    w = ["COGS · Sneaker Inventory", "COGS · Apparel Inventory", "COGS · Accessories",
+      "Expenses · Platform & Seller Fees", "Expenses · Shipping & Postage", "Expenses · Supplies",
+      "Expenses · Rent & Storage", "Expenses · Advertising", "Assets · Inventory Asset",
+      "Uncategorized Expense"
+    ],
+    S = [
+      ["Jordan 4 Retro 'Bred Reimagined'", 320, 430],
+      ["Nike Dunk Low 'Panda'", 110, 165],
+      ["New Balance 1906R 'Grey Day'", 155, 205],
+      ["adidas Samba OG 'Cloud White'", 100, 145],
+      ["Salomon XT-6 'Black/Silver'", 180, 240],
+      ["Jordan 1 Low OG 'Black Phantom'", 240, 340],
+      ["Yeezy Slide 'Onyx'", 95, 140],
+      ["ASICS Gel-Kayano 14 'Cream'", 150, 195],
+      ["Nike Air Max 95 'Neon'", 175, 230],
+      ["Travis Scott x Jordan 1 Low 'Olive'", 620, 880],
+      ["New Balance 990v6 'Grey'", 195, 245],
+      ["Nike SB Dunk Low 'Why So Sad?'", 210, 300],
+      ["adidas Campus 00s 'Dark Green'", 105, 150],
+      ["Jordan 3 Retro 'White Cement'", 210, 285],
+      ["Nike Air Force 1 '07 'Triple White'", 100, 125],
+      ["Onitsuka Tiger Mexico 66", 90, 130]
+    ],
+    k = [
+      ["Supreme Box Logo Hoodie FW25", 380, 620],
+      ["Carhartt WIP Detroit Jacket", 190, 240],
+      ["Aimé Leon Dore Rugby Polo", 140, 195],
+      ["Corteiz Cargos 'Triple Black'", 130, 180],
+      ["Palace Tri-Ferg Tee", 55, 85],
+      ["Stüssy 8 Ball Heavyweight Hoodie", 130, 175],
+      ["Nike Tech Fleece Joggers", 95, 130],
+      ["Kith Williams III Hoodie", 160, 210],
+      ["Denim Tears Cotton Wreath Sweat", 210, 290],
+      ["Arc'teryx Beta LT Shell", 400, 560],
+      ["Represent Owners Club Tee", 70, 110],
+      ["Nike x NOCTA Cardinal Sweats", 120, 170]
+    ],
+    M = [
+      ["New Era 59FIFTY Yankees Cap", 42, 65],
+      ["Stüssy Crown Socks 3-Pack", 24, 38],
+      ["Supreme Shoulder Bag", 68, 105],
+      ["Casio G-Shock DW-5600", 95, 145],
+      ["Nike Everyday Crew Socks 6pk", 20, 30],
+      ["Oakley Factory Pilot Sunglasses", 120, 180],
+      ["Carhartt WIP Beanie", 28, 42],
+      ["Bape Shark Face Mask", 55, 80]
+    ],
+    T = [
+      ["Jason Markk Premium Kit", 22, 34],
+      ["Crep Protect Rain & Stain Spray", 14, 22],
+      ["Reshoevn8r Deep Clean Kit", 32, 48],
+      ["Angelus Leather Paint Set", 26, 40],
+      ["Sneaker Lab Foam Cleaner", 15, 24],
+      ["Suede Restore Brush Set", 12, 20]
+    ],
+    C = [
+      ["SneakerThrone Rack — 12 pair", 120, 190],
+      ["Crep Protect Crates ×4", 60, 95],
+      ["Container Store Drop-Front Boxes ×6", 70, 110],
+      ["Public Storage — monthly unit", 85, 130],
+      ["IKEA Skubb Shoe Boxes ×9", 25, 45]
+    ],
+    L = {
+      sneakers: ["StockX", "GOAT", "Nike SNKRS", "adidas CONFIRMED", "Foot Locker", "Flight Club",
+        "Stadium Goods", "END. Clothing", "Sneakersnstuff", "JD Sports", "New Balance", "Kith"
+      ],
+      apparel: ["Supreme", "Stüssy", "Kith", "Aimé Leon Dore", "Carhartt WIP", "Palace", "Corteiz",
+        "END. Clothing", "Bodega", "SSENSE"
+      ],
+      accessories: ["Kith", "Supreme", "New Era", "Stüssy", "Bodega", "SSENSE", "Concepts"],
+      fees: ["StockX", "GOAT", "eBay", "Grailed", "Depop", "Flight Club", "Stadium Goods"],
+      shipping: ["UPS", "FedEx", "USPS", "DHL Express"],
+      cleaning: ["Jason Markk", "Crep Protect", "Reshoevn8r", "Sneaker Lab"],
+      storage: ["SneakerThrone", "The Container Store", "Public Storage", "IKEA"]
+    },
+    D = ["Category has no QuickBooks account mapping",
+      "QuickBooks OAuth token expired — reauthorize the connection",
+      "Possible duplicate: matching amount and date already in QuickBooks",
+      "Vendor 'unknown' not found in QuickBooks vendor list",
+      "Transaction date falls in a closed accounting period"
+    ],
+    B = g(new Date),
+    A = new Date(B.getTime() - 400 * s),
+    E = [],
+    H = [];
+  let F = 1e3,
+    P = 5e3;
+  const O = {
+    "Nike SNKRS": /nike|jordan|air max|air force|dunk|nocta/i,
+    "adidas CONFIRMED": /adidas|samba|campus|yeezy/i,
+    "New Balance": /new balance/i,
+    Supreme: /supreme/i,
+    "Stüssy": /st(ü|u)ssy/i,
+    Palace: /palace/i,
+    Corteiz: /corteiz/i,
+    "Carhartt WIP": /carhartt/i,
+    "Aimé Leon Dore": /aim(é|e) leon dore/i,
+    "New Era": /new era/i,
+    "Jason Markk": /jason markk/i,
+    "Crep Protect": /crep protect/i,
+    Reshoevn8r: /reshoevn8r/i,
+    "Sneaker Lab": /sneaker lab/i,
+    SneakerThrone: /sneakerthrone/i,
+    "The Container Store": /container store/i,
+    "Public Storage": /public storage/i,
+    IKEA: /ikea/i
+  };
+
+  function R(t, e) {
+    const a = O[e],
+      s = a ? t.filter(t => a.test(t[0])) : t,
+      n = o(s.length ? s : t);
+    return {
+      name: n[0],
+      amount: Math.round(100 * l(n[1], n[2])) / 100
+    }
+  }
+  for (let t = A.getTime(); t <= B.getTime(); t += s) {
+    const e = new Date(t),
+      a = e.getDay();
+    let i = .34 + (5 === a || 6 === a ? .2 : 0) + (0 === a ? .08 : 0);
+    e.getDate() <= 3 && (i += .1);
+    const d = n() < i ? n() < .22 ? 2 : 1 : 0;
+    for (let a = 0; a < d; a++) {
+      const a = n();
+      let i;
+      i = a < .5 ? "sneakers" : a < .72 ? "apparel" : a < .82 ? "accessories" : a < .9 ? "fees" : a < .955 ?
+        "cleaning" : "storage";
+      const d = o(L[i]),
+        c = {
+          id: "RCP-" + ++F,
+          merchant: d,
+          date: new Date(t),
+          status: n() < .045 ? "error" : t > B.getTime() - 2 * s && n() < .4 ? "pending" : "processed",
+          confidence: 0,
+          corrected: !1,
+          source: n() < .72 ? "Camera capture" : "Photo library",
+          items: []
+        };
+      c.confidence = "error" === c.status ? Math.round(1e3 * l(.41, .68)) / 10 : Math.round(1e3 * l(.88,
+        .999)) / 10, c.corrected = "processed" === c.status && n() < .17;
+      const p = [],
+        u = "sneakers" === i && n() < .28 ? 2 : 1;
+      for (let t = 0; t < u; t++) {
+        let t;
+        t = "sneakers" === i ? R(S, d) : "apparel" === i ? R(k, d) : "accessories" === i ? R(M, d) :
+          "cleaning" === i ? R(T, d) : "storage" === i ? R(C, d) : {
+            name: "Seller fee — " + d + " order",
+            amount: Math.round(100 * l(12, 96)) / 100
+          }, p.push({
+            cat: i,
+            name: t.name,
+            amount: t.amount
+          })
+      }
+      if (["StockX", "GOAT", "eBay", "Grailed", "Depop", "Flight Club", "Stadium Goods"].includes(d) &&
+        "fees" !== i && n() < .62) {
+        const t = p.reduce((t, e) => t + e.amount, 0);
+        p.push({
+          cat: "fees",
+          name: "Processing + seller fee",
+          amount: Math.round(t * l(.06, .11) * 100) / 100
+        })
+      }
+      n() < .55 && "shipping" !== i && p.push({
+        cat: "shipping",
+        name: o(["Standard shipping", "Expedited shipping", "Return label", "Signature delivery"]),
+        amount: Math.round(100 * l(6.5, 28)) / 100
+      }), p.forEach(a => {
+        const i = ["sneakers", "apparel", "accessories", "cleaning", "storage"].includes(a.cat) ? Math
+          .round(.08875 * a.amount * 100) / 100 : 0;
+        let l = "synced",
+          p = null,
+          u = "QB-" + r(1e4, 99999);
+        const g = (B - e) / s,
+          h = n();
+        "error" === c.status ? (l = "error", p = "Receipt failed OCR — no line data to post", u = null) :
+          g < 2 && h < .55 ? (l = "pending", u = null) : h < .055 ? (l = "error", p = o(D), u = null) :
+          h < .085 && (l = "pending", u = null);
+        const m = {
+          id: "TX-" + ++P,
+          receiptId: c.id,
+          merchant: d,
+          date: new Date(t),
+          item: a.name,
+          cat: a.cat,
+          amount: a.amount,
+          tax: i,
+          total: Math.round(100 * (a.amount + i)) / 100,
+          sync: l,
+          error: p,
+          qbId: u,
+          syncedAt: "synced" === l ? new Date(t + 36e5 * r(9, 20) + 6e4 * r(0, 59)) : null
+        };
+        H.push(m), c.items.push(m)
+      }), E.push(c)
+    }
+  }
+  H.sort((t, e) => e.date - t.date || t.id.localeCompare(e.id));
+  const I = {
+      overall: 3600,
+      sneakers: 2300,
+      apparel: 680,
+      accessories: 180,
+      fees: 130,
+      shipping: 160,
+      cleaning: 50,
+      storage: 100
+    },
+    j = {
+      view: "overview",
+      range: "30",
+      from: null,
+      to: null,
+      cat: "all",
+      sync: "all",
+      search: "",
+      page: 1,
+      perPage: 14,
+      sort: {
+        key: "date",
+        dir: -1
+      },
+      budgets: Object.assign({}, I),
+      mapping: Object.fromEntries($.map(t => [t.id, t.qb])),
+      prefs: {
+        autosync: !0,
+        alerts: !0,
+        threshold: 80,
+        currency: "USD ($)"
+      },
+      toggles: {
+        trend: "chart",
+        catmain: "chart",
+        stack: "chart",
+        budhist: "chart"
+      }
+    };
+
+  function z() {
+    const t = B;
+    let e;
+    return "custom" === j.range && j.from && j.to ? {
+      from: g(j.from),
+      to: g(j.to)
+    } : (e = "mtd" === j.range ? new Date(t.getFullYear(), t.getMonth(), 1) : "ytd" === j.range ? new Date(t
+      .getFullYear(), 0, 1) : new Date(t.getTime() - (parseInt(j.range, 10) - 1) * s), {
+      from: g(e),
+      to: t
+    })
+  }
+
+  function N() {
+    if ("custom" === j.range) {
+      const t = z();
+      return v(t.from) + " – " + v(t.to)
+    }
+    return {
+      7: "last 7 days",
+      30: "last 30 days",
+      90: "last 90 days",
+      365: "last 12 months",
+      mtd: "month to date",
+      ytd: "year to date"
+    } [j.range]
+  }
+
+  function W(t, e) {
+    const a = g(t).getTime();
+    return a >= e.from.getTime() && a <= e.to.getTime()
+  }
+
+  function U(t) {
+    t = t || {};
+    const e = z();
+    return H.filter(a => {
+      if (!W(a.date, e)) return !1;
+      if ("all" !== j.cat && a.cat !== j.cat) return !1;
+      if ("all" !== j.sync && a.sync !== j.sync) return !1;
+      if (t.search && j.search) {
+        const t = j.search.toLowerCase();
+        if (!(a.merchant.toLowerCase().includes(t) || a.item.toLowerCase().includes(t) || a.id
+            .toLowerCase().includes(t))) return !1
+      }
+      return !0
+    })
+  }
+  const G = t => t.reduce((t, e) => t + e.total, 0);
+
+  function q(t) {
+    const e = new Date(B.getFullYear(), B.getMonth() - (t || 0), 1),
+      a = new Date(e.getFullYear(), e.getMonth() + 1, 0);
+    return {
+      label: e,
+      list: H.filter(t => t.date >= e && t.date <= new Date(a.getTime() + s - 1))
+    }
+  }
+
+  function Q(t, e, a, s) {
+    return [t + a * Math.cos(s), e + a * Math.sin(s)]
+  }
+
+  function Y(t, e, a, s, n, i) {
+    const o = i - n > Math.PI ? 1 : 0,
+      [r, l] = Q(t, e, a, n),
+      [d, c] = Q(t, e, a, i),
+      [p, u] = Q(t, e, s, i),
+      [g, h] = Q(t, e, s, n);
+    return `M${r},${l} A${a},${a} 0 ${o} 1 ${d},${c} L${p},${u} A${s},${s} 0 ${o} 0 ${g},${h} Z`
+  }
+
+  function K(t, e) {
+    if (t <= 0) return {
+      ticks: [0, 1],
+      max: 1
+    };
+    const a = t / (e || 4),
+      s = Math.pow(10, Math.floor(Math.log10(a))),
+      n = a / s,
+      i = (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * s,
+      o = Math.ceil(t / i) * i,
+      r = [];
+    for (let t = 0; t <= o + 1e-6; t += i) r.push(t);
+    return {
+      ticks: r,
+      max: o
+    }
+  }
+
+  function J(t) {
+    let e = t.querySelector(".tip");
+    return e || (e = document.createElement("div"), e.className = "tip", t.appendChild(e)), e
+  }
+
+  function V(t, s) {
+    t.addEventListener("mouseleave", () => {
+      s.style.opacity = 0
+    }), e("[data-tip]", t).forEach(e => {
+      e.addEventListener("mousemove", n => {
+        const i = t.getBoundingClientRect();
+        s.innerHTML = e.getAttribute("data-tip"), s.style.opacity = 1, s.style.left = a(n.clientX - i
+          .left, 70, i.width - 70) + "px", s.style.top = n.clientY - i.top - 12 + "px"
+      }), e.addEventListener("mouseleave", () => {
+        s.style.opacity = 0
+      })
+    })
+  }
+  const X = t => Math.max(t.clientWidth || t.getBoundingClientRect().width || 520, 260);
+  let Z = 0;
+
+  function _() {
+    const t = "hx" + ++Z;
+    return {
+      id: t,
+      def: `<defs><pattern id="${t}" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">\n    <rect width="7" height="7" fill="var(--hatch-bg)"></rect>\n    <rect width="3" height="7" fill="var(--hatch)"></rect></pattern></defs>`
+    }
+  }
+
+  function tt(t, e, a, s) {
+    const n = Math.min(a / 2, Math.max(s, .6));
+    return `M${t},${e+(s=Math.max(s,.6))} V${e+n} A${n},${n} 0 0 1 ${t+n},${e} H${t+a-n} A${n},${n} 0 0 1 ${t+a},${e+n} V${e+s} Z`
+  }
+  const et = t => t >= 1e3 ? "$" + (t / 1e3).toFixed(t % 1e3 >= 100 ? 1 : 0) + "k" : "$" + Math.round(t);
+
+  function at(t, e) {
+    const s = e > 0 ? t / e : 0,
+      n = s > 1,
+      i = s >= j.prefs.threshold / 100 && !n,
+      o = n ? "var(--critical)" : i ? "var(--warning)" : "var(--brand)";
+    return `<div class="meter-track hatched"><div class="meter-fill" style="width:${100*a(s,0,1)}%; background:${o}"></div></div>`
+  }
+  const st = {
+      overview: ["Dashboard", "Capture, categorize and control your sneaker spend."],
+      categories: ["Categories", "Where the money actually goes, by category."],
+      budgets: ["Budgets", "Monthly budgets versus what you've really spent."],
+      transactions: ["Transactions", "Every line item extracted from your receipts."],
+      sync: ["QuickBooks sync", "One-way sync status for every transaction."],
+      settings: ["Settings", "Account mapping, connection and preferences."]
+    },
+    nt = ["S", "M", "T", "W", "T", "F", "S"],
+    it = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  function ot(t) {
+    const e = G(t) || 1;
+    return $.map(a => {
+      const s = t.filter(t => t.cat === a.id),
+        n = G(s);
+      return {
+        id: a.id,
+        name: a.name,
+        short: a.name.replace(" / Consignment Fees", " fees"),
+        color: a.color,
+        value: n,
+        count: s.length,
+        share: n / e
+      }
+    }).filter(t => t.value > 0).sort((t, e) => e.value - t.value)
+  }
+
+  function rt(t) {
+    return `<div class="card kpi${t.filled?" filled":""}">\n    <div class="kpi-head"><span class="kpi-title">${t.title}</span>\n      <button class="kpi-arrow" ${t.goto?`data-goto="${t.goto}"`:""} aria-label="${t.title}">↗</button></div>\n    <div class="kpi-value">${t.value}</div>\n    <div class="kpi-foot">${t.chip?`<span class="kpi-chip">${t.chip}</span>`:""}<span>${t.foot}</span></div>\n  </div>`
+  }
+
+  function lt(t, e, a) {
+    if (!e) return "";
+    const s = (t - e) / e;
+    return !isFinite(s) || Math.abs(s) < .005 ? "flat" : `${s>0?"▲":"▼"} ${u(Math.abs(s))}`
+  }
+
+  function dt(t) {
+    return "synced" === t ?
+      '<span class="badge b-good"><span class="dotmark" style="background:var(--good-text)"></span>Synced</span>' :
+      "pending" === t ?
+      '<span class="badge b-neutral"><span class="dotmark" style="background:var(--ink-3)"></span>Pending</span>' :
+      '<span class="badge b-crit"><span class="dotmark" style="background:var(--critical)"></span>Failed</span>'
+  }
+
+  let healthPending = !0;
+  const healthSteps = [1, .8, .56, .32, .12, 0];
+
+  function renderHealth(cats, spend, budget, monthTx) {
+    const host = t("#healthCard");
+    if (!host) return;
+    const band = (v, zero, full) => a((v - zero) / (full - zero), 0, 1),
+      smooth = (good, n, prior) => (good + 2 * prior) / (n + 2),
+      sameMonth = t => t.getMonth() === B.getMonth() && t.getFullYear() === B.getFullYear(),
+      rc = E.filter(t => sameMonth(t.date)),
+      daysIn = new Date(B.getFullYear(), B.getMonth() + 1, 0).getDate(),
+      elapsed = B.getDate() / daysIn,
+      budgeted = cats.filter(t => j.budgets[t.id]),
+      allowance = .25 + .75 * elapsed,
+      over = budgeted.filter(t => t.value > j.budgets[t.id] * allowance).length,
+      expected = budget * Math.max(elapsed, .15),
+      pace = expected > 0 ? spend / expected : 0,
+      rcClean = rc.filter(t => !t.corrected && "processed" === t.status).length,
+      txSynced = monthTx.filter(t => "synced" === t.sync).length,
+      ocr = smooth(rcClean, rc.length, .7),
+      syncRate = smooth(txSynced, monthTx.length, .85),
+      signals = [{
+        name: "Budget adherence",
+        score: healthSteps[Math.min(over, 5)],
+        val: over ? over + " over" : "All clear",
+        detail: over + " of " + budgeted.length + " categories past their day-" + B.getDate() +
+          " allowance",
+        hint: (1 === over ? "one category is" : over + " categories are") +
+          " running ahead of budget for this point in the month"
+      }, {
+        name: "Spend pace",
+        score: band(pace, 1.5, 1),
+        val: pace > 1 ? u(pace - 1) + " over" : u(1 - pace) + " under",
+        detail: c(spend) + " of " + c(expected) + " expected by day " + B.getDate(),
+        hint: "spend is running " + u(pace - 1) + " ahead of where the month has got to"
+      }, {
+        name: "Capture quality",
+        score: band(ocr, .5, .9),
+        val: u(ocr),
+        detail: rcClean + " of " + rc.length + " receipts parsed clean",
+        hint: "only " + u(ocr) + " of receipts parsed without a correction"
+      }, {
+        name: "Sync health",
+        score: band(syncRate, .72, .98),
+        val: u(syncRate),
+        detail: txSynced + " of " + monthTx.length + " transactions synced",
+        hint: u(1 - syncRate) + " of transactions have not reached QuickBooks"
+      }],
+      total = Math.round(25 * signals.reduce((t, e) => t + e.score, 0)),
+      grade = total >= 80 ? ["Strong", "var(--g700)", "b-good"] : total >= 60 ? ["Steady", "var(--g400)",
+        "b-good"
+      ] : total >= 40 ? ["Strained", "var(--warning)", "b-warn"] : ["At risk", "var(--critical)", "b-crit"],
+      weakest = signals.reduce((t, e) => e.score < t.score ? e : t),
+      note = weakest.score >= 1 ? "All four signals at full marks." : "Weakest signal: " + weakest.name
+      .toLowerCase() + " — " + weakest.hint + ".",
+      circ = 2 * Math.PI * 54,
+      still = !!window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      run = healthPending && !still;
+    healthPending = !1;
+    host.innerHTML = `<div class="health-dial">
+      <svg viewBox="0 0 132 132" role="img" aria-label="Financial health ${total} out of 100 — ${grade[0]}">
+        <circle class="hs-track" cx="66" cy="66" r="54"></circle>
+        <circle class="hs-arc" cx="66" cy="66" r="54" stroke="${grade[1]}" stroke-dasharray="${circ.toFixed(2)}"
+          stroke-dashoffset="${(run?circ:circ*(1-total/100)).toFixed(2)}"></circle></svg>
+      <div class="health-read" aria-hidden="true">
+        <div class="health-num" style="color:${grade[1]}">${run?0:total}</div>
+        <div class="health-out">OUT OF 100</div></div></div>
+    <div class="health-body">
+      <div class="card-head"><div><h3 class="card-title">Financial health</h3>
+          <p class="card-sub">Four signals, 25 points each · this month</p></div>
+        <div class="card-tools"><span class="badge ${grade[2]}">${f(grade[0])}</span></div></div>
+      <div class="health-note">${f(note)}</div>
+      <div class="health-signals">${signals.map(t=>`<div title="${f(t.name+" — "+t.detail+" · "+Math.round(25*t.score)+" of 25 points")}">
+        <div class="hs-label"><span class="hs-name">${f(t.name)}</span><span class="hs-val">${f(t.val)}</span></div>
+        <div class="meter-track"><div class="meter-fill" style="width:${run?0:(100*t.score).toFixed(1)}%;background:${t.score>=.75?"var(--g700)":t.score>=.4?"var(--g400)":t.score>=.2?"var(--warning)":"var(--critical)"}"></div></div>
+      </div>`).join("")}</div></div>`;
+    if (!run) return;
+    requestAnimationFrame(() => {
+      const s = t(".hs-arc", host);
+      s && (s.style.strokeDashoffset = (circ * (1 - total / 100)).toFixed(2)), e(".meter-fill", host).forEach((
+        t, e) => {
+        t.style.width = (100 * signals[e].score).toFixed(1) + "%"
+      });
+      const n = t(".health-num", host);
+      if (!n) return;
+      const i = performance.now();
+      ! function o(r) {
+        const l = a((r - i) / 1150, 0, 1);
+        n.textContent = Math.round(total * (1 - Math.pow(1 - l, 3))), l < 1 && requestAnimationFrame(o)
+      }(i)
+    })
+  }
+
+  function ct() {
+    const e = z(),
+      n = U(),
+      i = function() {
+        const t = z(),
+          e = Math.round((t.to - t.from) / s) + 1,
+          a = new Date(t.from.getTime() - s),
+          n = new Date(a.getTime() - (e - 1) * s);
+        return H.filter(t => {
+          const e = g(t.date).getTime();
+          return !(e < n.getTime() || e > a.getTime() || "all" !== j.cat && t.cat !== j.cat || "all" !== j
+            .sync && t.sync !== j.sync)
+        })
+      }(),
+      o = G(n),
+      r = G(i),
+      l = new Set(n.map(t => t.receiptId)).size,
+      b = new Set(i.map(t => t.receiptId)).size,
+      $ = E.filter(t => W(t.date, e)),
+      w = $.length ? $.filter(t => !t.corrected && "processed" === t.status).length / $.length : 0,
+      S = n.filter(t => "error" === t.sync).length,
+      k = n.filter(t => "pending" === t.sync).length;
+    t("#kpiRow").innerHTML = rt({
+      filled: !0,
+      title: "Total spend",
+      value: p(o),
+      chip: lt(o, r),
+      foot: "vs. previous period",
+      goto: "transactions"
+    }) + rt({
+      title: "Receipts captured",
+      value: l.toLocaleString(),
+      chip: lt(l, b),
+      foot: n.length + " line items",
+      goto: "transactions"
+    }) + rt({
+      title: "Auto-categorized",
+      value: u(w),
+      foot: "needed no correction",
+      goto: "categories"
+    }) + rt({
+      title: "Needs attention",
+      value: S.toLocaleString(),
+      foot: S ? "failed syncs · " + k + " pending" : "everything synced",
+      goto: "sync"
+    });
+    const M = q(0),
+      T = M.list,
+      C = G(T),
+      L = ot(T).filter(t => j.budgets[t.id] && t.value > j.budgets[t.id]),
+      D = H.filter(t => "error" === t.sync).length;
+    let A = "";
+    L.length && (A +=
+      `<div class="alert"><span>⚠</span><div><div class="alert-title">${L.length} ${1===L.length?"category is":"categories are"} over budget this month</div>\n    <div class="alert-body">${L.map(t=>`${f(t.name)} — ${c(t.value)} of ${c(j.budgets[t.id])} (${u(t.value/j.budgets[t.id])})`).join(" · ")}</div></div>\n    <button class="btn btn-xs" style="margin-left:auto" data-goto="budgets">Adjust</button></div>`
+      ), D && (A +=
+      `<div class="alert warn"><span>⇄</span><div><div class="alert-title">${D} transactions failed to sync</div>\n    <div class="alert-body">Mostly mapping and token errors — retry them in one click.</div></div>\n    <button class="btn btn-xs" style="margin-left:auto" data-goto="sync">Open sync log</button></div>`
+      ), t("#alertHost").innerHTML = A;
+    const F = function(t, e) {
+      if (Math.round((e.to - e.from) / s) + 1 <= 31) {
+        const e = nt.map((t, e) => ({
+          label: t,
+          full: it[e],
+          value: 0,
+          count: 0,
+          receipts: new Set
+        }));
+        return t.forEach(t => {
+          const a = e[t.date.getDay()];
+          a.value += t.total, a.receipts.add(t.receiptId)
+        }), e.forEach(t => {
+          t.count = t.receipts.size
+        }), e
+      }
+      const n = function(t, e) {
+        const n = Math.round((e.to - e.from) / s) + 1,
+          i = [],
+          o = (t, e, a) => i.push({
+            key: t,
+            label: e,
+            full: a,
+            value: 0,
+            count: 0,
+            receipts: new Set
+          });
+        if (n <= 31)
+          for (let t = e.from.getTime(); t <= e.to.getTime(); t += s) o(h(new Date(t)), v(new Date(t)), m(
+            new Date(t)));
+        else if (n <= 130)
+          for (let t = e.from.getTime(); t <= e.to.getTime(); t += 7 * s) {
+            const e = new Date(t);
+            o("w" + h(e), v(e), "Week of " + m(e))
+          } else {
+            let t = new Date(e.from.getFullYear(), e.from.getMonth(), 1);
+            for (; t <= e.to;) o("m" + t.getFullYear() + "-" + t.getMonth(), y(t), t.toLocaleDateString(
+              "en-US", {
+                month: "long",
+                year: "numeric"
+              })), t = new Date(t.getFullYear(), t.getMonth() + 1, 1)
+          }
+        const r = new Map(i.map((t, e) => [t.key, e]));
+        return t.forEach(t => {
+          let o;
+          if (n <= 31) o = h(t.date);
+          else if (n <= 130) {
+            const n = Math.floor((g(t.date) - e.from) / (7 * s));
+            o = i[a(n, 0, i.length - 1)].key
+          } else o = "m" + t.date.getFullYear() + "-" + t.date.getMonth();
+          const l = r.has(o) ? r.get(o) : -1;
+          l >= 0 && (i[l].value += t.total, i[l].receipts.add(t.receiptId))
+        }), i.forEach(t => {
+          t.count = t.receipts.size
+        }), i
+      }(t, e);
+      return n.length > 12 ? n.slice(n.length - 12) : n
+    }(n, e);
+    t("#trendSub").textContent = (Math.round((e.to - e.from) / s) + 1 <= 31 ? "By day of week" :
+      "By period") + " · " + ("all" === j.cat ? "all categories" : x[j.cat].name), "chart" === j.toggles
+      .trend ? (t("#trendChart").style.display = "", t("#trendTable").style.display = "none", function(t, e) {
+        t.innerHTML = "";
+        const s = J(t),
+          n = X(t),
+          i = n - 4 - 4,
+          o = Math.max(...e.map(t => t.value), 1),
+          r = i / e.length,
+          l = Math.min(.56 * r, 46),
+          {
+            id: c,
+            def: p
+          } = _(),
+          u = e.reduce((t, a, s) => a.value > e[t].value ? s : t, 0);
+        let g = "";
+        e.forEach((t, e) => {
+          const a = 4 + r * e + (r - l) / 2,
+            s = t.value > 0 ? Math.max(t.value / o * 192, 6) : 192,
+            n = 222 - s,
+            i = 0 === t.value ? `url(#${c})` : e === u ? "var(--g800)" : t.value / o > .55 ?
+            "var(--g600)" : "var(--g400)";
+          g +=
+            `<g data-tip="${f(`<div class='tip-title'>${f(t.full)}</div><div class='tip-row'>Spend <b>${d(t.value)}</b></div><div class='tip-row'>Receipts <b>${t.count}</b></div>`)}">\n      <rect class="hit" x="${4+r*e}" y="30" width="${r}" height="192"></rect>\n      <path d="${tt(a,n,l,s)}" fill="${i}"></path></g>`,
+            g += `<text class="axis-t" x="${a+l/2}" y="242" text-anchor="middle">${f(t.label)}</text>`
+        });
+        const h = 4 + r * u + r / 2,
+          m = e[u].value;
+        if (m > 0) {
+          const t = 222 - Math.max(m / o * 192, 6);
+          g +=
+            `<g transform="translate(${a(h,34,n-34)},${Math.max(t-20,8)})">\n      <rect x="-30" y="-13" width="60" height="24" rx="12" fill="var(--surface-1)" stroke="var(--line-2)"></rect>\n      <text x="0" y="4" text-anchor="middle" style="font-size:11.5px;font-weight:700;fill:var(--ink)">${et(m)}</text></g>`
+        }
+        t.insertAdjacentHTML("afterbegin",
+          `<svg viewBox="0 0 ${n} 250" height="250" role="img" aria-label="Spend analytics">${p}${g}</svg>`
+          );
+        const v = e.some(t => 0 === t.value);
+        t.insertAdjacentHTML("beforeend",
+          `<div class="legend"><span class="legend-item"><span class="swatch" style="background:var(--g800)"></span>Highest</span>\n     <span class="legend-item"><span class="swatch" style="background:var(--g400)"></span>Spend</span>\n     ${v?'<span class="legend-item"><span class="legend-hatch"></span>Nothing captured</span>':""}</div>`
+          ), V(t, s)
+      }(t("#trendChart"), F)) : (t("#trendChart").style.display = "none", t("#trendTable").style.display = "",
+        t("#trendTable").innerHTML =
+        '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Period</th><th class="num">Receipts</th><th class="num">Spend</th></tr></thead><tbody>' +
+        F.map(t =>
+          `<tr><td>${f(t.full)}</td><td class="num">${t.count}</td><td class="num">${d(t.value)}</td></tr>`)
+        .join("") + "</tbody></table></div>");
+    const P = new Date(B.getFullYear(), B.getMonth() + 1, 0).getDate() - B.getDate(),
+      O = ot(T).map(t => ({
+        c: t,
+        p: j.budgets[t.id] ? t.value / j.budgets[t.id] : 0
+      })).sort((t, e) => e.p - t.p)[0],
+      R = j.budgets.overall,
+      I = O && O.p >= j.prefs.threshold / 100;
+    t("#spotlightCard").innerHTML =
+      `<div class="card-head"><h3 class="card-title">${I?"Budget alert":"This month"}</h3>\n      <div class="card-tools"><span class="badge ${I?O.p>1?"b-crit":"b-warn":"b-good"}">${I?u(O.p)+" used":"On track"}</span></div></div>\n     <div class="spotlight-title">${I?f(O.c.short):"Spend is under control"}</div>\n     <div class="spotlight-meta">${I?`${c(O.c.value)} of ${c(j.budgets[O.c.id])} budgeted · resets in ${P} days`:`${c(C)} of ${c(R)} overall · resets in ${P} days`}</div>\n     <div style="margin-top:18px">${ot(T).slice(0,3).map(t=>`\n       <div style="margin-bottom:13px">\n         <div style="display:flex;gap:8px;align-items:center;font-size:12.5px;margin-bottom:6px">\n           <span class="cat-chip"><span class="swatch" style="background:${t.color}"></span>${f(t.short)}</span>\n           <span style="margin-left:auto" class="mono sec">${c(t.value)} / ${c(j.budgets[t.id]||0)}</span>\n         </div>${at(t.value,j.budgets[t.id]||0)}</div>`).join("")}</div>\n     <button class="cta" data-goto="budgets">◆ Review budgets</button>`;
+    const N = ot(n).slice(0, 5);
+    t("#catList").innerHTML = N.length ? N.map(t =>
+      `<div class="lrow">\n      <div class="glyph" style="background:${t.color}">${f(t.short.slice(0,2).toUpperCase())}</div>\n      <div class="lrow-main"><div class="lrow-title">${f(t.short)}</div><div class="lrow-sub">${t.count} line items</div></div>\n      <div class="lrow-end"><b>${c(t.value)}</b><div class="muted" style="font-size:11.5px">${u(t.share)}</div></div>\n    </div>`
+      ).join("") : '<div class="empty">No spend in this range.</div>';
+    const Q = E.filter(t => W(t.date, e)).sort((t, e) => e.date - t.date).slice(0, 5);
+    t("#recentList").innerHTML = Q.length ? Q.map(t => {
+        const e = t.items.reduce((t, e) => t + e.total, 0),
+          a = t.items.some(t => "error" === t.sync) ? "error" : t.items.some(t => "pending" === t.sync) ?
+          "pending" : "synced";
+        return `<div class="lrow row-click" data-receipt="${t.id}">\n      <div class="glyph" style="background:${x[t.items[0].cat].color}">${f((t=>{const e=t.replace(/[^A-Za-z ]/g,"").split(/\s+/).filter(Boolean);return(e.length>1?e[0][0]+e[1][0]:(e[0]||"?").slice(0,2)).toUpperCase()})(t.merchant))}</div>\n      <div class="lrow-main"><div class="lrow-title">${f(t.merchant)}</div>\n        <div class="lrow-sub">${v(t.date)} · ${t.items.length} line ${1===t.items.length?"item":"items"} · ${f(t.items[0].item)}</div></div>\n      <div class="lrow-end"><b>${d(e)}</b><div style="margin-top:3px">${dt(a)}</div></div></div>`
+      }).join("") : '<div class="empty">No receipts in this range.</div>', t("#gaugeSub").textContent = M
+      .label.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric"
+      }),
+      function(t, e, s) {
+        t.innerHTML = "";
+        const n = X(t),
+          i = n / 2,
+          o = Math.min(i - 10, 118),
+          r = o - 26,
+          l = a(s > 0 ? e / s : 0, 0, 1),
+          d = s > 0 && e > s,
+          {
+            id: p,
+            def: g
+          } = _(),
+          h = Math.PI,
+          m = 2 * Math.PI,
+          v = h + (m - h) * l,
+          y = d ? "var(--critical)" : l >= .8 ? "var(--warning)" : "var(--g700)";
+        let b = `<path d="${Y(i,174,o,r,h,m)}" fill="url(#${p})"></path>`;
+        l > .002 && (b += `<path d="${Y(i,174,o,r,h,v)}" fill="${y}"></path>`), t.insertAdjacentHTML(
+          "afterbegin",
+          `<svg viewBox="0 0 ${n} 200" height="200" role="img" aria-label="Budget used">${g}${b}\n      <text x="${i}" y="160" text-anchor="middle" class="gauge-value">${u(s>0?e/s:0)}</text>\n      <text x="${i}" y="180" text-anchor="middle" class="gauge-label">of ${c(s)} budget</text></svg>`
+          ), t.insertAdjacentHTML("beforeend",
+          `<div class="legend" style="justify-content:center">\n       <span class="legend-item"><span class="swatch" style="background:${y}"></span>Spent ${c(e)}</span>\n       <span class="legend-item"><span class="legend-hatch"></span>${d?"Over by "+c(e-s):"Left "+c(s-e)}</span>\n     </div>`
+          )
+      }(t("#gauge"), C, R);
+    const K = new Date(B.getFullYear(), B.getMonth() + 1, 0).getDate() - B.getDate();
+    t("#gauge").insertAdjacentHTML("beforeend",
+      `<div style="display:flex; gap:12px; margin-top:16px; border-top:1px solid var(--line); padding-top:14px">\n       <div style="flex:1"><div class="muted" style="font-size:11.5px">Daily allowance left</div>\n         <div style="font-size:16px;font-weight:700;letter-spacing:-.02em">${c(Math.max(R-C,0)/Math.max(K,1))}</div></div>\n       <div style="flex:1"><div class="muted" style="font-size:11.5px">Days left</div>\n         <div style="font-size:16px;font-weight:700;letter-spacing:-.02em">${K}</div></div>\n     </div>`
+      );
+    const Z = new Set(T.map(t => t.receiptId)).size;
+    t("#mtdCard").innerHTML =
+      `<h3>Month to date</h3>\n     <div class="dark-meta" style="margin-top:4px">${(()=>{const t=G(q(1).list),e=t?(C-t)/t:0;return t?`${e>0?"▲":"▼"} ${u(Math.abs(e))} vs. ${y(q(1).label)}`:"first month of data"})()}</div>\n     <div class="dark-value">${c(C)}</div>\n     <div class="dark-meta">${Z} receipts · ${T.length} line items · resets in ${P} days</div>\n     <div class="dark-actions">\n       <button id="mtdExport" title="Export CSV" aria-label="Export month to date as CSV">↓</button>\n       <button id="mtdAdd" title="Add receipt" aria-label="Add receipt">＋</button>\n     </div>`;
+    renderHealth(ot(T), C, R, T)
+  }
+
+  function pt() {
+    const e = U(),
+      a = ot(e),
+      s = G(e);
+    t("#catBarsSub").textContent = N().replace(/^./, t => t.toUpperCase()) + " · " + e.length + " line items",
+      "chart" === j.toggles.catmain ? (t("#catBarsBig").style.display = "", t("#catBarsTable").style.display =
+        "none",
+        function(t, e, a) {
+          a = a || {}, t.innerHTML = "";
+          const s = J(t),
+            n = X(t),
+            i = a.rowH || 42,
+            o = a.labelW || 150,
+            r = e.length * i + 6,
+            l = Math.max(...e.map(t => t.value), 1),
+            p = Math.max(n - o - 66, 40);
+          let g = "";
+          e.forEach((t, e) => {
+            const a = e * i + 8,
+              s = t.value / l * p;
+            g +=
+              `<g data-tip="${f(`<div class='tip-title'>${f(t.name)}</div><div class='tip-row'><span class='swatch' style='background:${t.color}'></span> Spend <b>${d(t.value)}</b></div><div class='tip-row'>Share <b>${u(t.share,1)}</b></div><div class='tip-row'>Items <b>${t.count}</b></div>`)}">\n      <rect class="hit" x="0" y="${a-6}" width="${n}" height="${i}"></rect>\n      <text class="bar-name" x="0" y="${a+8+4}">${f(t.short||t.name)}</text>\n      <path d="${function(t,e,a){a=Math.max(a,.6);const s=Math.min(8,a);return`M${t},${e} H${t+a-s} A${s},${s} 0 0 1 ${t+a},${e+s} V${e+16-s} A${s},${s} 0 0 1 ${t+a-s},${e+16} H${t} Z`}(o,a,s)}" fill="${t.color}"></path>\n      <text class="bar-label" x="${o+s+10}" y="${a+8+4}">${c(t.value)}</text></g>`
+          }), t.insertAdjacentHTML("afterbegin",
+            `<svg viewBox="0 0 ${n} ${r}" height="${r}" role="img" aria-label="Spend by category">${g}</svg>`
+            ), V(t, s)
+        }(t("#catBarsBig"), a, {
+          labelW: 156,
+          rowH: 44
+        })) : (t("#catBarsBig").style.display = "none", t("#catBarsTable").style.display = "", t(
+          "#catBarsTable").innerHTML =
+        '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Category</th><th class="num">Spend</th><th class="num">Share</th></tr></thead><tbody>' +
+        a.map(t =>
+          `<tr><td><span class="cat-chip"><span class="swatch" style="background:${t.color}"></span>${f(t.name)}</span></td><td class="num">${d(t.value)}</td><td class="num">${u(t.share,1)}</td></tr>`
+          ).join("") + "</tbody></table></div>");
+    let n = a.slice(0, 5);
+    const i = a.slice(5);
+    i.length && (n = n.concat([{
+      name: "Other (" + i.length + ")",
+      color: "var(--c8)",
+      value: i.reduce((t, e) => t + e.value, 0)
+    }])), n.length ? function(t, e, a) {
+      t.innerHTML = "";
+      const s = J(t),
+        n = X(t),
+        i = n / 2,
+        o = Math.min(112, 100),
+        r = o - 30,
+        l = e.reduce((t, e) => t + e.value, 0) || 1;
+      let c = -Math.PI / 2,
+        g = "";
+      e.forEach(t => {
+        const e = t.value / l * Math.PI * 2,
+          a = c + .015,
+          s = c + e - .015;
+        s > a && (g +=
+          `<path d="${Y(i,116,o,r,a,s)}" fill="${t.color}" data-tip="${f(`<div class='tip-title'>${f(t.name)}</div><div class='tip-row'>Spend <b>${d(t.value)}</b></div><div class='tip-row'>Share <b>${u(t.value/l,1)}</b></div>`)}"></path>`
+          ), c += e
+      }), t.insertAdjacentHTML("afterbegin",
+        `<svg viewBox="0 0 ${n} 232" height="232" role="img" aria-label="Share of spend by category">${g}\n      <text x="${i}" y="115" text-anchor="middle" style="font-size:23px;font-weight:750;letter-spacing:-.03em;fill:var(--ink)">${p(a)}</text>\n      <text x="${i}" y="134" text-anchor="middle" class="gauge-label">total spend</text></svg>`
+        ), t.insertAdjacentHTML("beforeend",
+        `<div class="legend">${e.map(t=>`<span class="legend-item"><span class="swatch" style="background:${t.color}"></span>${f(t.name)} · ${u(t.value/l)}</span>`).join("")}</div>`
+        ), V(t, s)
+    }(t("#catDonut"), n, s) : t("#catDonut").innerHTML = '<div class="empty">Nothing to show.</div>';
+    const o = [];
+    for (let t = 5; t >= 0; t--) {
+      const e = q(t),
+        a = {};
+      $.forEach(t => {
+        a[t.id] = G(e.list.filter(e => e.cat === t.id))
+      }), o.push({
+        label: y(e.label),
+        by: a
+      })
+    }
+    "chart" === j.toggles.stack ? (t("#stackChart").style.display = "", t("#stackTable").style.display =
+      "none",
+      function(t, e, a) {
+        t.innerHTML = "";
+        const s = J(t),
+          n = X(t),
+          i = n - 52 - 8,
+          o = e.map(t => a.reduce((e, a) => e + (t.by[a.id] || 0), 0)),
+          {
+            ticks: r,
+            max: l
+          } = K(Math.max(...o, 1), 4),
+          d = i / e.length,
+          p = Math.min(.5 * d, 40),
+          u = t => 236 - t / l * 222;
+        let g = "";
+        r.forEach(t => {
+          g +=
+            `<line class="gridline" x1="52" y1="${u(t)}" x2="${52+i}" y2="${u(t)}"></line><text class="axis-t" x="42" y="${u(t)+4}" text-anchor="end">${et(t)}</text>`
+        });
+        let h = "";
+        e.forEach((t, e) => {
+          const s = 52 + d * e + (d - p) / 2;
+          let n = 0;
+          const i = a.filter(e => (t.by[e.id] || 0) > 0);
+          i.forEach((e, a) => {
+            const o = t.by[e.id],
+              r = u(n + o),
+              l = u(n);
+            let d = l - r;
+            const c = a === i.length - 1;
+            c || (d = Math.max(d - 2, .6)), h += c ?
+              `<path d="${tt(s,r,p,d)}" fill="${e.color}"></path>` :
+              `<path d="M${s},${r+(l-r-d)} h${p} v${d} h${-p} Z" fill="${e.color}"></path>`, n += o
+          });
+          const r = i.slice().reverse().map(e =>
+            `<div class='tip-row'><span class='swatch' style='background:${e.color}'></span> ${f(e.name)} <b>${c(t.by[e.id])}</b></div>`
+            ).join("");
+          h +=
+            `<g data-tip="${f(`<div class='tip-title'>${t.label} · ${c(o[e])}</div>${r}`)}"><rect class="hit" x="${52+d*e}" y="14" width="${d}" height="222"></rect></g>`,
+            h += `<text class="axis-t" x="${s+p/2}" y="258" text-anchor="middle">${f(t.label)}</text>`
+        }), t.insertAdjacentHTML("afterbegin",
+          `<svg viewBox="0 0 ${n} 268" height="268" role="img" aria-label="Monthly spend by category">${g}${h}</svg>`
+          ), t.insertAdjacentHTML("beforeend",
+          `<div class="legend">${a.map(t=>`<span class="legend-item"><span class="swatch" style="background:${t.color}"></span>${f(t.name)}</span>`).join("")}</div>`
+          ), V(t, s)
+      }(t("#stackChart"), o, $)) : (t("#stackChart").style.display = "none", t("#stackTable").style
+      .display = "", t("#stackTable").innerHTML =
+      '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Month</th>' + $.map(t =>
+        `<th class="num">${f(t.name.replace(" / Consignment Fees"," fees"))}</th>`).join("") +
+      '<th class="num">Total</th></tr></thead><tbody>' + o.slice().reverse().map(t =>
+        `<tr><td>${f(t.label)}</td>` + $.map(e => `<td class="num">${t.by[e.id]?c(t.by[e.id]):"—"}</td>`)
+        .join("") + `<td class="num"><b>${c($.reduce((e,a)=>e+(t.by[a.id]||0),0))}</b></td></tr>`).join(
+      "") + "</tbody></table></div>");
+    const r = q(0).list;
+    t("#catTable").innerHTML =
+      '<table class="tbl"><thead><tr>\n    <th>Category</th><th class="num">Items</th><th class="num">Spend in range</th><th class="num">Share</th><th class="num">Avg / item</th><th class="num">This month</th><th>Budget</th><th>QuickBooks account</th></tr></thead><tbody>' +
+      $.map(t => {
+        const a = e.filter(e => e.cat === t.id),
+          n = G(a),
+          i = G(r.filter(e => e.cat === t.id)),
+          o = j.budgets[t.id] || 0,
+          l = o ? i / o : 0;
+        return `<tr><td><span class="cat-chip"><span class="swatch" style="background:${t.color}"></span>${f(t.name)}</span></td>\n        <td class="num">${a.length}</td><td class="num">${d(n)}</td><td class="num">${u(s?n/s:0,1)}</td>\n        <td class="num sec">${a.length?d(n/a.length):"—"}</td><td class="num">${d(i)}</td>\n        <td><span class="badge ${l>1?"b-crit":l>=j.prefs.threshold/100?"b-warn":"b-good"}">${u(l)} of ${c(o)}</span></td>\n        <td class="sec" style="font-size:12px">${f(j.mapping[t.id])}</td></tr>`
+      }).join("") +
+      `<tr class="tfoot"><td>Total</td><td class="num">${e.length}</td><td class="num">${d(s)}</td><td class="num">100%</td><td class="num">—</td><td class="num">${d(G(r))}</td><td>—</td><td></td></tr></tbody></table>`
+  }
+
+  function ut() {
+    const e = q(0),
+      a = e.list,
+      s = G(a),
+      n = j.budgets.overall,
+      i = B.getDate(),
+      o = new Date(B.getFullYear(), B.getMonth() + 1, 0).getDate(),
+      r = n * (i / o),
+      l = s - r,
+      g = s / (i / o),
+      h = e.label.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric"
+      });
+    t("#budKpis").innerHTML = rt({
+      filled: !0,
+      title: "Spent · " + h,
+      value: p(s),
+      chip: u(s / (n || 1)) + " used",
+      foot: a.length + " line items"
+    }) + rt({
+      title: "Overall budget",
+      value: c(n),
+      foot: "resets in " + (o - i) + " days"
+    }) + rt({
+      title: s > n ? "Over budget" : "Remaining",
+      value: c(Math.abs(n - s)),
+      foot: c(Math.max(n - s, 0) / Math.max(o - i, 1)) + " a day left"
+    }) + rt({
+      title: "Projected finish",
+      value: p(g),
+      chip: l > 0 ? "▲ ahead of pace" : "▼ under pace",
+      foot: g > n ? c(g - n) + " over budget" : c(n - g) + " under budget"
+    });
+    const m = $.filter(t => G(a.filter(e => e.cat === t.id)) > (j.budgets[t.id] || 0));
+    t("#budAlertHost").innerHTML = m.length ?
+      `<div class="alert"><span>⚠</span><div><div class="alert-title">Over budget: ${m.map(t=>f(t.name)).join(", ")}</div>\n       <div class="alert-body">Push alerts for budget thresholds are post-MVP — for now they live here and on the dashboard.</div></div></div>` :
+      "", t("#paceBox").innerHTML =
+      `<div class="sec" style="font-size:13px">Day ${i} of ${o}</div>\n     <div style="display:flex;gap:10px;align-items:baseline;margin:8px 0 6px">\n       <span style="font-size:26px;font-weight:750;letter-spacing:-.03em">${c(Math.abs(l))}</span>\n       <span class="badge ${l>0?"b-crit":"b-good"}">${l>0?"ahead of pace":"under pace"}</span></div>\n     <div class="sec" style="font-size:12.5px">On this pace you'll finish at <b>${c(g)}</b> — ${g>n?`<span style="color:var(--critical-text)">${c(g-n)} over</span>`:`<span style="color:var(--good-text)">${c(n-g)} under</span>`}.</div>\n     <div style="margin-top:14px" class="kv">\n       <dt>Budgeted to date</dt><dd class="mono">${c(r)}</dd>\n       <dt>Actually spent</dt><dd class="mono">${c(s)}</dd>\n       <dt>Daily allowance left</dt><dd class="mono">${c(Math.max(n-s,0)/Math.max(o-i,1))}</dd></div>`,
+      t("#budgetList").innerHTML =
+      `<div class="budget-row" style="border-bottom:1px solid var(--line-2)">\n      <div class="budget-top"><b style="font-size:14px">Overall monthly budget</b>\n        <span class="budget-amt"><b>${c(s)}</b> of <input class="ctrl bud-input" type="number" min="0" step="50" data-budget="overall" value="${n}"></span></div>\n      ${at(s,n)}\n      <div class="budget-foot"><span>${u(s/(n||1))} used</span><span>·</span><span>${c(Math.max(n-s,0))} remaining</span></div></div>` +
+      $.map(t => {
+        const e = G(a.filter(e => e.cat === t.id)),
+          s = j.budgets[t.id] || 0,
+          n = s ? e / s : 0,
+          i = a.filter(e => e.cat === t.id).length;
+        return `<div class="budget-row">\n        <div class="budget-top">\n          <span class="cat-chip" style="font-weight:650"><span class="swatch" style="background:${t.color}"></span>${f(t.name)}</span>\n          <span class="badge ${n>1?"b-crit":n>=j.prefs.threshold/100?"b-warn":"b-good"}">${n>1?"Over by "+c(e-s):u(n)+" used"}</span>\n          <span class="budget-amt"><b>${c(e)}</b> of <input class="ctrl bud-input" type="number" min="0" step="10" data-budget="${t.id}" value="${s}"></span></div>\n        ${at(e,s)}\n        <div class="budget-foot"><span>${i} line ${1===i?"item":"items"}</span><span>·</span><span>${e>s?c(e-s)+" over":c(s-e)+" left"}</span></div></div>`
+      }).join("");
+    const v = [];
+    for (let t = 5; t >= 0; t--) {
+      const e = q(t);
+      v.push({
+        label: y(e.label),
+        value: G(e.list)
+      })
+    }
+    "chart" === j.toggles.budhist ? (t("#budHistChart").style.display = "", t("#budHistTable").style.display =
+      "none",
+      function(t, e, a) {
+        t.innerHTML = "";
+        const s = J(t),
+          n = X(t),
+          i = 52,
+          o = n - i - 8,
+          {
+            ticks: r,
+            max: l
+          } = K(Math.max(...e.map(t => t.value), 1.15 * a), 4),
+          p = o / e.length,
+          u = Math.min(.46 * p, 34),
+          g = t => 206 - t / l * 184;
+        let h = "";
+        r.forEach(t => {
+          h +=
+            `<line class="gridline" x1="52" y1="${g(t)}" x2="${i+o}" y2="${g(t)}"></line><text class="axis-t" x="42" y="${g(t)+4}" text-anchor="end">${et(t)}</text>`
+        });
+        let m = "";
+        e.forEach((t, e) => {
+          const s = i + p * e + (p - u) / 2,
+            n = t.value > a,
+            o = n ? "var(--critical)" : "var(--g600)";
+          m +=
+            `<g data-tip="${f(`<div class='tip-title'>${t.label}</div><div class='tip-row'>Spent <b>${d(t.value)}</b></div><div class='tip-row'>Budget <b>${c(a)}</b></div><div class='tip-row'>${n?"Over by":"Left"} <b>${c(Math.abs(a-t.value))}</b></div>`)}">\n      <rect class="hit" x="${i+p*e}" y="22" width="${p}" height="184"></rect>\n      <path d="${tt(s,g(t.value),u,206-g(t.value))}" fill="${o}"></path></g>\n      <text class="axis-t" x="${s+u/2}" y="226" text-anchor="middle">${f(t.label)}</text>`
+        }), t.insertAdjacentHTML("afterbegin",
+          `<svg viewBox="0 0 ${n} 236" height="236" role="img" aria-label="Monthly spend against budget">${h}${m}\n      <line x1="52" y1="${g(a)}" x2="${i+o}" y2="${g(a)}" stroke="var(--ink-3)" stroke-width="1.5"></line>\n      <text class="bar-label" x="${i+o}" y="${g(a)-8}" text-anchor="end">Budget ${c(a)}</text></svg>`
+          ), t.insertAdjacentHTML("beforeend",
+          '<div class="legend"><span class="legend-item"><span class="swatch" style="background:var(--g600)"></span>Within budget</span>\n     <span class="legend-item"><span class="swatch" style="background:var(--critical)"></span>Over budget</span></div>'
+          ), V(t, s)
+      }(t("#budHistChart"), v, n)) : (t("#budHistChart").style.display = "none", t("#budHistTable").style
+      .display = "", t("#budHistTable").innerHTML =
+      '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>Month</th><th class="num">Spent</th><th class="num">Budget</th><th class="num">Diff</th><th>Result</th></tr></thead><tbody>' +
+      v.slice().reverse().map(t =>
+        `<tr><td>${f(t.label)}</td><td class="num">${d(t.value)}</td><td class="num">${c(n)}</td>\n        <td class="num">${t.value>n?"+":"−"}${c(Math.abs(t.value-n))}</td>\n        <td><span class="badge ${t.value>n?"b-crit":"b-good"}">${t.value>n?"Over":"Within"}</span></td></tr>`
+        ).join("") + "</tbody></table></div>")
+  }
+
+  function gt(t) {
+    const {
+      key: e,
+      dir: a
+    } = j.sort;
+    return t.slice().sort((t, s) => {
+      let n, i;
+      return "date" === e ? (n = t.date, i = s.date) : "total" === e ? (n = t.total, i = s.total) :
+        "cat" === e ? (n = x[t.cat].name, i = x[s.cat].name) : (n = String(t[e]).toLowerCase(), i =
+          String(s[e]).toLowerCase()), n < i ? -a : n > i ? a : 0
+    })
+  }
+
+  function ht() {
+    const e = gt(U({
+        search: !0
+      })),
+      s = Math.max(Math.ceil(e.length / j.perPage), 1);
+    j.page = a(j.page, 1, s);
+    const n = e.slice((j.page - 1) * j.perPage, j.page * j.perPage);
+    t("#txCount").textContent = e.length.toLocaleString() + " line items · " + N() + ("all" !== j.cat ?
+        " · " + x[j.cat].name : "") + ("all" !== j.sync ? " · " + j.sync : ""), t("#txSum").textContent =
+      "Total " + d(G(e)), t("#txPage").textContent = "Page " + j.page + " of " + s;
+    const i = (t, e, a) =>
+      `<th class="sortable ${a||""}" data-sort="${t}">${e}${j.sort.key===t?1===j.sort.dir?" ↑":" ↓":""}</th>`;
+    t("#txTable").innerHTML = n.length ?
+      `<table class="tbl"><thead><tr>\n      ${i("date","Date")}${i("merchant","Merchant")}${i("item","Item")}${i("cat","Category")}${i("total","Amount","num")}<th class="num">Tax</th>${i("sync","Sync")}<th>QuickBooks ID</th></tr></thead><tbody>` +
+      n.map(t =>
+        `<tr class="row-click" data-receipt="${t.receiptId}" data-tx="${t.id}">\n      <td class="mono sec">${v(t.date)}</td><td style="font-weight:640">${f(t.merchant)}</td>\n      <td>${f(t.item)}</td>\n      <td><span class="cat-chip"><span class="swatch" style="background:${x[t.cat].color}"></span><span style="font-size:12.5px">${f(x[t.cat].name)}</span></span></td>\n      <td class="num">${d(t.total)}</td><td class="num sec">${t.tax?d(t.tax):"—"}</td>\n      <td>${dt(t.sync)}</td><td class="mono muted" style="font-size:12px">${t.qbId||"—"}</td></tr>`
+        ).join("") + "</tbody></table>" : '<div class="empty">No transactions match these filters.</div>'
+  }
+
+  function mt() {
+    const e = U(),
+      a = e.filter(t => "synced" === t.sync).length,
+      s = e.filter(t => "pending" === t.sync).length,
+      n = e.filter(t => "error" === t.sync).length;
+    t("#syncTiles").innerHTML = rt({
+      filled: !0,
+      title: "Sync success rate",
+      value: u(e.length ? a / e.length : 0, 1),
+      foot: "of " + e.length + " in range"
+    }) + rt({
+      title: "Synced",
+      value: a.toLocaleString(),
+      foot: "posted to QuickBooks"
+    }) + rt({
+      title: "Pending",
+      value: s.toLocaleString(),
+      foot: j.prefs.autosync ? "auto-sync runs hourly" : "auto-sync is off"
+    }) + rt({
+      title: "Failed",
+      value: n.toLocaleString(),
+      foot: n ? "needs attention" : "nothing to fix"
+    }), t("#syncSub").textContent = "One-way · Colourway → QuickBooks · " + (j.prefs.autosync ?
+      "auto-sync on" : "manual only") + " · last run " + b(new Date(Date.now() - 246e4));
+    const i = e.slice().sort((t, e) => ("error" === t.sync ? -1 : "error" === e.sync ? 1 : 0) || e.date - t
+      .date).slice(0, 60);
+    t("#syncTable").innerHTML = i.length ?
+      '<table class="tbl"><thead><tr>\n      <th>Transaction</th><th>Date</th><th>Merchant</th><th class="num">Amount</th><th>Account</th><th>Status</th><th>Detail</th><th></th></tr></thead><tbody>' +
+      i.map(t =>
+        `<tr><td class="mono muted" style="font-size:12px">${t.id}</td><td class="mono sec">${v(t.date)}</td>\n      <td style="font-weight:640">${f(t.merchant)}</td><td class="num">${d(t.total)}</td>\n      <td class="sec" style="font-size:12px">${f(j.mapping[t.cat])}</td><td>${dt(t.sync)}</td>\n      <td class="sec" style="font-size:12px">${"error"===t.sync?f(t.error):"pending"===t.sync?"Queued for next sync run":"Posted "+b(t.syncedAt)}</td>\n      <td>${"error"===t.sync?`<button class="btn btn-xs" data-retry="${t.id}">Retry</button>`:""}</td></tr>`
+        ).join("") + "</tbody></table>" : '<div class="empty">No sync activity in this range.</div>'
+  }
+
+  function vt() {
+    t("#mapList").innerHTML = $.map(t =>
+        `<div class="set-row">\n    <div class="set-main"><div class="set-title"><span class="cat-chip"><span class="swatch" style="background:${t.color}"></span>${f(t.name)}</span></div>\n    <div class="set-desc">${H.filter(e=>e.cat===t.id).length} transactions mapped</div></div>\n    <div class="set-ctrl"><select class="ctrl" data-map="${t.id}">${w.map(e=>`<option ${j.mapping[t.id]===e?"selected":""}>${f(e)}</option>`).join("")}</select></div></div>`
+        ).join("") +
+      '<div class="set-row"><div class="set-desc">Custom categories from the iOS app inherit their parent\'s account until mapped.</div></div>',
+      t("#connBox").innerHTML =
+      `<div class="kv">\n      <dt>Status</dt><dd><span class="badge b-good"><span class="dotmark" style="background:var(--good-text)"></span>Connected</span></dd>\n      <dt>Company</dt><dd>Colourway Resale LLC</dd>\n      <dt>Realm ID</dt><dd class="mono">4620816365228847104</dd>\n      <dt>Token expires</dt><dd>${m(new Date(Date.now()+74*s))}</dd>\n      <dt>Last sync</dt><dd>${b(new Date(Date.now()-246e4))}</dd>\n      <dt>Direction</dt><dd>One-way · Colourway → QuickBooks</dd></div>\n    <div style="display:flex;gap:8px;margin-top:16px"><button class="btn btn-xs" id="reauthBtn">Reauthorize</button><button class="btn btn-xs" id="disconnectBtn">Disconnect</button></div>\n    <div class="set-desc" style="margin-top:10px">Xero and Wave are planned as additional targets.</div>`,
+      t("#prefList").innerHTML =
+      `<div class="set-row"><div class="set-main"><div class="set-title">Automatic background sync</div><div class="set-desc">Push new transactions hourly</div></div>\n      <div class="set-ctrl"><button class="switch" role="switch" aria-checked="${j.prefs.autosync}" data-pref="autosync"></button></div></div>\n     <div class="set-row"><div class="set-main"><div class="set-title">Budget alerts</div><div class="set-desc">Warn when a category crosses its threshold</div></div>\n      <div class="set-ctrl"><button class="switch" role="switch" aria-checked="${j.prefs.alerts}" data-pref="alerts"></button></div></div>\n     <div class="set-row"><div class="set-main"><div class="set-title">Alert threshold</div><div class="set-desc">Flag a category at this share of its budget</div></div>\n      <div class="set-ctrl"><select class="ctrl" data-pref-val="threshold">${[70,75,80,85,90].map(t=>`<option ${j.prefs.threshold===t?"selected":""}>${t}</option>`).join("")}</select></div></div>\n     <div class="set-row"><div class="set-main"><div class="set-title">Currency</div><div class="set-desc">Multi-currency for international resale is an open question</div></div>\n      <div class="set-ctrl"><select class="ctrl" disabled><option>USD ($)</option></select></div></div>`;
+    const e = H.length ? H[H.length - 1].date : B;
+    t("#dataBox").innerHTML =
+      `<div class="kv">\n      <dt>Receipts stored</dt><dd class="mono">${E.length.toLocaleString()}</dd>\n      <dt>Line items</dt><dd class="mono">${H.length.toLocaleString()}</dd>\n      <dt>Oldest record</dt><dd>${m(e)}</dd>\n      <dt>Lifetime spend</dt><dd class="mono">${d(G(H))}</dd></div>\n    <div style="display:flex;gap:8px;margin-top:16px"><button class="btn btn-xs" id="exportBtn3">↓ Export all transactions</button></div>`
+  }
+  const yt = () => t("#modalBack").classList.remove("open");
+
+  function bt(e) {
+    const a = t("#toast");
+    a.textContent = e, a.classList.add("show"), clearTimeout(bt._t), bt._t = setTimeout(() => a.classList
+      .remove("show"), 2200)
+  }
+
+  function ft(t) {
+    const e = t ? H : gt(U({
+        search: !0
+      })),
+      a = t => `"${String(null==t?"":t).replace(/"/g,'""')}"`,
+      s = e.map(t => [t.id, t.receiptId, h(t.date), t.merchant, t.item, x[t.cat].name, t.amount.toFixed(2), t
+        .tax.toFixed(2), t.total.toFixed(2), t.sync, t.error || "", t.qbId || "", j.mapping[t.cat]
+      ].map(a).join(",")),
+      n = new Blob([
+        ["Transaction ID", "Receipt ID", "Date", "Merchant", "Item", "Category", "Amount", "Tax", "Total",
+          "Sync status", "Sync error", "QuickBooks ID", "QuickBooks account"
+        ].map(a).join(",") + "\n" + s.join("\n")
+      ], {
+        type: "text/csv;charset=utf-8;"
+      }),
+      i = document.createElement("a");
+    i.href = URL.createObjectURL(n), i.download = "colourway-transactions-" + h(B) + ".csv", document.body
+      .appendChild(i), i.click(), document.body.removeChild(i), setTimeout(() => URL.revokeObjectURL(i.href),
+        1e3), bt(e.length + " transactions exported to CSV")
+  }
+
+  function $t(a) {
+    "overview" === a && (healthPending = !0), j.view = a, e(".nav-item").forEach(t => t.setAttribute("aria-current", t.dataset.view === a ? "page" :
+      "false")), e(".view").forEach(t => t.classList.toggle("active", t.id === "view-" + a)), t(
+      "#pageTitle").textContent = st[a][0], t("#pageSub").textContent = st[a][1], xt(), window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+  }
+
+  function xt() {
+    t("#rangeCaption").textContent = (() => {
+      const t = z();
+      return m(t.from) + " – " + m(t.to)
+    })();
+    const e = H.filter(t => "error" === t.sync).length;
+    t("#navSyncPill").textContent = e, t("#navSyncPill").style.display = e ? "" : "none", {
+      overview: ct,
+      categories: pt,
+      budgets: ut,
+      transactions: ht,
+      sync: mt,
+      settings: vt
+    } [j.view]()
+  }
+  let wt, St;
+  $.forEach(e => {
+    const a = document.createElement("option");
+    a.value = e.id, a.textContent = e.name, t("#catFilter").appendChild(a)
+  }), document.addEventListener("click", a => {
+    const n = a.target.closest(".nav-item");
+    if (n) return $t(n.dataset.view);
+    const i = a.target.closest("[data-goto]");
+    if (i) return $t(i.dataset.goto);
+    const o = a.target.closest("#rangeSeg button");
+    if (o) {
+      j.range = o.dataset.range, j.page = 1, e("#rangeSeg button").forEach(t => t.setAttribute(
+        "aria-pressed", t === o));
+      const a = t("#customWrap");
+      return "custom" === j.range ? (a.style.display = "inline-flex", j.from || (j.from = new Date(B
+          .getTime() - 59 * s), j.to = B), t("#dFrom").value = h(j.from), t("#dTo").value = h(j.to)) : a
+        .style.display = "none", xt()
+    }
+    const l = a.target.closest("[data-toggle] button");
+    if (l) return j.toggles[l.closest("[data-toggle]").dataset.toggle] = l.dataset.mode, e("button", l
+      .parentNode).forEach(t => t.setAttribute("aria-pressed", t === l)), xt();
+    const c = a.target.closest("th[data-sort]");
+    if (c) {
+      const t = c.dataset.sort;
+      return j.sort = {
+        key: t,
+        dir: j.sort.key === t ? -j.sort.dir : "date" === t || "total" === t ? -1 : 1
+      }, ht()
+    }
+    const p = a.target.closest("[data-retry]");
+    if (p) {
+      const t = H.find(t => t.id === p.dataset.retry);
+      return p.textContent = "Syncing…", p.disabled = !0, void setTimeout(() => {
+        t.sync = "synced", t.error = null, t.qbId = "QB-" + r(1e4, 99999), t.syncedAt = new Date, bt(t
+          .id + " posted to QuickBooks"), xt()
+      }, 700)
+    }
+    const u = a.target.closest("[data-receipt]");
+    if (u) return function(e, a) {
+      const s = E.find(t => t.id === e);
+      if (!s) return;
+      const n = s.items.reduce((t, e) => t + e.total, 0);
+      var i;
+      t("#modalKicker").textContent = s.id + " · " + s.source, t("#modalTitle").textContent = s
+        .merchant, t("#modalBody").innerHTML =
+        `<div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:18px">\n      <div class="receipt-img">Receipt<br>image</div>\n      <dl class="kv" style="flex:1">\n        <dt>Purchase date</dt><dd>${m(s.date)}</dd>\n        <dt>Receipt status</dt><dd>${i=s,"error"===i.status?'<span class="badge b-crit">OCR error</span>':"pending"===i.status?'<span class="badge b-neutral">Processing</span>':`<span class="badge ${i.corrected?"b-warn":"b-good"}">${i.corrected?"Corrected":"Auto "+i.confidence.toFixed(1)+"%"}</span>`}</dd>\n        <dt>OCR confidence</dt><dd class="mono">${s.confidence.toFixed(1)}%</dd>\n        <dt>Manual correction</dt><dd>${s.corrected?"Yes — 1 field fixed before saving":"None"}</dd>\n        <dt>Line items</dt><dd>${s.items.length}</dd></dl></div>\n    <div class="tbl-scroll"><table class="tbl"><thead><tr><th>Item</th><th>Category</th><th class="num">Amount</th><th class="num">Tax</th><th>Sync</th></tr></thead><tbody>` +
+        s.items.map(t =>
+          `<tr style="${a===t.id?"background:var(--ghost)":""}">\n      <td style="min-width:148px">${f(t.item)}</td>\n      <td><span class="cat-chip"><span class="swatch" style="background:${x[t.cat].color}"></span><span style="font-size:12.5px">${f(x[t.cat].name)}</span></span></td>\n      <td class="num">${d(t.amount)}</td><td class="num sec">${t.tax?d(t.tax):"—"}</td>\n      <td>${dt(t.sync)}</td></tr>`
+          ).join("") +
+        `</tbody></table></div>\n    <div style="margin-top:14px; border-top:1px solid var(--line-2); padding-top:12px; display:flex; flex-direction:column; gap:5px; font-size:13px; margin-left:auto; max-width:280px;">\n      <div style="display:flex"><span class="sec">Subtotal</span><span class="mono" style="margin-left:auto">${d(s.items.reduce((t,e)=>t+e.amount,0))}</span></div>\n      <div style="display:flex"><span class="sec">Tax</span><span class="mono" style="margin-left:auto">${d(s.items.reduce((t,e)=>t+e.tax,0))}</span></div>\n      <div style="display:flex; font-weight:750"><span>Receipt total</span><span class="mono" style="margin-left:auto">${d(n)}</span></div></div>` +
+        (s.items.some(t => "error" === t.sync) ?
+          `<div class="alert warn" style="margin:16px 0 0"><span>⇄</span><div><div class="alert-title">Sync issue on this receipt</div><div class="alert-body">${f(s.items.find(t=>"error"===t.sync).error)}</div></div></div>` :
+          ""), t("#modalBack").classList.add("open")
+    }(u.dataset.receipt, u.dataset.tx);
+    if (a.target.closest("#modalClose") || "modalBack" === a.target.id) return yt();
+    if (a.target.closest("#exportBtn") || a.target.closest("#exportBtn2") || a.target.closest(
+        "#mtdExport")) return ft(!1);
+    if (a.target.closest("#exportBtn3")) return ft(!0);
+    if (a.target.closest("#addBtn") || a.target.closest("#mtdAdd")) return bt(
+      "Receipt capture lives in the iOS app");
+    if (a.target.closest("#bellBtn")) return bt(H.filter(t => "error" === t.sync).length +
+      " sync failures need attention");
+    if (a.target.closest("#themeBtn")) {
+      const t = document.documentElement.getAttribute("data-theme");
+      return document.documentElement.setAttribute("data-theme", "dark" === t ? "light" : "dark"), xt()
+    }
+    const g = a.target.closest("[data-pref]");
+    if (g) {
+      const t = g.dataset.pref;
+      return j.prefs[t] = !j.prefs[t], g.setAttribute("aria-checked", j.prefs[t]), bt(("autosync" === t ?
+        "Automatic sync " : "Budget alerts ") + (j.prefs[t] ? "on" : "off"))
+    }
+    if (a.target.closest("#resyncBtn")) {
+      const t = a.target.closest("#resyncBtn");
+      return t.textContent = "Syncing…", t.disabled = !0, void setTimeout(() => {
+        H.filter(t => "pending" === t.sync).forEach(t => {
+          t.sync = "synced", t.qbId = "QB-" + r(1e4, 99999), t.syncedAt = new Date
+        }), t.textContent = "⇄ Resync now", t.disabled = !1, bt(
+          "Sync complete — pending transactions posted"), xt()
+      }, 900)
+    }
+    if (a.target.closest("#retryFailed")) {
+      const t = H.filter(t => "error" === t.sync).length;
+      return H.filter(t => "error" === t.sync).forEach(t => {
+        t.error && t.error.indexOf("OCR") >= 0 || (t.sync = "synced", t.error = null, t.qbId = "QB-" +
+          r(1e4, 99999), t.syncedAt = new Date)
+      }), bt(t + " failed transactions retried"), xt()
+    }
+    return a.target.closest("#resetBudgets") ? (j.budgets = Object.assign({}, I), bt(
+      "Budgets reset to defaults"), xt()) : a.target.closest("#reauthBtn") ? bt(
+      "Reauthorization link sent to your email") : a.target.closest("#disconnectBtn") ? bt(
+      "Demo build — QuickBooks stays connected") : void 0
+  }), document.addEventListener("change", t => "catFilter" === t.target.id ? (j.cat = t.target.value, j
+      .page = 1, xt()) : "syncFilter" === t.target.id ? (j.sync = t.target.value, j.page = 1, xt()) :
+    "dFrom" === t.target.id ? (j.from = new Date(t.target.value + "T12:00:00"), xt()) : "dTo" === t.target
+    .id ? (j.to = new Date(t.target.value + "T12:00:00"), xt()) : t.target.dataset.budget ? (j.budgets[t
+      .target.dataset.budget] = Math.max(0, parseFloat(t.target.value) || 0), xt()) : t.target.dataset.map ?
+    (j.mapping[t.target.dataset.map] = t.target.value, bt("Mapping updated")) : t.target.dataset.prefVal ? (
+      j.prefs[t.target.dataset.prefVal] = parseInt(t.target.value, 10), bt("Alert threshold set to " + t
+        .target.value + "%"), xt()) : void 0), document.addEventListener("input", e => {
+    if ("txSearch" === e.target.id || "topSearch" === e.target.id) {
+      clearTimeout(wt);
+      const a = e.target.value.trim(),
+        s = "topSearch" === e.target.id;
+      wt = setTimeout(() => {
+        if (j.search = a, j.page = 1, s) {
+          "transactions" !== j.view && $t("transactions");
+          const e = t("#txSearch");
+          e && (e.value = a)
+        }
+        ht()
+      }, 150)
+    }
+  }), t("#txPrev").addEventListener("click", () => {
+    j.page--, ht()
+  }), t("#txNext").addEventListener("click", () => {
+    j.page++, ht()
+  }), document.addEventListener("keydown", t => {
+    "Escape" === t.key && yt()
+  }), window.addEventListener("resize", () => {
+    clearTimeout(St), St = setTimeout(xt, 160)
+  }), xt()
+}();
+</script>
+</body>
+</html>
