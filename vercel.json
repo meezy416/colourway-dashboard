@@ -1,19 +1,50 @@
 {
   "rewrites": [
-    { "source": "/auth-callback", "destination": "/auth-callback.html" },
-    { "source": "/auth-callback/:path*", "destination": "/auth-callback.html" },
-    { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/support", "destination": "/support.html" },
-    { "source": "/app", "destination": "/app.html" }
+    {
+      "source": "/auth-callback",
+      "destination": "/auth-callback.html"
+    },
+    {
+      "source": "/auth-callback/:path*",
+      "destination": "/auth-callback.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/support.html"
+    },
+    {
+      "source": "/demo",
+      "destination": "/demo.html"
+    }
   ],
   "headers": [
     {
       "source": "/.well-known/apple-app-site-association",
       "headers": [
-        { "key": "Content-Type", "value": "application/json" },
-        { "key": "Cache-Control", "value": "public, max-age=3600" }
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/app",
+      "destination": "/",
+      "permanent": true
     }
   ]
 }
