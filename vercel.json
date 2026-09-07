@@ -4,7 +4,8 @@
     { "source": "/auth-callback/:path*", "destination": "/auth-callback.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/support", "destination": "/support.html" }
+    { "source": "/support", "destination": "/support.html" },
+    { "source": "/app", "destination": "/app.html" }
   ],
   "headers": [
     {

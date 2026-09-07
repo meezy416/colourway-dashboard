@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colourway for iPhone — receipts in, cost basis out</title>
+<meta name="description" content="Colourway turns a photograph of a receipt into a per-item cost basis for resale inventory: what you paid, what it cost to land, what it sold for, and what was actually left.">
+<meta name="application-name" content="Colourway">
+<meta name="apple-mobile-web-app-title" content="Colourway">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f4ed" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101511" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Colourway">
+<meta property="og:title" content="Colourway for iPhone — receipts in, cost basis out">
+<meta property="og:description" content="Turn sneaker and streetwear receipts into a per-item cost basis. Landed cost, realized profit, and a tax pack.">
+<meta property="og:url" content="https://colourwayapp.com/app">
+<meta property="og:image" content="https://colourwayapp.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://colourwayapp.com/og-image.png">
+
+<!-- Tokens, the reset and the footer come from the shared sheet, so this page
+     cannot drift from /privacy, /terms and /support on colour. Everything below
+     is marketing layout, which a document page has no use for. -->
+<link rel="stylesheet" href="/doc.css">
+<style>
+.page { max-width: 940px }
+
+/* The document sheet sizes headings for prose. Marketing wants a different
+   rhythm, so these are restated rather than inherited. */
+h1 {
+  font-size: clamp(34px, 6.4vw, 58px); line-height: 1.04;
+  letter-spacing: -.035em; font-weight: 700; margin: 0 0 20px;
+}
+h2 {
+  font-size: clamp(22px, 3.4vw, 30px); letter-spacing: -.022em;
+  font-weight: 680; margin: 0 0 14px; padding-top: 0; border-top: 0;
+}
+h3 { font-size: 17px; font-weight: 650; margin: 0 0 7px; letter-spacing: -.01em }
+
+.hero { padding: 52px 0 8px; border-bottom: 0 }
+.lede { font-size: clamp(17px, 2.4vw, 21px); line-height: 1.5; max-width: 640px; margin-bottom: 26px }
+.kicker {
+  display: inline-block; font-size: 12px; font-weight: 650; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--brand);
+  background: var(--g100); border-radius: 999px; padding: 6px 14px; margin-bottom: 22px;
+}
+:root:not([data-theme=light]) .kicker { background: var(--g200) }
+
+.band { padding: 46px 0; border-top: 1px solid var(--line) }
+
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) }
+.card {
+  background: var(--surface-1); border: 1px solid var(--line);
+  border-radius: var(--r-card); padding: 22px 24px; box-shadow: var(--shadow);
+}
+.card p { margin: 0; font-size: 14.5px }
+
+.steps { counter-reset: step; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+.step { position: relative; padding-left: 46px }
+.step::before {
+  counter-increment: step; content: counter(step);
+  position: absolute; left: 0; top: -2px;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--brand); color: var(--brand-ink);
+  font-size: 14px; font-weight: 680;
+}
+:root:not([data-theme=light]) .step::before { color: #fff }
+
+table.plans td:first-child { font-weight: 620; color: var(--ink); white-space: nowrap }
+
+.note { margin-top: 26px }
+
+.cta {
+  background: var(--surface-1); border: 1px solid var(--line);
+  border-radius: var(--r-card); padding: 26px 28px; box-shadow: var(--shadow);
+  display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; justify-content: space-between;
+}
+.cta p { margin: 0 }
+.cta strong { display: block; font-size: 18px; color: var(--ink); margin-bottom: 4px }
+.badge {
+  border: 1px dashed var(--line-2); border-radius: 999px;
+  padding: 10px 18px; font-size: 14px; font-weight: 600; color: var(--ink-2); white-space: nowrap;
+}
+
+@media (max-width: 560px) { .page { padding: 0 17px 72px } .band { padding: 36px 0 } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="masthead">
+  <img src="/brand-mark.png" width="34" height="34" alt="" decoding="async">
+  <a href="/app">Colourway</a>
+</div>
+
+<header class="hero">
+  <span class="kicker">For iPhone</span>
+  <h1>Receipts in,<br>cost basis out.</h1>
+  <p class="lede">Colourway turns a photograph of a receipt into a per-item cost basis for resale inventory — what you paid, what it cost to land, what it sold for, and what was actually left.</p>
+  <p class="lede" style="font-size:16px">Built for people who buy and resell sneakers and streetwear, and who are tired of a spreadsheet that never quite balances.</p>
+</header>
+
+<section class="band">
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step">
+      <h3>Photograph the receipt</h3>
+      <p>Paper, email, a screenshot of an order page. Colourway reads the merchant, date, order number, currency, subtotal, tax, shipping, duties and every line item.</p>
+    </div>
+    <div class="step">
+      <h3>Check what it read</h3>
+      <p>Every figure shows the snippet of receipt text it came from, so you can see <em>why</em> it was read that way. Anything uncertain waits in Needs Review instead of entering your books.</p>
+    </div>
+    <div class="step">
+      <h3>Sell, and find out what you made</h3>
+      <p>Record the sale with its fees. Realized profit per pair and per month, with the shipping and duties already spread across the pairs that incurred them.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>What it keeps track of</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Landed cost, not sticker price</h3>
+      <p>Shipping, duties, brokerage and authentication spread across the pairs they belong to, so each item carries what it actually cost to get into your hands.</p>
+    </div>
+    <div class="card">
+      <h3>Bought abroad</h3>
+      <p>Foreign receipts keep their own amounts and convert at the rate published on the day you bought — from the Bank of Canada or the ECB, a rate a filing can cite.</p>
+    </div>
+    <div class="card">
+      <h3>What actually sold</h3>
+      <p>Marketplace, payment and shipping fees against each sale, and the effective rate each platform really takes rather than the one it advertises.</p>
+    </div>
+    <div class="card">
+      <h3>What's still on the shelf</h3>
+      <p>Stock at landed cost, how long each pair has been sitting, and what is aging past the point where it was worth holding.</p>
+    </div>
+    <div class="card">
+      <h3>Books that match</h3>
+      <p>Post purchases and sales to QuickBooks Online with sales tax handled properly and no duplicate entries — or export the whole ledger to CSV whenever you like.</p>
+    </div>
+    <div class="card">
+      <h3>A year, shaped for a return</h3>
+      <p>The tax pack groups a calendar year into the lines a T2125 or Schedule C actually asks for, with the receipts behind them.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>Plans</h2>
+  <div class="tbl-scroll">
+  <table class="plans">
+    <thead><tr><th>Tier</th><th>Includes</th></tr></thead>
+    <tbody>
+      <tr><td>Free</td><td>Up to 15 receipts a month, and export everything, always</td></tr>
+      <tr><td>Pro</td><td>Unlimited receipts, inventory and landed cost, category rules, spend reports, lookbook</td></tr>
+      <tr><td>Business</td><td>Everything in Pro, plus QuickBooks sync, realized profit and loss, inventory valuation and aging, and the tax pack</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:14.5px">Pro and Business are available monthly or yearly. The price is shown in the app, in your local currency, before you buy.</p>
+</section>
+
+<section class="band">
+  <h2>Two things worth saying plainly</h2>
+  <div class="note">
+    <p><strong>Automatic reading is sometimes wrong.</strong> Colourway reads receipts with an automated system, and creased, cropped or unusually formatted ones are harder than clean ones. Every figure is editable, and the app shows its work so you can check it. It is a bookkeeping tool, not tax or accounting advice — the numbers are yours to review before you file on them.</p>
+  </div>
+  <div class="note">
+    <p><strong>Your data stays yours.</strong> Everything is stored in Canada. There is no advertising SDK, no analytics SDK, and no tracking of any kind. Your ledger exports at any time, and deleting your account deletes it — immediately, from inside the app.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="cta">
+    <p>
+      <strong>Colourway for iPhone</strong>
+      Requires iOS 18. Available in Canada and the United States.
+    </p>
+    <span class="badge">Coming to the App&nbsp;Store</span>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Break Thruu Entertainment, Inc.</span>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/support">Support</a>
+</footer>
+
+</div>
+</body>
+</html>
