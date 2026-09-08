@@ -109,7 +109,7 @@
   <tbody>
     <tr><td><strong>Supabase</strong> — hosting, database, authentication, file storage</td><td>Your account, ledger, and receipt images</td><td>Canada (<code>ca-central-1</code>)</td></tr>
     <tr><td><strong>Anthropic</strong> — receipt reading</td><td>Receipt images, at the moment you scan one</td><td>United States</td></tr>
-    <tr><td><strong>Intuit (QuickBooks Online)</strong> — accounting sync, <strong>only if you connect it</strong></td><td>Purchase records you choose to sync, and the accounts they map to</td><td>United States</td></tr>
+    <tr><td><strong>Intuit (QuickBooks Online)</strong> — accounting sync, <strong>only if you connect it</strong>. A separate controller, not our processor</td><td>Purchase records you choose to sync, and the accounts they map to</td><td>United States</td></tr>
     <tr><td><strong>Vercel</strong> — serves <code>colourwayapp.com</code> for email confirmation links</td><td>IP address and request metadata when a link is opened</td><td>Global CDN</td></tr>
   </tbody>
 </table>
@@ -130,7 +130,9 @@
 <h3>If you are in the EEA, the UK, or Switzerland</h3>
 <p>Colourway is available worldwide, so for many people using it this is an international transfer.</p>
 <p><strong>Storage is in a country the European Commission has found adequate.</strong> Your account, ledger and receipt images live in Canada, and the Commission's adequacy decision covers Canadian private-sector organisations subject to PIPEDA, which we are. The UK and Switzerland recognise Canada on the same basis. No further safeguard is needed for the data to be held where it is held.</p>
-<p><strong>Onward processing in the United States relies on Standard Contractual Clauses.</strong> Receipt reading by Anthropic, and QuickBooks sync by Intuit if you connect it, take place in the US, which has no such adequacy decision covering these transfers. Those transfers are made under the European Commission's Standard Contractual Clauses, incorporated into our data processing agreements with each provider, together with the UK Addendum where UK data is involved. You can ask us for details of the safeguards in place at the address below.</p>
+<p><strong>Receipt reading in the United States relies on Standard Contractual Clauses.</strong> Anthropic reads your receipts in the US, which has no adequacy decision covering that transfer. Anthropic acts as our processor, and the transfer is made under the European Commission's Standard Contractual Clauses — Module Two, controller to processor — incorporated into Anthropic's Data Processing Addendum, together with the UK Addendum where UK data is involved. Supabase is covered the same way by its own Addendum. In both cases accepting the agreement has the same effect as signing the clauses, and both are in force. You can ask us for details of the safeguards at the address below.</p>
+
+<p><strong>QuickBooks is different, and it would be misleading to lump it in.</strong> If you connect QuickBooks, Intuit receives the records you choose to sync — but Intuit is an <strong>independent controller</strong> of that data, not our processor, and holds it under its own agreement with you rather than under ours. There is no processor's contract between us for it, and we would be overstating things to claim one. That transfer happens only because you asked for it, only to the company you chose, and only for as long as you leave the connection in place. Disconnecting stops it.</p>
 
 <h2>How long it is kept</h2>
 <p>Your data is kept for as long as your account exists. Colourway does not expire, archive, or auto-delete your ledger — a cost basis is only useful if it goes back as far as your inventory does.</p>
