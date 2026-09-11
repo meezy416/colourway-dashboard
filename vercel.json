@@ -23,6 +23,10 @@
     {
       "source": "/demo",
       "destination": "/demo.html"
+    },
+    {
+      "source": "/1099k",
+      "destination": "/1099k.html"
     }
   ],
   "headers": [

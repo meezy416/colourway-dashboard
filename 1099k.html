@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What you actually owe on a 1099-K — Colourway</title>
+<meta name="description" content="A 1099-K reports what came in, not what you made. Work out the profit you're actually taxed on, and what happens to the part of your cost basis you can't prove.">
+<meta name="application-name" content="Colourway">
+<meta name="apple-mobile-web-app-title" content="Colourway">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f4ed" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101511" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Colourway">
+<meta property="og:title" content="What you actually owe on a 1099-K">
+<meta property="og:description" content="A 1099-K reports what came in, not what you made. The difference is your cost basis — and the part you can't prove is treated as zero.">
+<meta property="og:url" content="https://colourwayapp.com/1099k">
+<meta property="og:image" content="https://colourwayapp.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://colourwayapp.com/og-image.png">
+<link rel="stylesheet" href="/doc.css">
+<style>
+.calc {
+  background: var(--surface-1); border: 1px solid var(--line);
+  border-radius: var(--r-card); padding: 22px 24px; box-shadow: var(--shadow);
+  margin: 26px 0;
+}
+.row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline;
+       padding: 11px 0; border-bottom: 1px solid var(--line); }
+.row:last-of-type { border-bottom: 0 }
+.row label { flex: 1 1 260px; font-size: 15px; color: var(--ink) }
+.row .hint { display: block; font-size: 13px; color: var(--ink-3); margin-top: 2px }
+.row .amt { position: relative; flex: 0 0 auto }
+.row .amt span { position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+                 color: var(--ink-3); font-size: 15px; pointer-events: none }
+.row input {
+  width: 168px; padding: 9px 11px 9px 24px; font: inherit; font-size: 15px;
+  color: var(--ink); background: var(--surface-2, var(--surface-1));
+  border: 1px solid var(--line-2); border-radius: var(--r-sm); text-align: right;
+}
+.row input:focus { outline: 2px solid var(--brand); outline-offset: 1px }
+
+.out { margin-top: 22px; border-top: 2px solid var(--line-2); padding-top: 18px }
+.out .line { display: flex; justify-content: space-between; gap: 16px;
+             padding: 9px 0; font-size: 15px; color: var(--ink-2) }
+.out .line b { color: var(--ink); font-variant-numeric: tabular-nums }
+.out .big { font-size: 19px; font-weight: 650; color: var(--ink); padding-top: 14px;
+            border-top: 1px solid var(--line); margin-top: 6px }
+.out .big b { font-size: 24px }
+
+.flag { border-radius: var(--r-sm); padding: 14px 16px; margin-top: 16px; font-size: 14.5px; line-height: 1.5 }
+.flag.warn { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning) }
+.flag.crit { background: var(--critical-bg); color: var(--critical-text); border: 1px solid var(--critical) }
+.flag.calm { background: var(--g100); color: var(--ink-2); border: 1px solid var(--line) }
+.flag b { display: block; margin-bottom: 4px }
+
+.refuse { background: var(--hatch-bg, var(--g100)); border: 1px dashed var(--line-2);
+          border-radius: var(--r-sm); padding: 14px 16px; margin-top: 16px;
+          font-size: 14.5px; color: var(--ink-2); line-height: 1.5 }
+.refuse b { color: var(--ink) }
+
+.cta { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-card);
+       padding: 22px 24px; box-shadow: var(--shadow); margin-top: 30px }
+.cta p { margin: 0 0 8px }
+.cta p:last-child { margin-bottom: 0 }
+table.kv td { vertical-align: top }
+table.kv td:first-child { white-space: nowrap; font-weight: 620; color: var(--ink); padding-right: 18px }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="masthead">
+  <img src="/brand-mark.png" width="34" height="34" alt="" decoding="async">
+  <a href="/">Colourway</a>
+</div>
+
+<div class="doc-head">
+  <h1>What you actually owe on a 1099-K</h1>
+  <p class="dates"><span>For US filers · updated 11 September 2026</span></p>
+</div>
+
+<p class="lede">A 1099-K reports <b>what came in</b>, not what you made. You are taxed
+on profit, and the gap between the two is your cost basis. The part of that basis
+you cannot prove is treated as <b>zero</b> — which is the expensive way to find out
+you should have kept the receipts.</p>
+
+<h2>First, the threshold — it changed, and not the way people expect</h2>
+
+<p>The <b>One Big Beautiful Bill Act</b>, law since 4 July 2025, repealed the $600
+rule and restored the old threshold. A payment platform issues a 1099-K when you
+cross <b>$20,000 <i>and</i> 200 transactions</b> — both, not either.</p>
+
+<p><b>This is the part that catches people out:</b> the threshold decides whether a
+<i>form</i> is issued. It does not decide whether you owe <i>tax</i>. Business income
+is taxable whether or not anyone sends you paperwork about it. If you sold
+$14,000 of sneakers at a profit and received no 1099-K, you still have income to
+report.</p>
+
+<p>And if you are moving twenty pairs a month, you are not near the line anyway —
+you clear $20,000 and 200 transactions comfortably, and the form is coming.</p>
+
+<h2>The calculator</h2>
+
+<p>Nothing here is sent anywhere. It runs in your browser and stores nothing.</p>
+
+<div class="calc">
+  <div class="row">
+    <label for="gross">Gross payments on your 1099-K
+      <span class="hint">Box 1a. The big number, before any fees came out.</span></label>
+    <div class="amt"><span>$</span><input id="gross" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+  </div>
+  <div class="row">
+    <label for="cogs">What you paid for the items that <i>sold</i>
+      <span class="hint">Cost of goods sold. Stock still on the shelf does not belong here.</span></label>
+    <div class="amt"><span>$</span><input id="cogs" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+  </div>
+  <div class="row">
+    <label for="fees">Marketplace and payment fees
+      <span class="hint">Commission plus processing. Usually far more than the advertised rate.</span></label>
+    <div class="amt"><span>$</span><input id="fees" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+  </div>
+  <div class="row">
+    <label for="ship">Shipping you paid
+      <span class="hint">Outbound postage and packaging you absorbed.</span></label>
+    <div class="amt"><span>$</span><input id="ship" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+  </div>
+  <div class="row">
+    <label for="other">Other business expenses
+      <span class="hint">Supplies, software, subscriptions, mileage, home office.</span></label>
+    <div class="amt"><span>$</span><input id="other" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+  </div>
+
+  <div class="out" id="out" hidden>
+    <div class="line"><span>Gross on the form</span><b id="o-gross">—</b></div>
+    <div class="line"><span>Less cost of goods sold</span><b id="o-cogs">—</b></div>
+    <div class="line"><span>Less fees, shipping and expenses</span><b id="o-exp">—</b></div>
+    <div class="line big"><span id="o-label">Profit you're taxed on</span><b id="o-net">—</b></div>
+    <div class="line" style="margin-top:10px"><span>Estimated self-employment tax</span><b id="o-se">—</b></div>
+  </div>
+
+  <div id="flags"></div>
+
+  <div class="refuse">
+    <b>What this deliberately does not tell you: your income tax.</b>
+    That depends on your filing status, your other income, your deductions and your
+    state — none of which this page knows, and guessing at it would produce a
+    confident number that happens to be wrong. Self-employment tax is computable
+    from your profit alone, so that is the one that appears above. Income tax sits
+    on top of it.
+  </div>
+</div>
+
+<h2>How the self-employment figure is worked out</h2>
+
+<table class="kv">
+  <tr><td>Taxable base</td><td>92.35% of net profit — the portion subject to SE tax.</td></tr>
+  <tr><td>Social Security</td><td>12.4%, applied up to the 2026 wage base of <b>$184,500</b>. Profit above that is not charged this part.</td></tr>
+  <tr><td>Medicare</td><td>2.9%, with no ceiling.</td></tr>
+  <tr><td>Not modelled</td><td>The additional 0.9% Medicare surcharge on high earners, the deduction for one half of SE tax, and the qualified business income deduction — all of which can move the final number.</td></tr>
+</table>
+
+<h2>The part that costs people money</h2>
+
+<p><b>Basis you cannot substantiate is basis of zero.</b> If a return is examined and
+you cannot show what you paid for the pairs you sold, the cost side of the
+calculation does not default to something reasonable — it defaults to nothing, and
+the gross becomes the profit. On $80,000 of sales that is the difference between
+tax on a few thousand dollars and tax on eighty.</p>
+
+<p>Substantiation is not a spreadsheet cell containing a number you typed. It is
+the receipt, the date, the merchant and the amount, retained and retrievable —
+which is easy in January and nearly impossible to reconstruct two years later
+when someone asks.</p>
+
+<div class="cta">
+  <p><b>This is the problem Colourway exists to solve.</b></p>
+  <p>It reads a photograph of a receipt into a per-item cost basis — landed cost with
+  shipping and duties allocated across the pairs that incurred them, realized profit
+  per pair, and a year-end pack with the Schedule C lines already labelled. The
+  receipt image stays attached to the figures it produced.</p>
+  <p>And when it cannot read something, it says so and leaves the field blank rather
+  than filling in a zero. <a href="/">See how it works</a>.</p>
+</div>
+
+<p class="note"><b>This is not tax advice.</b> It is arithmetic, plus the two rules
+that catch resellers out most often. Whether your activity is a business or a
+hobby, which form applies to you, and what your bracket is are questions for an
+accountant who knows your situation. Canadian filers: none of the above applies —
+there is no 1099-K, and the CRA's treatment of inventory and business income is its
+own analysis.</p>
+
+<footer>
+  <span>© 2026 Break Thruu Entertainment, Inc.</span>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+  <a href="/">colourwayapp.com</a>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var SS_BASE = 184500, SS_RATE = 0.124, MED_RATE = 0.029, SE_PORTION = 0.9235;
+  var ids = ['gross', 'cogs', 'fees', 'ship', 'other'];
+  var el = {};
+  ids.forEach(function (i) { el[i] = document.getElementById(i); });
+  var out = document.getElementById('out'), flags = document.getElementById('flags');
+
+  function money(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function val(i) {
+    var v = parseFloat(el[i].value);
+    return isFinite(v) && v > 0 ? v : 0;
+  }
+
+  function render() {
+    var gross = val('gross'), cogs = val('cogs');
+    var expenses = val('fees') + val('ship') + val('other');
+    var touched = ids.some(function (i) { return el[i].value !== ''; });
+
+    if (!touched || gross <= 0) { out.hidden = true; flags.innerHTML = ''; return; }
+    out.hidden = false;
+
+    var net = gross - cogs - expenses;
+    var seBase = Math.max(0, net) * SE_PORTION;
+    var se = Math.min(seBase, SS_BASE) * SS_RATE + seBase * MED_RATE;
+
+    document.getElementById('o-gross').textContent = money(gross);
+    document.getElementById('o-cogs').textContent = '−' + money(cogs);
+    document.getElementById('o-exp').textContent = '−' + money(expenses);
+    document.getElementById('o-net').textContent = money(net);
+    document.getElementById('o-se').textContent = net > 0 ? money(se) : money(0);
+    document.getElementById('o-label').textContent =
+      net < 0 ? 'Loss for the year' : 'Profit you’re taxed on';
+
+    var html = '';
+
+    if (cogs <= 0) {
+      html += '<div class="flag crit"><b>You have not entered a cost basis.</b>' +
+        'As it stands this says you are taxed on ' + money(Math.max(0, net)) + ' — on ' +
+        money(gross) + ' of sales, with nothing deducted for what the goods cost you. ' +
+        'That is exactly the treatment applied when basis cannot be substantiated, and ' +
+        'it is almost never the true position. If you know what you paid, enter it.</div>';
+    } else {
+      var pct = gross > 0 ? Math.round((1 - Math.max(0, net) / gross) * 100) : 0;
+      html += '<div class="flag calm"><b>You are taxed on ' + money(Math.max(0, net)) +
+        ', not ' + money(gross) + '.</b>' +
+        'The form reports the larger number. Costs and expenses account for ' + pct +
+        '% of it — but only because you can show what they were.</div>';
+    }
+
+    if (net < 0) {
+      html += '<div class="flag warn"><b>This shows a loss.</b>' +
+        'A genuine business loss can offset other income, but an activity that loses money ' +
+        'year after year invites the question of whether it is a business at all. That ' +
+        'distinction has real consequences and is worth an accountant’s view.</div>';
+    }
+
+    if (seBase > SS_BASE) {
+      html += '<div class="flag warn"><b>Above the Social Security wage base.</b>' +
+        'Profit past $184,500 of SE-taxable earnings is charged Medicare but not the ' +
+        'Social Security portion, which the figure above accounts for.</div>';
+    }
+
+    flags.innerHTML = html;
+  }
+
+  ids.forEach(function (i) { el[i].addEventListener('input', render); });
+  render();
+})();
+</script>
+</body>
+</html>
