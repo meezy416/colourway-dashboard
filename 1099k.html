@@ -68,6 +68,22 @@
        padding: 22px 24px; box-shadow: var(--shadow); margin-top: 30px }
 .cta p { margin: 0 0 8px }
 .cta p:last-child { margin-bottom: 0 }
+.dl {
+  display: inline-block; background: var(--brand); color: var(--brand-ink);
+  border-radius: 999px; padding: 11px 22px; font-size: 15px; font-weight: 650;
+  text-decoration: none; white-space: nowrap;
+}
+.dl:hover { opacity: .88 }
+:root:not([data-theme=light]) .dl { color: #fff }
+
+.cta-video { display: flex; flex-wrap: wrap; gap: 22px 28px; align-items: center }
+.cta-video video {
+  width: 232px; max-width: 100%; height: auto; display: block;
+  border-radius: 24px; border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg, var(--shadow)); background: var(--surface-1);
+}
+.cta-video .say { flex: 1 1 280px; min-width: 250px }
+
 table.kv td { vertical-align: top }
 table.kv td:first-child { white-space: nowrap; font-weight: 620; color: var(--ink); padding-right: 18px }
 </style>
@@ -178,14 +194,21 @@ the receipt, the date, the merchant and the amount, retained and retrievable —
 which is easy in January and nearly impossible to reconstruct two years later
 when someone asks.</p>
 
-<div class="cta">
-  <p><b>This is the problem Colourway exists to solve.</b></p>
-  <p>It reads a photograph of a receipt into a per-item cost basis — landed cost with
-  shipping and duties allocated across the pairs that incurred them, realized profit
-  per pair, and a year-end pack with the Schedule C lines already labelled. The
-  receipt image stays attached to the figures it produced.</p>
-  <p>And when it cannot read something, it says so and leaves the field blank rather
-  than filling in a zero. <a href="/">See how it works</a>.</p>
+<div class="cta cta-video">
+  <video src="/colourwayreel.mp4" poster="/colourwayreel-poster.jpg"
+         muted loop playsinline preload="metadata" controls
+         aria-label="Screen recording: a receipt is photographed and read automatically. Figures it cannot find are marked Unsure and left blank rather than filled with zero."></video>
+  <div class="say">
+    <p><b>This is the problem Colourway exists to solve.</b></p>
+    <p>It reads a photograph of a receipt into a per-item cost basis — landed cost with
+    shipping and duties allocated across the pairs that incurred them, realized profit
+    per pair, and a year-end pack with the Schedule C lines already labelled. The
+    receipt image stays attached to the figures it produced.</p>
+    <p>Watch what it does when it is <em>not</em> certain. Shipping and duties that
+    aren't printed come back marked <b>Unsure</b> — not zero. That distinction is the
+    whole difference between a basis you can defend and one you cannot.</p>
+    <p><a class="dl" href="https://apps.apple.com/app/id6806053821">Download on the App&nbsp;Store</a></p>
+  </div>
 </div>
 
 <p class="note"><b>This is not tax advice.</b> It is arithmetic, plus the two rules
