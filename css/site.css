@@ -373,6 +373,27 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   border:1px solid var(--line-2); color:var(--muted);
 }
 
+/* ── inline aside (links /1099k out of the reports chapter) ── */
+.aside{
+  display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:center;
+  margin-top:28px; padding:22px 26px; border-radius:var(--r-lg);
+  background:var(--card); border:1px solid var(--line); text-decoration:none;
+  transition:border-color .45s var(--ease), transform .45s var(--ease), background .45s var(--ease);
+}
+.aside:hover{ border-color:rgba(var(--emerald-rgb),.55); transform:translateY(-3px); background:#121E18; }
+.aside__tag{
+  align-self:start; padding:4px 11px; border-radius:999px;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  border:1px solid var(--line-2); color:var(--emerald-lift); white-space:nowrap;
+}
+.aside__body{ display:grid; gap:5px; font-size:14.5px; color:var(--muted); line-height:1.55; }
+.aside__body b{
+  font-family:var(--display); font-size:20px; font-weight:700;
+  letter-spacing:-.025em; color:var(--ink);
+}
+.aside__go{ font-size:20px; color:var(--emerald-lift); transition:transform .45s var(--spring); }
+.aside:hover .aside__go{ transform:translateX(5px); }
+
 /* ── privacy ───────────────────────────────────────────── */
 .privacy{ padding:clamp(100px,14vh,170px) 0; background:var(--bg-2); }
 .privacy__wrap{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(30px,6vw,80px); align-items:center; }
@@ -448,6 +469,8 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   /* headline leads on a phone; the device follows it */
   .hero__device{ order:0; }
   .eyebrow{ font-size:10.5px; letter-spacing:.14em; }
+  .aside{ grid-template-columns:1fr; gap:12px; padding:20px; }
+  .aside__go{ display:none; }
   .lede,.prose{ max-width:none; }
   .close .display{ max-width:none; }
 }
