@@ -2,261 +2,424 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Colourway for iPhone — receipts in, cost basis out</title>
-<meta name="description" content="Colourway turns a photograph of a receipt into a per-item cost basis for resale inventory: what you paid, what it cost to land, what it sold for, and what was actually left.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colourway — Every pair. Every receipt. Every number that follows.</title>
+<meta name="description" content="Colourway reads your sneaker receipts, holds the cost basis, and shapes a year of it for T2125 or Schedule C. It tells you what it is unsure about instead of guessing. iOS.">
 <meta name="application-name" content="Colourway">
 <meta name="apple-mobile-web-app-title" content="Colourway">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f3f4ed" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#101511" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07100C">
+
+<!-- The icon set and the OG image already live at the domain root and are shared
+     with /privacy, /terms, /support and /1099k. Referenced, not duplicated. -->
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://colourwayapp.com/">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Colourway">
-<meta property="og:title" content="Colourway for iPhone — receipts in, cost basis out">
-<meta property="og:description" content="Turn sneaker and streetwear receipts into a per-item cost basis. Landed cost, realized profit, and a tax pack.">
+<meta property="og:title" content="Colourway — Every pair. Every receipt. Every number that follows.">
+<meta property="og:description" content="Reads your sneaker receipts, holds the cost basis, and shapes a year of it for T2125 or Schedule C. It says when it is unsure instead of guessing.">
 <meta property="og:url" content="https://colourwayapp.com/">
 <meta property="og:image" content="https://colourwayapp.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://colourwayapp.com/og-image.png">
 
-<!-- Tokens, the reset and the footer come from the shared sheet, so this page
-     cannot drift from /privacy, /terms and /support on colour. Everything below
-     is marketing layout, which a document page has no use for. -->
-<link rel="stylesheet" href="/doc.css">
-<style>
-.page { max-width: 940px }
-
-/* The document sheet sizes headings for prose. Marketing wants a different
-   rhythm, so these are restated rather than inherited. */
-h1 {
-  font-size: clamp(34px, 6.4vw, 58px); line-height: 1.04;
-  letter-spacing: -.035em; font-weight: 700; margin: 0 0 20px;
-}
-h2 {
-  font-size: clamp(22px, 3.4vw, 30px); letter-spacing: -.022em;
-  font-weight: 680; margin: 0 0 14px; padding-top: 0; border-top: 0;
-}
-h3 { font-size: 17px; font-weight: 650; margin: 0 0 7px; letter-spacing: -.01em }
-
-.hero { padding: 52px 0 8px; border-bottom: 0 }
-.lede { font-size: clamp(17px, 2.4vw, 21px); line-height: 1.5; max-width: 640px; margin-bottom: 26px }
-.kicker {
-  display: inline-block; font-size: 12px; font-weight: 650; letter-spacing: .09em;
-  text-transform: uppercase; color: var(--brand);
-  background: var(--g100); border-radius: 999px; padding: 6px 14px; margin-bottom: 22px;
-}
-:root:not([data-theme=light]) .kicker { background: var(--g200) }
-
-.band { padding: 46px 0; border-top: 1px solid var(--line) }
-
-/* The demo. Sized as a phone rather than a widescreen player, because that is
-   the shape of the thing being shown. */
-.demo { display: flex; flex-wrap: wrap; gap: 30px 40px; align-items: center }
-.demo video {
-  width: 268px; max-width: 100%; height: auto; display: block;
-  border-radius: 26px; border: 1px solid var(--line);
-  box-shadow: var(--shadow-lg, var(--shadow)); background: var(--surface-1);
-}
-.demo .say { flex: 1 1 300px; min-width: 260px }
-.demo .say p { font-size: 15.5px }
-.demo .say p:last-child { margin-bottom: 0 }
-
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) }
-.card {
-  background: var(--surface-1); border: 1px solid var(--line);
-  border-radius: var(--r-card); padding: 22px 24px; box-shadow: var(--shadow);
-}
-.card p { margin: 0; font-size: 14.5px }
-
-.steps { counter-reset: step; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
-.step { position: relative; padding-left: 46px }
-.step::before {
-  counter-increment: step; content: counter(step);
-  position: absolute; left: 0; top: -2px;
-  width: 32px; height: 32px; border-radius: 50%;
-  display: grid; place-items: center;
-  background: var(--brand); color: var(--brand-ink);
-  font-size: 14px; font-weight: 680;
-}
-:root:not([data-theme=light]) .step::before { color: #fff }
-
-table.plans td:first-child { font-weight: 620; color: var(--ink); white-space: nowrap }
-
-.note { margin-top: 26px }
-
-.cta {
-  background: var(--surface-1); border: 1px solid var(--line);
-  border-radius: var(--r-card); padding: 26px 28px; box-shadow: var(--shadow);
-  display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; justify-content: space-between;
-}
-.cta p { margin: 0 }
-.cta strong { display: block; font-size: 18px; color: var(--ink); margin-bottom: 4px }
-.badge {
-  border: 1px dashed var(--line-2); border-radius: 999px;
-  padding: 10px 18px; font-size: 14px; font-weight: 600; color: var(--ink-2); white-space: nowrap;
-}
-
-/* The download button. Solid brand fill, because on a page whose job is now
-   "get the app" it should be the only thing that looks clickable. */
-.dl {
-  display: inline-block; background: var(--brand); color: var(--brand-ink);
-  border-radius: 999px; padding: 12px 24px; font-size: 15.5px; font-weight: 650;
-  text-decoration: none; white-space: nowrap; border: 0;
-}
-.dl:hover { opacity: .88 }
-:root:not([data-theme=light]) .dl { color: #fff }
-.hero .dl { margin-top: 6px }
-.hero-sub { font-size: 14px; color: var(--ink-3); margin: 10px 0 0 }
-
-@media (max-width: 560px) { .page { padding: 0 17px 72px } .band { padding: 36px 0 } }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
 </head>
 <body>
-<div class="page">
 
-<div class="masthead">
-  <img src="/brand-mark.png" width="34" height="34" alt="" decoding="async">
-  <a href="/">Colourway</a>
+<!-- ───────────────────────── loader ───────────────────────── -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <svg class="loader__ring" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="34" pathLength="1"/>
+    </svg>
+    <div class="loader__word"><span>C</span><span>O</span><span>L</span><span>O</span><span>U</span><span>R</span><span>W</span><span>A</span><span>Y</span></div>
+  </div>
+  <div class="loader__count"><span id="loaderCount">000</span></div>
+  <div class="loader__curtain"></div>
 </div>
 
-<header class="hero">
-  <span class="kicker">For iPhone</span>
-  <h1>Receipts in,<br>cost basis out.</h1>
-  <p class="lede">Colourway turns a photograph of a receipt into a per-item cost basis for resale inventory — what you paid, what it cost to land, what it sold for, and what was actually left.</p>
-  <p class="lede" style="font-size:16px">Built for people who buy and resell sneakers and streetwear, and who are tired of a spreadsheet that never quite balances.</p>
-  <a class="dl" href="https://apps.apple.com/app/id6806053821">Download on the App Store</a>
-  <p class="hero-sub">Free for 15 receipts a month. Requires iOS 18.</p>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ───────────────────────── nav ───────────────────────── -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top">
+    <img src="assets/mark.png" alt="" width="28" height="28">
+    <span>Colourway</span>
+  </a>
+  <nav class="nav__links" aria-label="Sections">
+    <a href="#read">The read</a>
+    <a href="#ledger">The ledger</a>
+    <a href="#reports">Reports</a>
+    <a href="#pricing">Pricing</a>
+  </nav>
+  <a class="btn btn--sm" href="https://apps.apple.com/app/id6806053821" target="_blank" rel="noopener">Download</a>
 </header>
 
-<section class="band">
-  <h2>Watch it read a receipt</h2>
-  <div class="demo">
-    <video id="demo" src="/colourwayreel.mp4" poster="/colourwayreel-poster.jpg"
-           muted loop playsinline preload="metadata" controls
-           aria-label="Screen recording: a receipt is imported, read automatically, checked, and saved to the ledger."></video>
-    <div class="say">
-      <p>A real recording, not a mockup — the same reader that runs on your receipts, on a receipt it had never seen.</p>
-      <p>Watch what it does when it is <em>not</em> certain. It infers the currency from the province and the tax line, and says so. It marks shipping and duties as unsure rather than guessing a zero. Nothing is saved until you have looked at it.</p>
-      <p>The only edit is speed: reading takes about fifteen seconds and is played faster here.</p>
+<main id="top">
+
+<!-- ───────────────────────── hero ───────────────────────── -->
+<section class="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow" data-rise>
+        <span class="dot"></span> iOS · Live on the App Store · Worldwide
+      </p>
+      <h1 class="display" data-split>
+        Every pair you buy. Every number that follows it.
+      </h1>
+      <p class="lede" data-rise>
+        Photograph the receipt. Colourway reads it, holds the cost basis, tracks
+        what the pair is worth on the shelf, and shapes a calendar year of it for
+        T2125 or Schedule C.
+      </p>
+      <div class="hero__cta" data-rise>
+        <a class="btn btn--solid" href="https://apps.apple.com/app/id6806053821" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M17.05 12.94c-.03-2.7 2.2-3.99 2.3-4.06-1.25-1.83-3.2-2.08-3.9-2.11-1.66-.17-3.24.98-4.08.98-.84 0-2.14-.96-3.52-.93-1.81.03-3.48 1.05-4.41 2.67-1.88 3.26-.48 8.09 1.35 10.74.9 1.3 1.97 2.75 3.38 2.7 1.36-.06 1.87-.88 3.51-.88 1.64 0 2.1.88 3.53.85 1.46-.03 2.38-1.32 3.27-2.63 1.03-1.51 1.46-2.97 1.48-3.05-.03-.01-2.84-1.09-2.87-4.33zM14.4 4.9c.74-.9 1.24-2.15 1.1-3.4-1.07.05-2.36.71-3.13 1.61-.69.8-1.29 2.07-1.13 3.29 1.19.09 2.41-.6 3.16-1.5z"/></svg>
+          Download on the App Store
+        </a>
+        <a class="btn btn--ghost" href="#read">See how it reads a receipt</a>
+      </div>
+      <p class="fine" data-rise>Free to use for 15 receipts a month. No account needed to look around.</p>
+    </div>
+
+    <div class="hero__device" data-device>
+      <div class="phone">
+        <div class="phone__screen">
+          <video poster="assets/app-preview-poster.jpg"
+                 autoplay muted loop playsinline preload="metadata"
+                 aria-label="Screen recording: a receipt is imported, read, and saved to the ledger">
+            <source src="assets/app-preview.webm" type="video/webm">
+            <source src="assets/app-preview.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="phone__notch" aria-hidden="true"></div>
+      </div>
+      <p class="phone__cap">A real extraction, recorded. The 14-second read is played at 7×.</p>
     </div>
   </div>
+
+  <div class="scrollcue" aria-hidden="true"><span></span></div>
 </section>
 
-<section class="band">
-  <h2>How it works</h2>
-  <div class="steps">
-    <div class="step">
-      <h3>Photograph the receipt</h3>
-      <p>Paper, email, a screenshot of an order page. Colourway reads the merchant, date, order number, currency, subtotal, tax, shipping, duties and every line item.</p>
-    </div>
-    <div class="step">
-      <h3>Check what it read</h3>
-      <p>Every figure shows the snippet of receipt text it came from, so you can see <em>why</em> it was read that way. Anything uncertain waits in Needs Review instead of entering your books.</p>
-    </div>
-    <div class="step">
-      <h3>Sell, and find out what you made</h3>
-      <p>Record the sale with its fees. Realized profit per pair and per month, with the shipping and duties already spread across the pairs that incurred them.</p>
-    </div>
+<!-- ───────────────────────── marquee ───────────────────────── -->
+<div class="stripe" aria-hidden="true">
+  <div class="stripe__track" data-marquee>
+    <span>Keeps the receipt</span><i>◆</i>
+    <span>Knows the landed cost</span><i>◆</i>
+    <span>Says when it is unsure</span><i>◆</i>
+    <span>Keeps the receipt</span><i>◆</i>
+    <span>Knows the landed cost</span><i>◆</i>
+    <span>Says when it is unsure</span><i>◆</i>
   </div>
-</section>
-
-<section class="band">
-  <h2>What it keeps track of</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Landed cost, not sticker price</h3>
-      <p>Shipping, duties, brokerage and authentication spread across the pairs they belong to, so each item carries what it actually cost to get into your hands.</p>
-    </div>
-    <div class="card">
-      <h3>Bought abroad</h3>
-      <p>Foreign receipts keep their own amounts and convert at the rate published on the day you bought — from the Bank of Canada or the ECB, a rate a filing can cite.</p>
-    </div>
-    <div class="card">
-      <h3>What actually sold</h3>
-      <p>Marketplace, payment and shipping fees against each sale, and the effective rate each platform really takes rather than the one it advertises.</p>
-    </div>
-    <div class="card">
-      <h3>What's still on the shelf</h3>
-      <p>Stock at landed cost, how long each pair has been sitting, and what is aging past the point where it was worth holding.</p>
-    </div>
-    <div class="card">
-      <h3>Books that match</h3>
-      <p>Post purchases and sales to QuickBooks Online with sales tax handled properly and no duplicate entries — or export the whole ledger to CSV whenever you like.</p>
-    </div>
-    <div class="card">
-      <h3>A year, shaped for a return</h3>
-      <p>The tax pack groups a calendar year into the lines a T2125 or Schedule C actually asks for, with the receipts behind them.</p>
-    </div>
-  </div>
-</section>
-
-<section class="band">
-  <h2>Plans</h2>
-  <div class="tbl-scroll">
-  <table class="plans">
-    <thead><tr><th>Tier</th><th>Includes</th></tr></thead>
-    <tbody>
-      <tr><td>Free</td><td>Up to 15 receipts a month, and export everything, always</td></tr>
-      <tr><td>Pro</td><td>Unlimited receipts, inventory and landed cost, category rules, spend reports, lookbook</td></tr>
-      <tr><td>Business</td><td>Everything in Pro, plus QuickBooks sync, realized profit and loss, inventory valuation and aging, and the tax pack</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p style="font-size:14.5px">Pro and Business are available monthly or yearly. The price is shown in the app, in your local currency, before you buy.</p>
-</section>
-
-<section class="band">
-  <h2>Two things worth saying plainly</h2>
-  <div class="note">
-    <p><strong>Automatic reading is sometimes wrong.</strong> Colourway reads receipts with an automated system, and creased, cropped or unusually formatted ones are harder than clean ones. Every figure is editable, and the app shows its work so you can check it. It is a bookkeeping tool, not tax or accounting advice — the numbers are yours to review before you file on them.</p>
-  </div>
-  <div class="note">
-    <p><strong>Your data stays yours.</strong> Everything is stored in Canada. There is no advertising SDK, no analytics SDK, and no tracking of any kind. Your ledger exports at any time, and deleting your account deletes it — immediately, from inside the app.</p>
-  </div>
-</section>
-
-<section class="band">
-  <div class="cta">
-    <p>
-      <strong>Colourway for iPhone</strong>
-      Requires iOS 18. Available worldwide on the App Store.
-    </p>
-    <a class="dl" href="https://apps.apple.com/app/id6806053821">Download on the App&nbsp;Store</a>
-  </div>
-  <p style="font-size:14.5px; margin-top:18px">
-    Want to see the numbers move first? <a href="/demo">Try the interactive demo</a> —
-    a dashboard filled with sample data, in your browser, no account needed.
-  </p>
-</section>
-
-<footer>
-  <span>© 2026 Break Thruu Entertainment, Inc.</span>
-  <a href="/privacy">Privacy</a>
-  <a href="/terms">Terms</a>
-  <a href="/support">Support</a>
-</footer>
-
 </div>
 
-<script>
-  // Autoplay only where motion is welcome. Someone who has asked their system
-  // for reduced motion gets the poster and the controls instead.
-  (function () {
-    var v = document.getElementById('demo');
-    if (!v) return;
-    try {
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        v.autoplay = true;
-        var p = v.play();
-        if (p && p.catch) p.catch(function () {});
-      }
-    } catch (e) {}
-  })();
-</script>
+<!-- ─────────────────── pinned extraction sequence ─────────────────── -->
+<section class="read" id="read">
+  <div class="read__pin" data-read-pin>
+    <div class="read__stage">
+
+      <div class="read__left">
+        <div class="receipt" data-receipt>
+          <div class="receipt__scan" aria-hidden="true"></div>
+          <pre class="receipt__body">NIKE.COM
+TORONTO, ON
+========================================
+DATE    2026-09-01
+ORDER   CA-9188342
+----------------------------------------
+AIR JORDAN 4 RETRO WHITE CEMENT
+  1 x $230.00   SIZE US 10      $230.00
+----------------------------------------
+SUBTOTAL                        $230.00
+HST 13%                          $29.90
+========================================
+TOTAL                           $259.90
+========================================
+VISA ************4821</pre>
+        </div>
+      </div>
+
+      <div class="read__right">
+        <p class="read__kicker" data-read-kicker>The read</p>
+        <div class="term" data-term>
+          <p class="term__line" data-line="0">Reading the image…</p>
+          <p class="term__line" data-line="1">Merchant and date found</p>
+          <p class="term__line" data-line="2">Line items: 1</p>
+          <p class="term__line" data-line="3">Two fields could not be determined</p>
+          <p class="term__line term__line--ok" data-line="4">Saved to your ledger</p>
+        </div>
+
+        <ul class="fields" data-fields>
+          <li data-field="0"><span>Merchant</span><b>Nike</b></li>
+          <li data-field="1"><span>Date</span><b>2026 September 1</b></li>
+          <li data-field="2"><span>Item</span><b>Air Jordan 4 Retro White Cement</b></li>
+          <li data-field="3"><span>Size</span><b>US 10</b></li>
+          <li data-field="4"><span>Subtotal</span><b>$230.00</b></li>
+          <li data-field="5"><span>Tax — HST 13%</span><b>$29.90</b></li>
+          <li data-field="6"><span>Total</span><b>$259.90</b></li>
+          <li data-field="7"><span>Paid with</span><b>Visa ····4821</b></li>
+          <li data-field="8" class="is-unsure"><span>Shipping</span><b>Unsure</b></li>
+          <li data-field="9" class="is-unsure"><span>Duties</span><b>Unsure</b></li>
+        </ul>
+
+        <p class="read__saved" data-saved>
+          <strong>Saved to your ledger</strong> — 1 line item, 1 pair tracked.
+          Cost basis $259.90.
+        </p>
+      </div>
+
+    </div>
+    <div class="read__progress" aria-hidden="true"><i data-read-bar></i></div>
+  </div>
+</section>
+
+<!-- ───────────────────────── the wedge ───────────────────────── -->
+<section class="wedge">
+  <div class="wrap">
+    <h2 class="h2" data-split>Most scanners guess. This one tells you.</h2>
+    <p class="prose" data-rise>
+      A confident number you cannot check is worse than a blank you can fill in.
+      When Colourway cannot read a field it says so and leaves it empty, rather
+      than writing a tidy zero you will find out about in April.
+    </p>
+
+    <div class="wedge__cards">
+      <article class="card" data-rise>
+        <p class="card__tag">Confident</p>
+        <p class="card__row"><span>Total</span><b>$259.90</b></p>
+        <p class="card__note">Read directly from the total line.</p>
+      </article>
+      <article class="card card--warn" data-rise>
+        <p class="card__tag">Unsure</p>
+        <p class="card__row"><span>Shipping</span><b>—</b></p>
+        <p class="card__note">Not printed on this receipt. Left for you, not filled with a zero.</p>
+      </article>
+      <article class="card card--inferred" data-rise>
+        <p class="card__tag">Inferred, and said so</p>
+        <p class="card__row"><span>Currency</span><b>CAD</b></p>
+        <p class="card__note">From the province and the HST line — flagged as inferred, not asserted.</p>
+      </article>
+    </div>
+
+    <blockquote class="pull" data-rise>
+      “Extracted with high confidence. The image is immutable — edits are recorded
+      against the transaction, not the receipt.”
+      <cite>— shown on every receipt in the app</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ───────────────────────── chapters ───────────────────────── -->
+<section class="chapters" id="ledger">
+  <div class="wrap chapters__wrap">
+    <div class="chapters__rail">
+      <p class="kicker" data-rise>From shelf to filing</p>
+      <h2 class="h2" data-split>Four steps, and the last one is the point.</h2>
+      <ol class="steps" data-steps>
+        <li data-step="0">
+          <span class="steps__n">01</span>
+          <h3>Capture</h3>
+          <p>Photograph the receipt, or import one you already have. Paper, email, screenshot.</p>
+        </li>
+        <li data-step="1">
+          <span class="steps__n">02</span>
+          <h3>Read</h3>
+          <p>Merchant, date, line items, sizes, tax and payment method — with anything uncertain marked rather than invented.</p>
+        </li>
+        <li data-step="2">
+          <span class="steps__n">03</span>
+          <h3>Hold the basis</h3>
+          <p>Each pair carries its landed cost, its status, and how long it has sat. Sell it and the realized figure follows automatically.</p>
+        </li>
+        <li data-step="3">
+          <span class="steps__n">04</span>
+          <h3>File</h3>
+          <p>A calendar year of the ledger, shaped for <b>T2125</b> or <b>Schedule C</b>, exported as a pack your accountant can open.</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="chapters__viz">
+      <div class="phone phone--sticky">
+        <div class="phone__screen">
+          <img data-shot="0" class="is-on" src="assets/shots/01-home.webp" alt="Colourway dashboard: what needs attention, month spend, and shelf value" width="720" height="1558">
+          <img data-shot="1" src="assets/shots/03-receipt-detail.webp" alt="A receipt image beside the fields read from it" width="720" height="1558">
+          <img data-shot="2" src="assets/shots/04-inventory.webp" alt="Inventory with cost basis, status, holding age and unrealized profit and loss" width="720" height="1558">
+          <img data-shot="3" src="assets/shots/08-tax-pack.webp" alt="Tax pack: year and form picker for T2125 or Schedule C" width="720" height="1558">
+        </div>
+        <div class="phone__notch" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── horizontal rail ───────────────────────── -->
+<section class="rail" aria-label="The app, screen by screen">
+  <div class="rail__pin" data-rail-pin>
+    <div class="rail__head">
+      <p class="kicker">The whole app</p>
+      <h2 class="h2">Ten screens, nothing staged.</h2>
+    </div>
+    <div class="rail__track" data-rail-track>
+      <figure><img src="assets/shots/01-home.webp" alt="Dashboard" width="720" height="1558" loading="lazy"><figcaption>Dashboard</figcaption></figure>
+      <figure><img src="assets/shots/02-transactions.webp" alt="Transactions by month" width="720" height="1558" loading="lazy"><figcaption>Ledger by month</figcaption></figure>
+      <figure><img src="assets/shots/03-receipt-detail.webp" alt="Receipt detail" width="720" height="1558" loading="lazy"><figcaption>Receipt detail</figcaption></figure>
+      <figure><img src="assets/shots/04-inventory.webp" alt="Inventory" width="720" height="1558" loading="lazy"><figcaption>Inventory</figcaption></figure>
+      <figure><img src="assets/shots/05-realized-pl.webp" alt="Realized profit and loss" width="720" height="1558" loading="lazy"><figcaption>Realized P&amp;L</figcaption></figure>
+      <figure><img src="assets/shots/06-inventory-valuation.webp" alt="Inventory valuation" width="720" height="1558" loading="lazy"><figcaption>Valuation &amp; aging</figcaption></figure>
+      <figure><img src="assets/shots/07-fees-and-landed-cost.webp" alt="Fees and landed cost" width="720" height="1558" loading="lazy"><figcaption>Fees &amp; landed cost</figcaption></figure>
+      <figure><img src="assets/shots/08-tax-pack.webp" alt="Tax pack" width="720" height="1558" loading="lazy"><figcaption>Tax pack</figcaption></figure>
+      <figure><img src="assets/shots/09-lookbook.webp" alt="Lookbook" width="720" height="1558" loading="lazy"><figcaption>Lookbook</figcaption></figure>
+      <figure><img src="assets/shots/10-paywall.webp" alt="Reports index" width="720" height="1558" loading="lazy"><figcaption>Reports</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── reports ───────────────────────── -->
+<section class="reports" id="reports">
+  <div class="wrap">
+    <p class="kicker" data-rise>Reports</p>
+    <h2 class="h2" data-split>The numbers a spreadsheet stops giving you.</h2>
+    <div class="reports__grid">
+      <article data-rise><h3>Spend</h3><p>Where the money went, by month and category.</p><span>Pro</span></article>
+      <article data-rise><h3>Merchants</h3><p>Who you buy from, what they cost, and which rules act on them.</p><span>Pro</span></article>
+      <article data-rise><h3>Realized P&amp;L</h3><p>Revenue, cost of goods, selling costs and what was left.</p><span>Business</span></article>
+      <article data-rise><h3>Inventory valuation</h3><p>What the shelf is worth at cost, and how long it has been sitting.</p><span>Business</span></article>
+      <article data-rise><h3>Fees &amp; landed cost</h3><p>What each platform really takes, and what importing adds.</p><span>Business</span></article>
+      <article data-rise><h3>Tax pack</h3><p>A calendar year of your ledger, shaped for T2125 or Schedule C.</p><span>Business</span></article>
+    </div>
+    <p class="fine" data-rise>Inventory is valued at landed cost, not market. Colourway has no opinion on what a pair is worth to a buyer.</p>
+  </div>
+</section>
+
+<!-- ───────────────────────── privacy ───────────────────────── -->
+<section class="privacy">
+  <div class="wrap privacy__wrap">
+    <div>
+      <p class="kicker" data-rise>Privacy</p>
+      <h2 class="h2" data-split>Zero analytics SDKs. Not one.</h2>
+      <p class="prose" data-rise>
+        There is no tracker in this app measuring how you use it. Receipt images
+        go to one processor to be read and are not used to train anything. Your
+        whole ledger exports to a ZIP of CSVs whenever you want it, images
+        included, and deleting your account removes it.
+      </p>
+      <p class="fine" data-rise>
+        The full detail is in the <a href="/privacy">privacy policy</a>, which is
+        written to match what the app actually does rather than to cover every
+        possibility.
+      </p>
+    </div>
+    <ul class="privacy__list" data-rise>
+      <li>No analytics SDK</li>
+      <li>No ad identifiers</li>
+      <li>No selling of your data</li>
+      <li>No training on your receipts</li>
+      <li>Export everything, any time</li>
+      <li>Delete the account and it is gone</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────── pricing ───────────────────────── -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <p class="kicker" data-rise>Pricing</p>
+    <h2 class="h2" data-split>Free until the spreadsheet has actually stopped working.</h2>
+
+    <div class="plans">
+      <article class="plan" data-rise>
+        <h3>Free</h3>
+        <p class="plan__price">Free</p>
+        <ul>
+          <li>Up to <b>15 receipts</b> per calendar month, resetting on the 1st</li>
+          <li>The full read, including the unsure flags</li>
+          <li>Your ledger, exportable</li>
+        </ul>
+      </article>
+      <article class="plan plan--mid" data-rise>
+        <h3>Pro</h3>
+        <p class="plan__price">Shown in the app</p>
+        <ul>
+          <li>Unlimited receipts</li>
+          <li>Inventory and landed cost</li>
+          <li>Category rules</li>
+          <li>Spend and merchant reports</li>
+          <li>Lookbook</li>
+        </ul>
+      </article>
+      <article class="plan plan--top" data-rise>
+        <h3>Business</h3>
+        <p class="plan__price">Shown in the app</p>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>QuickBooks sync</li>
+          <li>Realized profit and loss</li>
+          <li>Inventory valuation and aging</li>
+          <li><b>Tax pack export</b> — T2125 or Schedule C</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="fine" data-rise>
+      Prices are shown in the app before you buy, in your local currency as set on
+      the App Store for your region, so there is no figure on this page that could
+      be wrong for you. Both paid tiers have a monthly and a yearly option. Apple
+      bills you, not us; manage or cancel in Settings → Apple Account →
+      Subscriptions.
+    </p>
+  </div>
+</section>
+
+<!-- ───────────────────────── close ───────────────────────── -->
+<section class="close">
+  <div class="close__marquee" aria-hidden="true">
+    <div class="close__track" data-marquee>
+      <span>Get Colourway</span><i>◆</i><span>Get Colourway</span><i>◆</i>
+      <span>Get Colourway</span><i>◆</i><span>Get Colourway</span><i>◆</i>
+    </div>
+  </div>
+  <div class="wrap close__wrap">
+    <h2 class="display display--sm" data-split>Buy the pair. Keep the paper.</h2>
+    <a class="btn btn--solid btn--lg" href="https://apps.apple.com/app/id6806053821" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M17.05 12.94c-.03-2.7 2.2-3.99 2.3-4.06-1.25-1.83-3.2-2.08-3.9-2.11-1.66-.17-3.24.98-4.08.98-.84 0-2.14-.96-3.52-.93-1.81.03-3.48 1.05-4.41 2.67-1.88 3.26-.48 8.09 1.35 10.74.9 1.3 1.97 2.75 3.38 2.7 1.36-.06 1.87-.88 3.51-.88 1.64 0 2.1.88 3.53.85 1.46-.03 2.38-1.32 3.27-2.63 1.03-1.51 1.46-2.97 1.48-3.05-.03-.01-2.84-1.09-2.87-4.33zM14.4 4.9c.74-.9 1.24-2.15 1.1-3.4-1.07.05-2.36.71-3.13 1.61-.69.8-1.29 2.07-1.13 3.29 1.19.09 2.41-.6 3.16-1.5z"/></svg>
+      Download on the App Store
+    </a>
+    <p class="fine">iOS 18 and later. iPhone.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__wrap">
+    <a class="nav__brand" href="#top"><img src="assets/mark.png" alt="" width="24" height="24"><span>Colourway</span></a>
+    <nav aria-label="Legal and support">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/support">Support</a>
+      <a href="/demo">Demo dashboard</a>
+    </nav>
+    <p class="foot__fine">
+      Figures shown on this page come from the demo account and are illustrative.
+      Colourway is a record-keeping tool, not tax or accounting advice.
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="js/site.js"></script>
 </body>
 </html>
