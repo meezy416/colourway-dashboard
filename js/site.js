@@ -325,4 +325,34 @@
     document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+
+  /* ── the film ──
+     The overlay is a real <button> rather than a styled div, so it is
+     reachable by keyboard and announced as a control. Native <video controls>
+     does the rest — no custom transport to keep in sync, and no bespoke
+     fullscreen or captions handling to get wrong. */
+  var filmBtn = document.querySelector('[data-film-play]');
+  if (filmBtn) {
+    var frame = filmBtn.closest('.film__frame');
+    var video = frame && frame.querySelector('video');
+    if (video) {
+      filmBtn.addEventListener('click', function () {
+        frame.classList.add('is-playing');
+        // Controls appear with playback, so the poster stays a clean still
+        // rather than carrying the browser's transport under our own button.
+        video.setAttribute('controls', '');
+        video.play();
+        video.focus();
+      });
+      // Bring the overlay back when the film ends, so the section invites a
+      // replay rather than sitting on a frozen last frame.
+      video.addEventListener('ended', function () {
+        frame.classList.remove('is-playing');
+        video.removeAttribute('controls');
+      });
+      // Someone can also start it from the native controls; keep the overlay
+      // in step either way.
+      video.addEventListener('play', function () { frame.classList.add('is-playing'); });
+    }
+  }
 })();

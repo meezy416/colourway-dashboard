@@ -484,3 +484,50 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   .read__pin{ height:auto; padding:90px 0; }
   .rail__track{ overflow-x:auto; width:auto; }
 }
+
+/* ───────────────────────── the film ───────────────────────── */
+.film{ padding: clamp(80px, 11vw, 150px) 0; background: var(--bg); }
+.film__lede{
+  max-width: 54ch; margin: 14px 0 0; color: var(--prose);
+  font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6;
+}
+.film__fig{ margin: clamp(30px, 4vw, 52px) 0 0; }
+.film__frame{
+  position: relative;
+  border: 1px solid var(--line-2); border-radius: 20px; overflow: hidden;
+  background: #000; box-shadow: 0 40px 90px -40px rgba(0,0,0,.9);
+}
+/* 16:9 is the film's real shape; letterboxing it inside another ratio would
+   add bars to footage that already has none. */
+.film__video{ display: block; width: 100%; aspect-ratio: 16 / 9; }
+
+.film__play{
+  position: absolute; inset: 0; display: flex; gap: 14px;
+  align-items: center; justify-content: center; flex-direction: column;
+  border: 0; cursor: pointer; color: var(--ink);
+  background: linear-gradient(to bottom, rgba(7,16,12,.10), rgba(7,16,12,.55));
+  font: inherit; font-size: 15px; font-weight: 600; letter-spacing: .01em;
+  transition: opacity .25s ease;
+}
+.film__disc{
+  display: grid; place-items: center;
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--emerald-lift); color: #04120C;
+  box-shadow: 0 10px 40px rgba(var(--emerald-rgb), .5);
+  transition: transform .25s ease;
+}
+/* Optically centred: a triangle's visual mass sits left of its bounding box. */
+.film__disc svg{ margin-left: 4px; }
+.film__play:hover .film__disc{ transform: scale(1.07); }
+.film__play:focus-visible{ outline: 3px solid var(--emerald-lift); outline-offset: -3px; }
+/* Hidden once playback starts, and kept out of the tab order with it —
+   a focusable control sitting invisibly over a playing video is a trap. */
+.film__frame.is-playing .film__play{ opacity: 0; pointer-events: none; visibility: hidden; }
+
+/* Below the frame, not over it. Overlaid bottom-left it ran into the centred
+   button label the moment the viewport narrowed. */
+.film__cap{ margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce){
+  .film__disc, .film__play{ transition: none; }
+}

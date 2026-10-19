@@ -124,6 +124,42 @@
   </div>
 </div>
 
+<!-- ───────────────────────── the film ───────────────────────── -->
+<section class="film" id="film">
+  <div class="wrap">
+    <p class="kicker" data-rise>Forty-three seconds</p>
+    <h2 class="h2" data-rise>What the ledger is for.</h2>
+    <p class="film__lede" data-rise>
+      Shot for the 1.1 release. The screens in it are real captures from the app,
+      not mockups.
+    </p>
+
+    <!--
+      Not autoplaying, and not muted-with-an-unmute-button. The film carries a
+      voiceover that does most of the explaining, so a silent autoplay would
+      show the pictures and lose the argument. `preload="none"` means the 3 MB
+      costs nothing until somebody actually asks for it.
+    -->
+    <figure class="film__fig" data-rise>
+      <div class="film__frame">
+      <video class="film__video" playsinline preload="none"
+             poster="assets/launch-film-poster.jpg"
+             aria-label="Colourway launch film, 43 seconds, with narration">
+        <source src="assets/launch-film.mp4" type="video/mp4">
+      </video>
+      <button class="film__play" type="button" data-film-play aria-label="Play the film">
+        <span class="film__disc" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28">
+            <path fill="currentColor" d="M8 5.2v13.6a1 1 0 0 0 1.52.85l11.1-6.8a1 1 0 0 0 0-1.7L9.52 4.35A1 1 0 0 0 8 5.2z"/>
+          </svg>
+        </span>
+        <span>Play the film</span>
+      </button>
+      </div>
+    <figcaption class="film__cap" data-rise>43 seconds, with sound.</figcaption>
+  </div>
+</section>
+
 <!-- ─────────────────── pinned extraction sequence ─────────────────── -->
 <section class="read" id="read">
   <div class="read__pin" data-read-pin>
@@ -269,7 +305,7 @@ VISA ************4821</pre>
   <div class="rail__pin" data-rail-pin>
     <div class="rail__head">
       <p class="kicker">The whole app</p>
-      <h2 class="h2">Ten screens, nothing staged.</h2>
+      <h2 class="h2">Eight screens, nothing staged.</h2>
     </div>
     <div class="rail__track" data-rail-track>
       <figure><img src="assets/shots/01-home.webp" alt="Dashboard" width="720" height="1558" loading="lazy"><figcaption>Dashboard</figcaption></figure>
@@ -280,8 +316,6 @@ VISA ************4821</pre>
       <figure><img src="assets/shots/06-inventory-valuation.webp" alt="Inventory valuation" width="720" height="1558" loading="lazy"><figcaption>Valuation &amp; aging</figcaption></figure>
       <figure><img src="assets/shots/07-fees-and-landed-cost.webp" alt="Fees and landed cost" width="720" height="1558" loading="lazy"><figcaption>Fees &amp; landed cost</figcaption></figure>
       <figure><img src="assets/shots/08-tax-pack.webp" alt="Tax pack" width="720" height="1558" loading="lazy"><figcaption>Tax pack</figcaption></figure>
-      <figure><img src="assets/shots/09-lookbook.webp" alt="Lookbook" width="720" height="1558" loading="lazy"><figcaption>Lookbook</figcaption></figure>
-      <figure><img src="assets/shots/10-paywall.webp" alt="Reports index" width="720" height="1558" loading="lazy"><figcaption>Reports</figcaption></figure>
     </div>
   </div>
 </section>
